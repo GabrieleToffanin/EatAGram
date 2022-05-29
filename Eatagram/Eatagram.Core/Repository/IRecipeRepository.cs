@@ -11,5 +11,6 @@ namespace Eatagram.Core.Repository
         //Gets the method for getting all the recipes 
         //from the DAL
         Task<IEnumerable<Recipe>> FetchAllRecipes();
+        Task<Recipe> CreateRecipe(Recipe recipe);
     }
 }

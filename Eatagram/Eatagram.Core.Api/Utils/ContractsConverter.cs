@@ -1,4 +1,5 @@
 ﻿using Eatagram.Core.Api.Models.Contracts;
+using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Entities;
 
 namespace Eatagram.Core.Api.Utils
@@ -38,6 +39,20 @@ namespace Eatagram.Core.Api.Utils
                     Name = recipe.Name,
                     Description = recipe.Description
                 };
+
+        /// <summary>
+        /// Converts request entity to his base Entity
+        /// </summary>
+        /// <param name="request">Actual request to be converted</param>
+        /// <returns>The actual recipe achieved from the conversion</returns>
+        public static Recipe AsBase(this RecipeCreationRequest request)
+        {
+            return new Recipe
+            {
+                Name = request.Name,
+                Description = request.Description,
+            };
+        }
         
     }
 }

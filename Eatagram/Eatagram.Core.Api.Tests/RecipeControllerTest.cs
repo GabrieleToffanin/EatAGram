@@ -1,18 +1,37 @@
 using Eatagram.Core.Api.Controllers;
 using Eatagram.Core.Api.Models.Contracts;
+using Eatagram.Core.Api.Models.Requests;
+using Eatagram.Core.Api.Tests.StabDb;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Logic;
 using Eatagram.Core.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Newtonsoft.Json;
+using System.Net;
+using System.Net.Http.Json;
 
 namespace Eatagram.Core.Api.Tests
 {
     /// <summary>
     /// Class that has the task of testing RecipeController
     /// </summary>
-    public class RecipeControllerTest
+    public class RecipeControllerTest : IClassFixture<ApiCoreWebApplicationFactory<RecipeController>>
     {
+        private readonly ApiCoreWebApplicationFactory<RecipeController> _factory;
+        private readonly HttpClient _httpClient;
+
+        public RecipeControllerTest(ApiCoreWebApplicationFactory<RecipeController> factory)
+        {
+            _factory = factory;
+            _httpClient = _factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
+        }
+
+
+
         /// <summary>
         /// Testing GET FetchAll endpoint method
         /// </summary>
@@ -21,31 +40,44 @@ namespace Eatagram.Core.Api.Tests
         {
             //*** Arrange
             //Creates a mockRepository with Moq Library
-            var mockRepository = new Mock<IRecipeRepository>();
-            //Setups a new db stub with default items in item
-            mockRepository
-                .Setup(r => r.FetchAllRecipes())
-                .ReturnsAsync(new List<Recipe> { new Recipe { Id = 5, Description = "Piatto buonissimo", Name = "Pasta alla matriciana"} });
+            var result = await _httpClient.GetAsync("api/Recipe/GetRecipes");
 
-            //Initialize recipe brain logic with the mock repository
-            IRecipeBrainLogic logic = new RecipeBrainLogic(mockRepository.Object);
-            //Initializes a new controller with the business layer
-            RecipeController controller = new RecipeController(logic);
+            var content = await result.Content.ReadAsStringAsync();
 
-            //*** Act
-            var availableRecipes = await controller.GetRecipes();
-            OkObjectResult result = availableRecipes as OkObjectResult;
-
-            IEnumerable<RecipeContract> contentEnum = result.Value as IEnumerable<RecipeContract>;
-            IList<RecipeContract> content = contentEnum.ToList();
+            var currentObjs = JsonConvert.DeserializeObject<IEnumerable<RecipeContract>>(content);
+            var singleObj = currentObjs.FirstOrDefault();
 
 
             //*** Assert
-            Assert.True(result != null);
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
             Assert.True(content != null);
-            Assert.True(content.Any());
-            Assert.True(content[0].Name == "Pasta alla matriciana");
-            Assert.True(content[0].Description == "Piatto buonissimo");
+            Assert.True(currentObjs.Any());
+            Assert.True(singleObj.Name == "Cozze");
+            Assert.True(singleObj.Description == "Bone le cozze");
+        }
+
+        [Fact]
+        public async Task ShouldCreateARecipeWhenGoodDataProvided()
+        {
+            
+            var recipeToAdd = new RecipeCreationRequest()
+            {
+                Name = "Tortellini in brodo",
+                Description = "Bono"
+            };
+
+
+            var result = await _httpClient.PostAsJsonAsync("api/Recipe/CreateRecipe", recipeToAdd);
+
+            var currentResult = await result.Content.ReadAsStringAsync();
+
+            var content = JsonConvert.DeserializeObject<RecipeContract>(currentResult);
+
+
+            Assert.True(content != null);
+            Assert.True(content.Name == "Tortellini in brodo");
+            Assert.True(content.Description == "Bono");
+
         }
     }
 }

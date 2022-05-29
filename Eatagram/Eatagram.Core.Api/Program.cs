@@ -14,7 +14,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-
     options.UseSqlServer(builder.Configuration["ConnectionStrings:LocalSqlServer"],
     migrationsAsm => migrationsAsm.MigrationsAssembly("Eatagram.Core.Api")));
 

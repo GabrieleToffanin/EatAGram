@@ -1,5 +1,6 @@
 ﻿using Eatagram.Core.Entities;
 using Eatagram.Core.Repository;
+using Eatagram.Core.Utils;
 
 namespace Eatagram.Core.Logic
 {
@@ -14,6 +15,20 @@ namespace Eatagram.Core.Logic
         public RecipeBrainLogic(IRecipeRepository recipeRepository)
         {
             _recipeRepository = recipeRepository;
+        }
+
+        /// <summary>
+        /// Checks if entity is valid and asks the DAL to create the new Entity
+        /// </summary>
+        /// <param name="currentRecipe">Current asked for entity </param>
+        /// <returns>Return the created recipe if good data else null</returns>
+        public async Task<Recipe> CreateRecipe(Recipe currentRecipe)
+        {
+            //Performs the validation on the Entity
+            if (ValidationUtils.Validate(currentRecipe).Count() > 0)
+                return null;
+            //Returns the entity cause of success validation
+            return await _recipeRepository.CreateRecipe(currentRecipe);
         }
 
         /// <summary>
