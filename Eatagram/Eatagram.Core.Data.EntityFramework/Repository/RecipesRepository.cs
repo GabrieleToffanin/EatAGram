@@ -22,6 +22,20 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         {
             _dbContext = dbContext;
         }
+
+        /// <summary>
+        /// Creates the recipe 
+        /// </summary>
+        /// <param name="recipe">current recipe that has to be added to the db</param>
+        /// <returns>the current create recipe</returns>
+        public async Task<Recipe> CreateRecipe(Recipe recipe)
+        {
+            await _dbContext.AddAsync(recipe);
+            await _dbContext.SaveChangesAsync();
+
+            return recipe;
+        }
+
         /// <summary>
         /// Fetches all the recipes from the DataBase
         /// </summary>

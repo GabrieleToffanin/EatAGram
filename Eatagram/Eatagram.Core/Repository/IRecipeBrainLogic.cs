@@ -16,5 +16,7 @@ namespace Eatagram.Core.Repository
     {
         //Gets all the recipes
         Task<IEnumerable<Recipe>> GetAllRecipes();
+        //Creates a new Recipe if goes well returns the latter else null
+        Task<Recipe> CreateRecipe(Recipe currentRecipe);
     }
 }
