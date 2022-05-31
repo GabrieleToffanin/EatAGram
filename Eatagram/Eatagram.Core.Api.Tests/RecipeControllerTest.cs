@@ -2,11 +2,6 @@ using Eatagram.Core.Api.Controllers;
 using Eatagram.Core.Api.Models.Contracts;
 using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Tests.StabDb;
-using Eatagram.Core.Entities;
-using Eatagram.Core.Logic;
-using Eatagram.Core.Repository;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
@@ -47,15 +42,17 @@ namespace Eatagram.Core.Api.Tests
             var currentObjs = JsonConvert.DeserializeObject<IEnumerable<RecipeContract>>(content);
             var singleObj = currentObjs.FirstOrDefault();
 
+            
 
             //*** Assert
             Assert.Equal(HttpStatusCode.OK, result.StatusCode);
             Assert.True(content != null);
             Assert.True(currentObjs.Any());
-            Assert.True(singleObj.Name == "Cozze");
-            Assert.True(singleObj.Description == "Bone le cozze");
         }
 
+        /// <summary>
+        /// Method to test if the creation goes well 
+        /// </summary>
         [Fact]
         public async Task ShouldCreateARecipeWhenGoodDataProvided()
         {
@@ -73,11 +70,32 @@ namespace Eatagram.Core.Api.Tests
 
             var content = JsonConvert.DeserializeObject<RecipeContract>(currentResult);
 
+            
 
             Assert.True(content != null);
             Assert.True(content.Name == "Tortellini in brodo");
             Assert.True(content.Description == "Bono");
 
+        }
+
+        /// <summary>
+        /// Method for testing Recipe Deletion
+        /// </summary>
+        [Fact]
+        public async Task ShouldDeleteItemOnGoodIndexAndBodyProvided()
+        {
+            
+            var result = await _httpClient.PutAsJsonAsync($"api/Recipe/DeleteRecipe/{1}", typeof(int));
+
+            var response = await result.Content.ReadAsStringAsync();
+
+            var currentObj = JsonConvert.DeserializeObject<RecipeContract>(response);
+
+            
+
+            Assert.True(HttpStatusCode.OK == result.StatusCode);
+            Assert.True(typeof(RecipeContract) == currentObj.GetType());
+            Assert.True("Cozze" == currentObj.Name);
         }
     }
 }

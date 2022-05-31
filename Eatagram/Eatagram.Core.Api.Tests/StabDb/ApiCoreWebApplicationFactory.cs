@@ -14,6 +14,9 @@ namespace Eatagram.Core.Api.Tests.StabDb
 {
     public class ApiCoreWebApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : ControllerBase
     {
+        
+
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
@@ -23,12 +26,9 @@ namespace Eatagram.Core.Api.Tests.StabDb
 
                 services.Remove(currentDbDescriptor);
 
-                services.AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseInMemoryDatabase("InMemoryDb");
-                });
-
-                services.AddEntityFrameworkInMemoryDatabase();
+                services.AddDbContext<ApplicationDbContext>(options => 
+                    options.UseInMemoryDatabase("InMemoryDb")
+                );
 
                 var sp = services.BuildServiceProvider();
 
@@ -38,9 +38,8 @@ namespace Eatagram.Core.Api.Tests.StabDb
                 var db = scopedServices.GetRequiredService<ApplicationDbContext>();
 
                 db.Database.EnsureCreated();
-
+                
                 Utilities.IntializeDbForTest(db);
-
 
             });
         }

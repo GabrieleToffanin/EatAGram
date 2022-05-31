@@ -53,6 +53,19 @@ namespace Eatagram.Core.Api.Utils
                 Description = request.Description,
             };
         }
+        /// <summary>
+        /// Converts a RecipeDeletionRequest to his Recipe equivalent
+        /// </summary>
+        /// <param name="request">Actual request to convert</param>
+        /// <returns>The parametrized Recipe</returns>
+        public static Recipe AsBase(this RecipeDeletionRequest request)
+        {
+            return new Recipe
+            {
+                Name = request.Name,
+                Description = request.Description
+            };
+        }
         
     }
 }

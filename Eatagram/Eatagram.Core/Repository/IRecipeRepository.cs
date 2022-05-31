@@ -12,5 +12,7 @@ namespace Eatagram.Core.Repository
         //from the DAL
         Task<IEnumerable<Recipe>> FetchAllRecipes();
         Task<Recipe> CreateRecipe(Recipe recipe);
+        Task<Recipe> FindRecipeById(int id);
+        Task<Recipe> DeleteRecipe(Recipe currentRecipe);
     }
 }

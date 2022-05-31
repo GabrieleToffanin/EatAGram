@@ -27,8 +27,24 @@ namespace Eatagram.Core.Logic
             //Performs the validation on the Entity
             if (ValidationUtils.Validate(currentRecipe).Count() > 0)
                 return null;
+
             //Returns the entity cause of success validation
             return await _recipeRepository.CreateRecipe(currentRecipe);
+        }
+        /// <summary>
+        /// Calls the DAL for deleting the recipe from the database
+        /// </summary>
+        /// <param name="id">Current id of the recipe to be deleted</param>
+        /// <returns>If Recipe not found in db null, else the deleted recipe</returns>
+        public async Task<Recipe> DeleteRecipe(int id)
+        {
+            Recipe currentRecipe = await _recipeRepository.FindRecipeById(id);
+
+            if (currentRecipe == null)
+                return null;
+
+            return await _recipeRepository.DeleteRecipe(currentRecipe);
+
         }
 
         /// <summary>

@@ -37,6 +37,19 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         }
 
         /// <summary>
+        /// Deletes the current recipe from the database
+        /// </summary>
+        /// <param name="currentRecipe">current recipe to be removed</param>
+        /// <returns>Return the recipe if deleted else null</returns>
+        public async Task<Recipe> DeleteRecipe(Recipe currentRecipe)
+        {
+            _dbContext.Remove(currentRecipe);
+            await _dbContext.SaveChangesAsync();
+
+            return currentRecipe;
+        }
+
+        /// <summary>
         /// Fetches all the recipes from the DataBase
         /// </summary>
         /// <returns>A collection of recipes</returns>
@@ -44,6 +57,16 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         {
             return await _dbContext.Recipes.OrderBy(x => x.Name)
                                            .ToListAsync();
+        }
+
+        /// <summary>
+        /// Finds the recipe by id
+        /// </summary>
+        /// <param name="id">Current supposed recipe id already present in DB </param>
+        /// <returns>The fetched recipe</returns>
+        public async Task<Recipe> FindRecipeById(int id)
+        {
+            return await _dbContext.Recipes.FindAsync(id);
         }
     }
 }
