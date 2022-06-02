@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Eatagram.Core.Api.Tests.Helper
 {
-    public class TestsBase<TController> : WebApplicationFactory<TController> where TController : class
+    public class TestsBase<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {

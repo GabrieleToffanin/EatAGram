@@ -2,15 +2,12 @@
 
 namespace Eatagram.Core.Entities
 {
-    public class Recipe
+    public class Ingredient
     {
         [Key]
         public int Id { get; set; }
         [MaxLength(255)]
         public string Name { get; set; }
-        [MaxLength(255)]
-        public string Description { get; set; }
-        public virtual ICollection<Ingredient> Ingredients { get; set; }
-        
+        public virtual ICollection<Recipe> Recipes { get; set; }
     }
 }

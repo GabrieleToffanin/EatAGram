@@ -25,7 +25,7 @@ namespace Eatagram.Core.Api.Controllers
         {
             var recipes = await _recipeLogic.GetAllRecipes();
 
-            return Ok(recipes);
+            return Ok(recipes.AsContracts(x => x.GetContract()));
         }
 
         [HttpPost]

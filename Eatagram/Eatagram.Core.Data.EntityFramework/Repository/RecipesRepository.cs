@@ -55,8 +55,9 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// <returns>A collection of recipes</returns>
         public async Task<IEnumerable<Recipe>> FetchAllRecipes()
         {
-            var items = await _dbContext.Recipes.OrderBy(x => x.Name)
-                                           .ToListAsync();
+            var items = await _dbContext.Recipes.Include(x => x.Ingredients)
+                                                .OrderBy(x => x.Name)
+                                                .ToListAsync();
             return items ?? Enumerable.Empty<Recipe>();
         }
 
