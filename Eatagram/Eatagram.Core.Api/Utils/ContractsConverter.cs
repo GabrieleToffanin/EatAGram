@@ -45,7 +45,7 @@ namespace Eatagram.Core.Api.Utils
         /// </summary>
         /// <param name="request">Actual request to be converted</param>
         /// <returns>The actual recipe achieved from the conversion</returns>
-        public static Recipe AsBase(this RecipeCreationRequest request)
+        public static Recipe GetContract(this RecipeCreationRequest request)
         {
             return new Recipe
             {
@@ -58,7 +58,7 @@ namespace Eatagram.Core.Api.Utils
         /// </summary>
         /// <param name="request">Actual request to convert</param>
         /// <returns>The parametrized Recipe</returns>
-        public static Recipe AsBase(this RecipeDeletionRequest request)
+        public static Recipe GetContract(this RecipeUpdateRequest request)
         {
             return new Recipe
             {

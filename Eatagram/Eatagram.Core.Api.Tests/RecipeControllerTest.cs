@@ -1,7 +1,13 @@
 using Eatagram.Core.Api.Controllers;
 using Eatagram.Core.Api.Models.Contracts;
 using Eatagram.Core.Api.Models.Requests;
-using Eatagram.Core.Api.Tests.StabDb;
+using Eatagram.Core.Api.Tests.Helper;
+using Eatagram.Core.Data.EntityFramework.Repository;
+using Eatagram.Core.Logic;
+using Eatagram.Core.Repository;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
@@ -11,91 +17,86 @@ namespace Eatagram.Core.Api.Tests
     /// <summary>
     /// Class that has the task of testing RecipeController
     /// </summary>
-    public class RecipeControllerTest : IClassFixture<ApiCoreWebApplicationFactory<RecipeController>>
+    public class RecipeControllerTest : IClassFixture<TestsBase<Program>>
     {
-        private readonly ApiCoreWebApplicationFactory<RecipeController> _factory;
-        private readonly HttpClient _httpClient;
+        private readonly TestsBase<Program> _factory;
+        private readonly HttpClient _client;
 
-        public RecipeControllerTest(ApiCoreWebApplicationFactory<RecipeController> factory)
+
+        public RecipeControllerTest(TestsBase<Program> factory)
         {
             _factory = factory;
-            _httpClient = _factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions
-            {
-                AllowAutoRedirect = false
-            });
+            _client = _factory.CreateClient(new WebApplicationFactoryClientOptions());
         }
 
-
-
-        /// <summary>
-        /// Testing GET FetchAll endpoint method
-        /// </summary>
+        
+        
         [Fact]
-        public async Task ShouldReturnAllTheRecipes()
+        public async Task ShouldFetchAllRecipesFromDbIfAny()
         {
             //*** Arrange
-            //Creates a mockRepository with Moq Library
-            var result = await _httpClient.GetAsync("api/Recipe/GetRecipes");
+            var respnse = await _client.GetAsync("api/Recipe/GetRecipes");
 
-            var content = await result.Content.ReadAsStringAsync();
-
-            var currentObjs = JsonConvert.DeserializeObject<IEnumerable<RecipeContract>>(content);
-            var singleObj = currentObjs.FirstOrDefault();
-
-            
+            //*** Act
+            var content = await respnse.Content.ReadAsStringAsync();
 
             //*** Assert
-            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
             Assert.True(content != null);
-            Assert.True(currentObjs.Any());
+        }
+        [Fact]
+        public async Task ShouldCreateRecipeWhenGoodDataProvided()
+        {
+            //*** Arrange
+            var toCreate = new RecipeCreationRequest()
+            {
+                Description = "Cozze",
+                Name = "Cozze"
+            };
+            //*** Act 
+            var response = await _client.PostAsJsonAsync("api/Recipe/CreateRecipe", toCreate);
+            var content = await response.Content.ReadAsStringAsync();
+
+            var @object = await JsonConvert.DeserializeObjectAsync<RecipeContract>(content);
+
+            //*** Assert
+            Assert.True(@object != null);
+            Assert.True(@object.Name.Equals(toCreate.Name));
+
         }
 
-        /// <summary>
-        /// Method to test if the creation goes well 
-        /// </summary>
         [Fact]
-        public async Task ShouldCreateARecipeWhenGoodDataProvided()
+        public async Task ShouldDeleteRecipeIfIdFound()
         {
-            
-            var recipeToAdd = new RecipeCreationRequest()
+            //*** Arrange
+            int id = 1;
+            //*** Act
+            var response = await _client.DeleteAsync($"api/Recipe/DeleteRecipe/{id}");
+            var content = await response.Content.ReadAsStringAsync();
+            var @object = JsonConvert.DeserializeObject<RecipeContract>(content);
+            //*** Assert
+
+            Assert.True(@object != null);
+        }
+        [Fact]
+        public async Task SouldUpdateRecipeWhenGoodIdAndDataProvided()
+        {
+            //*** Arrange
+            int id = 2;
+            var request = new RecipeUpdateRequest()
             {
-                Name = "Tortellini in brodo",
-                Description = "Bono"
+                Name = "Cozze",
+                Description = "Bone le cozze"
             };
 
+            //*** Act
+            var response = await _client.PutAsJsonAsync($"api/Recipe/UpdateRecipe/{id}", request);
+            var content = await response.Content.ReadAsStringAsync();
+            var @object = JsonConvert.DeserializeObject<RecipeContract>(content);
 
-            var result = await _httpClient.PostAsJsonAsync("api/Recipe/CreateRecipe", recipeToAdd);
-
-            var currentResult = await result.Content.ReadAsStringAsync();
-
-            var content = JsonConvert.DeserializeObject<RecipeContract>(currentResult);
-
-            
-
-            Assert.True(content != null);
-            Assert.True(content.Name == "Tortellini in brodo");
-            Assert.True(content.Description == "Bono");
+            //*** Assert
+            Assert.True(@object != null);
 
         }
-
-        /// <summary>
-        /// Method for testing Recipe Deletion
-        /// </summary>
-        [Fact]
-        public async Task ShouldDeleteItemOnGoodIndexAndBodyProvided()
-        {
-            
-            var result = await _httpClient.PutAsJsonAsync($"api/Recipe/DeleteRecipe/{1}", typeof(int));
-
-            var response = await result.Content.ReadAsStringAsync();
-
-            var currentObj = JsonConvert.DeserializeObject<RecipeContract>(response);
-
-            
-
-            Assert.True(HttpStatusCode.OK == result.StatusCode);
-            Assert.True(typeof(RecipeContract) == currentObj.GetType());
-            Assert.True("Cozze" == currentObj.Name);
-        }
+        
     }
 }

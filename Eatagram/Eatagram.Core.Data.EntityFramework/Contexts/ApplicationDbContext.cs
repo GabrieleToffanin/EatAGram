@@ -17,8 +17,17 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
         public DbSet<Recipe> Recipes { get; set; }
 
         //Uses the default dbContext options
-        public ApplicationDbContext(DbContextOptions dbOptions) : base(dbOptions)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbOptions) : base(dbOptions)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Recipe>()
+                .HasData(new Recipe() { Description = "Bona", Name = "Pasta", Id = 1 },
+                         new Recipe() { Description = "Bona", Name = "Pasta", Id = 2 } );
+        }
+
+
     }
 }

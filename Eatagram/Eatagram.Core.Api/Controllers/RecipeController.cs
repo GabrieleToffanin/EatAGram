@@ -20,12 +20,12 @@ namespace Eatagram.Core.Api.Controllers
 
         [HttpGet]
         [Route("GetRecipes")]
-        [ProducesResponseType(200,Type = typeof(RecipeContract))]
+        [ProducesResponseType(200,Type = typeof(Recipe))]
         public async Task<IActionResult> GetRecipes() //Status code 200 Ok status code 400 BadRequest status 500 internal server error 
         {
             var recipes = await _recipeLogic.GetAllRecipes();
 
-            return Ok(recipes.AsContracts(x => x.GetContract()));
+            return Ok(recipes);
         }
 
         [HttpPost]
@@ -33,7 +33,7 @@ namespace Eatagram.Core.Api.Controllers
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> CreateRecipe([FromBody] RecipeCreationRequest recipeToAdd)
         {
-            var currentRecipe = recipeToAdd.AsBase();
+            var currentRecipe = recipeToAdd.GetContract();
 
             var result = await _recipeLogic.CreateRecipe(currentRecipe);
 
@@ -43,8 +43,8 @@ namespace Eatagram.Core.Api.Controllers
             return Ok(result.GetContract());
         }
 
-        [HttpPut]
-        [Route("DeleteRecipe/{id}")]
+        [HttpDelete]
+        [Route("DeleteRecipe/{id:int}")]
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> DeleteRecipe([FromRoute]int id)
         {
@@ -53,6 +53,20 @@ namespace Eatagram.Core.Api.Controllers
 
             if (result == null)
                 return BadRequest("Bad id or data provided for deletionRequest");
+
+            return Ok(result.GetContract());
+        }
+
+        [HttpPut]
+        [Route("UpdateRecipe/{id:int}")]
+        [ProducesResponseType(200, Type = typeof(RecipeContract))]
+        public async Task<IActionResult> UpdateRecipe([FromRoute] int id, [FromBody]RecipeUpdateRequest recipeUpdateRequest)
+        {
+            var toUpdate = recipeUpdateRequest.GetContract();
+            Recipe result = await _recipeLogic.UpdateRecipe(id, toUpdate);
+
+            if (result == null)
+                return BadRequest("Can't update with provided data, or object not found");
 
             return Ok(result.GetContract());
         }
