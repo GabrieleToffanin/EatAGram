@@ -50,13 +50,20 @@ namespace Eatagram.Core.Api.Tests
             var toCreate = new RecipeCreationRequest()
             {
                 Description = "Cozze",
-                Name = "Cozze"
+                Name = "Cozze",
+                Ingredients = new List<IngredientCreationRequest>
+                {
+                    new IngredientCreationRequest
+                    {
+                        Name = "Cozze"
+                    }
+                }
             };
             //*** Act 
             var response = await _client.PostAsJsonAsync("api/Recipe/CreateRecipe", toCreate);
             var content = await response.Content.ReadAsStringAsync();
 
-            var @object = await JsonConvert.DeserializeObjectAsync<RecipeContract>(content);
+            var @object = JsonConvert.DeserializeObject<RecipeContract>(content);
 
             //*** Assert
             Assert.True(@object != null);
@@ -85,7 +92,15 @@ namespace Eatagram.Core.Api.Tests
             var request = new RecipeUpdateRequest()
             {
                 Name = "Cozze",
-                Description = "Bone le cozze"
+                Description = "Bone le cozze",
+                Ingredients = new List<IngredientCreationRequest>
+                {
+                    new IngredientCreationRequest
+                    {
+                        Name = "Cozze"
+                    }
+                }
+                
             };
 
             //*** Act
