@@ -65,10 +65,16 @@ namespace Eatagram.Core.Api.Utils
             return new Recipe
             {
                 Name = request.Name,
-                Description = request.Description
+                Description = request.Description,
+                Ingredients = request.Ingredients.AsContracts(x => x.GetContract()).ToList()
             };
         }
 
+        /// <summary>
+        /// Request model for the creation of a recipe
+        /// </summary>
+        /// <param name="request">current request to be transposed to Ingredient Base</param>
+        /// <returns>The converted in Ingredient</returns>
         public static Ingredient GetContract(this IngredientCreationRequest request)
         {
             return new Ingredient
@@ -77,6 +83,11 @@ namespace Eatagram.Core.Api.Utils
             };
         }
 
+        /// <summary>
+        /// Tranforms an Ingredient in his IngredientContract equivalent
+        /// </summary>
+        /// <param name="ingredient">Current ingredient to be converted</param>
+        /// <returns>The ingredient contract with same properties as the ingredient passed</returns>
         public static IngredientContract GetContract(this Ingredient ingredient)
         {
             return new IngredientContract()

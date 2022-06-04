@@ -24,7 +24,7 @@ namespace Eatagram.Core.Utils
             //Creates a validation context based on current entity
             ValidationContext context = new ValidationContext(entityToValidate);
 
-            //Creates a list who'll be fulled with error if any
+            //Creates a list who'll be filled with error if any
             IList<ValidationResult> validationResults = new List<ValidationResult>();
 
             //Tries to validate the current object

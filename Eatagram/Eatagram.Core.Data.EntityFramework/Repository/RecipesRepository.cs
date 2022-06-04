@@ -68,7 +68,9 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// <returns>The fetched recipe</returns>
         public async Task<Recipe> FindRecipeById(int id)
         {
-            return await _dbContext.Recipes.FindAsync(id);
+            return await _dbContext.Recipes.Include(x => x.Ingredients)
+                                           .Where(x => x.Id == id)
+                                           .FirstOrDefaultAsync();
         }
 
         /// <summary>

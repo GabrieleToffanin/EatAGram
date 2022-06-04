@@ -1,8 +1,14 @@
+using Eatagram.Core.Api.Config;
+using Eatagram.Core.Api.Extensions;
 using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Data.EntityFramework.Repository;
+using Eatagram.Core.Entities.Token;
 using Eatagram.Core.Logic;
 using Eatagram.Core.Repository;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 public partial class Program 
 {
     public static void Main(string[] args)
@@ -16,17 +22,16 @@ public partial class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        if (builder.Environment.IsDevelopment())
-                builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase(builder.Configuration["ConnectionStrings:InMemory"]));
-        else
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(builder.Configuration["ConnectionStrings:LocalSqlServer"],
-                migrationsAsm => migrationsAsm.MigrationsAssembly("Eatagram.Core.Api")));
+        builder.Services.Configure<JwtToken>(builder.Configuration.GetSection("token"));
 
+        builder.Services.SetupIdentityDatabase(builder.Configuration);
+
+        builder.Services.AddHttpContextAccessor();
+        
 
         builder.Services.AddScoped<IRecipeRepository, RecipesRepository>();
         builder.Services.AddScoped<IRecipeBrainLogic, RecipeBrainLogic>();
+        builder.Services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
 
 
         var app = builder.Build();
@@ -36,14 +41,21 @@ public partial class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+
+            app.EnsureIdentityDbIsCreated();
+            app.SeedIdentityDataAsync().Wait();
+
         }
 
         app.UseHttpsRedirection();
 
+        app.UseAuthentication();
         app.UseAuthorization();
+
 
         app.MapControllers();
 
         app.Run();
     }
 }
+
