@@ -33,7 +33,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
             await _dbContext.AddAsync(recipe);
             await _dbContext.SaveChangesAsync();
 
-            return recipe;
+            return await FindRecipeById(recipe.Id);
         }
 
         /// <summary>
@@ -43,10 +43,12 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// <returns>Return the recipe if deleted else null</returns>
         public async Task<Recipe> DeleteRecipe(Recipe currentRecipe)
         {
+            var momentCopy = currentRecipe;
+
             _dbContext.Remove(currentRecipe);
             await _dbContext.SaveChangesAsync();
 
-            return currentRecipe;
+            return momentCopy;
         }
 
         /// <summary>
@@ -56,6 +58,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         public async Task<IEnumerable<Recipe>> FetchAllRecipes()
         {
             var items = await _dbContext.Recipes.Include(x => x.Ingredients)
+                                                .Include(x => x.Owner)
                                                 .OrderBy(x => x.Name)
                                                 .ToListAsync();
             return items ?? Enumerable.Empty<Recipe>();
@@ -69,6 +72,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         public async Task<Recipe> FindRecipeById(int id)
         {
             return await _dbContext.Recipes.Include(x => x.Ingredients)
+                                           .Include(x => x.Owner)
                                            .Where(x => x.Id == id)
                                            .FirstOrDefaultAsync();
         }
@@ -90,7 +94,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
             
             await _dbContext.SaveChangesAsync();
 
-            return updated;
+            return await FindRecipeById(updated.Id);
         }
     }
 }

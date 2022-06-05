@@ -17,7 +17,7 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
     {
         //DbSet representing Recipes Table
         public DbSet<Recipe> Recipes { get; set; }
-        public DbSet<Ingredient> Ingredients { get; set; } 
+        public DbSet<Ingredient> Ingredients { get; set; }
 
         //Uses the default dbContext options
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbOptions) : base(dbOptions)
@@ -28,17 +28,15 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
-
-            modelBuilder.Entity<Recipe>()
-                .HasData(new Recipe() { Description = "Bona", Name = "Pasta", Id = 1 },
-                         new Recipe() { Description = "Bona", Name = "Pasta", Id = 2 });
-
             modelBuilder.Entity<Recipe>()
                 .HasMany(x => x.Ingredients)
                 .WithMany(x => x.Recipes);
 
-
-            
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(x => x.Recipes)
+                .WithOne(x => x.Owner)
+                .HasForeignKey(x => x.User_Id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
 

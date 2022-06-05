@@ -37,6 +37,8 @@ namespace Eatagram.Core.Api.Controllers
         {
             var currentRecipe = recipeToAdd.GetContract();
 
+            currentRecipe.User_Id = User.GetUserId();
+
             var result = await _recipeLogic.CreateRecipe(currentRecipe);
 
             if (result == null)

@@ -21,5 +21,7 @@ namespace Eatagram.Core.Entities
                 return $"{FirstName} {LastName}";
             }
         }
+
+        public virtual ICollection<Recipe> Recipes { get; set; }
     }
 }

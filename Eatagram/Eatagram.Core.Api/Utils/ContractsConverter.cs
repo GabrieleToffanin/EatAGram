@@ -38,7 +38,8 @@ namespace Eatagram.Core.Api.Utils
                 {
                     Name = recipe.Name,
                     Description = recipe.Description,
-                    Ingredients = recipe.Ingredients.Select(x => x.Name).ToList()
+                    Ingredients = recipe.Ingredients.Select(x => x.Name).ToList(),
+                    User_Name = recipe.Owner.UserName
                 };
 
         /// <summary>
