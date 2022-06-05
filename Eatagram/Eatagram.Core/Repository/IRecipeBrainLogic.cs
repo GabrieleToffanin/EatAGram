@@ -20,5 +20,6 @@ namespace Eatagram.Core.Repository
         Task<Recipe> CreateRecipe(Recipe currentRecipe);
         //Deletes the wanted Recipe from the db
         Task<Recipe> DeleteRecipe(int id);
+        Task<Recipe> UpdateRecipe(int id, Recipe toUpdate);
     }
 }

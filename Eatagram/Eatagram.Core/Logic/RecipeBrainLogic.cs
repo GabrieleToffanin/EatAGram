@@ -59,5 +59,21 @@ namespace Eatagram.Core.Logic
             //Returns the recipes if any, else an empty Enumerable of type Recipe
             return recipes ?? Enumerable.Empty<Recipe>();
         }
+
+        /// <summary>
+        /// Updates the recipe in the database
+        /// </summary>
+        /// <param name="id">current recipe id in the database</param>
+        /// <param name="toUpdate">current data that the already present Recipe will be updated with</param>
+        /// <returns>the updated recipe from the database</returns>
+        public async Task<Recipe> UpdateRecipe(int id, Recipe toUpdate)
+        {
+            if (ValidationUtils.Validate(toUpdate).Count() > 0)
+                return null;
+
+            Recipe updated = await _recipeRepository.UpdateRecipe(id, toUpdate);
+
+            return updated;
+        }
     }
 }

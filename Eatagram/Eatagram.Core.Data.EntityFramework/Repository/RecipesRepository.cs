@@ -55,8 +55,10 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// <returns>A collection of recipes</returns>
         public async Task<IEnumerable<Recipe>> FetchAllRecipes()
         {
-            return await _dbContext.Recipes.OrderBy(x => x.Name)
-                                           .ToListAsync();
+            var items = await _dbContext.Recipes.Include(x => x.Ingredients)
+                                                .OrderBy(x => x.Name)
+                                                .ToListAsync();
+            return items ?? Enumerable.Empty<Recipe>();
         }
 
         /// <summary>
@@ -66,7 +68,29 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// <returns>The fetched recipe</returns>
         public async Task<Recipe> FindRecipeById(int id)
         {
-            return await _dbContext.Recipes.FindAsync(id);
+            return await _dbContext.Recipes.Include(x => x.Ingredients)
+                                           .Where(x => x.Id == id)
+                                           .FirstOrDefaultAsync();
+        }
+
+        /// <summary>
+        /// Updated the recipe if found in db
+        /// </summary>
+        /// <param name="id">of the recipe already in DB</param>
+        /// <param name="toUpdate">Data that will update the recipe</param>
+        /// <returns>The updated recipe, with updated values</returns>
+        public async Task<Recipe> UpdateRecipe(int id, Recipe toUpdate)
+        {
+            var current = await FindRecipeById(id);
+
+            if(current == null) return null;
+
+            await DeleteRecipe(current);
+            var updated = await CreateRecipe(toUpdate);
+            
+            await _dbContext.SaveChangesAsync();
+
+            return updated;
         }
     }
 }

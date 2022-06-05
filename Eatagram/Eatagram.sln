@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.Api.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core", "Eatagram.Core\Eatagram.Core.csproj", "{56168C2B-E134-4981-978D-E79E876E948E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eatagram.Core.Data.EntityFramework", "Eatagram.Core.Data.EntityFramework\Eatagram.Core.Data.EntityFramework.csproj", "{8AFCC55C-EB04-4D72-A132-C865A8A46126}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.Data.EntityFramework", "Eatagram.Core.Data.EntityFramework\Eatagram.Core.Data.EntityFramework.csproj", "{8AFCC55C-EB04-4D72-A132-C865A8A46126}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
