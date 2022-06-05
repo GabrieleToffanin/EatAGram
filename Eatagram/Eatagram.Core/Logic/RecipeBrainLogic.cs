@@ -71,6 +71,8 @@ namespace Eatagram.Core.Logic
             if (ValidationUtils.Validate(toUpdate).Count() > 0)
                 return null;
 
+
+
             Recipe updated = await _recipeRepository.UpdateRecipe(id, toUpdate);
 
             return updated;

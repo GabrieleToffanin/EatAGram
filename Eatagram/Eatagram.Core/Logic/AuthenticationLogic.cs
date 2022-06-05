@@ -25,7 +25,7 @@ namespace Eatagram.Core.Logic
 
         public async Task<JwtTokenResponse> AuthenticateAsync(JwtTokenRequest request)
         {
-            string ipAddress = _httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            string ipAddress = _httpContext?.Connection?.RemoteIpAddress?.MapToIPv4().ToString() ?? string.Empty;
 
             JwtTokenResponse jwtTokenResponse = await _tokenService.Authenticate(request, ipAddress);
 

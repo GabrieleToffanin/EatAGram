@@ -5,11 +5,14 @@ using Eatagram.Core.Api.Tests.Helper;
 using Eatagram.Core.Data.EntityFramework.Repository;
 using Eatagram.Core.Logic;
 using Eatagram.Core.Repository;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace Eatagram.Core.Api.Tests
@@ -20,20 +23,23 @@ namespace Eatagram.Core.Api.Tests
     public class RecipeControllerTest : IClassFixture<TestsBase<Program>>
     {
         private readonly TestsBase<Program> _factory;
-        private readonly HttpClient _client;
+        private HttpClient _client;
 
 
         public RecipeControllerTest(TestsBase<Program> factory)
         {
             _factory = factory;
-            _client = _factory.CreateClient(new WebApplicationFactoryClientOptions());
+            _client = _factory.CreateDefaultClient();
+            
         }
 
+        
         
         
         [Fact]
         public async Task ShouldFetchAllRecipesFromDbIfAny()
         {
+            
             //*** Arrange
             var respnse = await _client.GetAsync("api/Recipe/GetRecipes");
 

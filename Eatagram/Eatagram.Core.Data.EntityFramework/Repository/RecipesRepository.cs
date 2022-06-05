@@ -90,11 +90,12 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
             if(current == null) return null;
 
             await DeleteRecipe(current);
-            var updated = await CreateRecipe(toUpdate);
-            
             await _dbContext.SaveChangesAsync();
 
-            return await FindRecipeById(updated.Id);
+            await CreateRecipe(toUpdate);
+            await _dbContext.SaveChangesAsync();
+
+            return await FindRecipeById(toUpdate.Id);
         }
     }
 }

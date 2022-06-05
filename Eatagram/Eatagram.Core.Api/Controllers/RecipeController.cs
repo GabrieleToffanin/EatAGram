@@ -69,6 +69,9 @@ namespace Eatagram.Core.Api.Controllers
         public async Task<IActionResult> UpdateRecipe([FromRoute] int id, [FromBody]RecipeUpdateRequest recipeUpdateRequest)
         {
             var toUpdate = recipeUpdateRequest.GetContract();
+
+            toUpdate.User_Id = User.GetUserId();
+
             Recipe result = await _recipeLogic.UpdateRecipe(id, toUpdate);
 
             if (result == null)
