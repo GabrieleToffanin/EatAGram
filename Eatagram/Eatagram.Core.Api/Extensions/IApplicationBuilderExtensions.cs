@@ -1,6 +1,6 @@
 ﻿using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Entities;
-using Eatagram.Core.Entities.Seed;
+using Eatagram.Core.Utils.Seed;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eatagram.Core.Entities.Seed
+namespace Eatagram.Core.Utils.Seed
 {
     public class ApplicationDbContextDataSeed
     {
@@ -22,7 +22,6 @@ namespace Eatagram.Core.Entities.Seed
             {
                 UserName = adminUserName,
                 Email = adminUserName,
-                IsEnabled = true,
                 EmailConfirmed = true,
                 FirstName = "Gabriele",
                 LastName = "Admin"

@@ -3,6 +3,7 @@ using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Utils;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eatagram.Core.Api.Controllers
@@ -18,6 +19,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Member")]
         [Route("GetRecipes")]
         [ProducesResponseType(200,Type = typeof(Recipe))]
         public async Task<IActionResult> GetRecipes() //Status code 200 Ok status code 400 BadRequest status 500 internal server error 
@@ -28,6 +30,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Member")]
         [Route("CreateRecipe")]
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> CreateRecipe([FromBody] RecipeCreationRequest recipeToAdd)
@@ -43,6 +46,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Member")]
         [Route("DeleteRecipe/{id:int}")]
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> DeleteRecipe([FromRoute]int id)
@@ -51,12 +55,13 @@ namespace Eatagram.Core.Api.Controllers
             var result = await _recipeLogic.DeleteRecipe(id);
 
             if (result == null)
-                return BadRequest("Bad id or data provided for deletionRequest");
+                return BadRequest("Bad id or Recipe not found");
 
             return Ok(result.GetContract());
         }
 
         [HttpPut]
+        [Authorize(Roles = "Member")]
         [Route("UpdateRecipe/{id:int}")]
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> UpdateRecipe([FromRoute] int id, [FromBody]RecipeUpdateRequest recipeUpdateRequest)

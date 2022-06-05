@@ -1,6 +1,8 @@
 ﻿using Eatagram.Core.Entities.Token;
+using Eatagram.Core.Entities.User;
 using Eatagram.Core.Repository;
 using Eatagram.Core.Services;
+using Eatagram.Core.Utils;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -31,6 +33,17 @@ namespace Eatagram.Core.Logic
                 return null;
 
             return jwtTokenResponse;
+        }
+
+        public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
+        {
+            if (ValidationUtils.Validate(request).Count() > 0)
+                return null;
+
+            RegistrationResponse response = await _tokenService.RegisterAsync(request);
+
+            return response;
+            
         }
     }
 }

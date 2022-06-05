@@ -1,5 +1,7 @@
-﻿using Eatagram.Core.Entities;
+﻿using Eatagram.Core.Configuration;
+using Eatagram.Core.Entities;
 using Eatagram.Core.Entities.Token;
+using Eatagram.Core.Entities.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -25,13 +27,45 @@ namespace Eatagram.Core.Services
             _httpContext = httpContext.HttpContext;
         }
 
+        public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
+        {
+            var response = new RegistrationResponse();
+            var alreadyUser = await GetUserByEmail(request.Email);
+
+            if (alreadyUser != null)
+            {
+                response.Message = $"An user is already registered with {request.Email}";
+                response.Registered = false;
+                return response;
+            }
+
+            ApplicationUser user = new ApplicationUser
+            {
+                UserName = request.UserName,
+                FirstName = request.FirstName,
+                Email = request.Email,
+                LastName = request.LastName,
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true,
+            };
+
+            var registration = await _userManager.CreateAsync(user, request.Password);
+            if (registration.Succeeded)
+                await _userManager.AddToRoleAsync(user, ApplicationIdenityConstants.Roles.Member);
+
+            response.Message = $"User registered with {request.Email}";
+            response.Registered = true;
+
+            return response;
+        }
+        
         public async Task<JwtTokenResponse> Authenticate(JwtTokenRequest request, string ipAddress)
         {
             if (await IsValidUser(request.Username, request.Password))
             {
                 ApplicationUser user = await GetUserByEmail(request.Username);
 
-                if (user is not null && user.IsEnabled)
+                if (user is not null)
                 {
                     string role = (await _userManager.GetRolesAsync(user))[0];
                     string jwtToken = await GenerateJwtToken(user, role);
