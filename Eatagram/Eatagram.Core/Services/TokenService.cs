@@ -67,7 +67,7 @@ namespace Eatagram.Core.Services
 
             return response;
         }
-        
+
         /// <summary>
         /// Creates the token for the user present in the database,
         /// if the user is not registered returns null

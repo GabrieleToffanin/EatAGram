@@ -1,14 +1,10 @@
 using Eatagram.Core.Api.Config;
 using Eatagram.Core.Api.Extensions;
-using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Data.EntityFramework.Repository;
 using Eatagram.Core.Entities.Token;
 using Eatagram.Core.Logic;
 using Eatagram.Core.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -17,6 +13,7 @@ public partial class Program
 {
     public static void Main(string[] args)
     {
+
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
@@ -31,30 +28,30 @@ public partial class Program
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = @"JWT Authorization header using the Bearer scheme. <br>
-                      Enter 'Bearer' [space] and then your token in the text input below.
-                      <br>Example: 'Bearer 12345abcdef'",
+                Enter 'Bearer' [space] and then your token in the text input below.
+                <br>Example: 'Bearer 12345abcdef'",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
                 Scheme = "Bearer"
             });
             c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-      {
         {
-          new OpenApiSecurityScheme
-          {
-            Reference = new OpenApiReference
-              {
-                Type = ReferenceType.SecurityScheme,
-                Id = "Bearer"
-              },
-              Scheme = "oauth2",
-              Name = "Bearer",
-              In = ParameterLocation.Header,
+{
+    new OpenApiSecurityScheme
+    {
+    Reference = new OpenApiReference
+        {
+        Type = ReferenceType.SecurityScheme,
+        Id = "Bearer"
+        },
+        Scheme = "oauth2",
+        Name = "Bearer",
+        In = ParameterLocation.Header,
 
-                },
-            new List<string>()
-            }
+        },
+    new List<string>()
+    }
         });
 
         });
@@ -93,7 +90,7 @@ public partial class Program
                 };
             });
 
-        
+
 
         var app = builder.Build();
 
@@ -113,11 +110,10 @@ public partial class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-        
+
 
         app.MapControllers();
 
         app.Run();
     }
 }
-

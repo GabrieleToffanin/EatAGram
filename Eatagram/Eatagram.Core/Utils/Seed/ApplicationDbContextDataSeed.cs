@@ -1,15 +1,10 @@
 ﻿using Eatagram.Core.Configuration;
 using Eatagram.Core.Entities;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Eatagram.Core.Utils.Seed
 {
-    public class ApplicationDbContextDataSeed
+    public static class ApplicationDbContextDataSeed
     {
         public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {

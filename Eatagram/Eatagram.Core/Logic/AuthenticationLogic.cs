@@ -4,11 +4,6 @@ using Eatagram.Core.Repository;
 using Eatagram.Core.Services;
 using Eatagram.Core.Utils;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Eatagram.Core.Logic
 {
@@ -43,7 +38,7 @@ namespace Eatagram.Core.Logic
             RegistrationResponse response = await _tokenService.RegisterAsync(request);
 
             return response;
-            
+
         }
     }
 }

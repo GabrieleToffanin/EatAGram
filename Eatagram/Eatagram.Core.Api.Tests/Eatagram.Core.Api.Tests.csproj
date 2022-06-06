@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -30,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Eatagram.Core.Api\Eatagram.Core.Api.csproj" />
+    <ProjectReference Include="..\Eatagram.Core.Data.EntityFramework\Eatagram.Core.Data.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>

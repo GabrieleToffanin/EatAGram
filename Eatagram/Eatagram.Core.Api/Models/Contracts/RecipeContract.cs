@@ -1,6 +1,4 @@
-﻿using Eatagram.Core.Entities;
-
-namespace Eatagram.Core.Api.Models.Contracts
+﻿namespace Eatagram.Core.Api.Models.Contracts
 {
     public class RecipeContract
     {

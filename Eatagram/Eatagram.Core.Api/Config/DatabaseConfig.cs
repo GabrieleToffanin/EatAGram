@@ -13,7 +13,7 @@ namespace Eatagram.Core.Api.Config
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration["ConnectionStrings:LocalSqlServer"],
                 migrations => migrations.MigrationsAssembly("Eatagram.Core.Api")));
-            
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultTokenProviders()
                 .AddUserManager<UserManager<ApplicationUser>>()

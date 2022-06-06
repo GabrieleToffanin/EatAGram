@@ -1,12 +1,10 @@
 ﻿using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Entities.Token;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
@@ -16,11 +14,11 @@ namespace Eatagram.Core.Api.Tests.Helper
 {
     public class TestsBase<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
-        
-        
+
+
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            
+
 
             builder.ConfigureServices(services =>
             {
@@ -32,7 +30,7 @@ namespace Eatagram.Core.Api.Tests.Helper
                     options.UseInMemoryDatabase("InMemoryDbForTesting"));
 
                 services.AddEntityFrameworkInMemoryDatabase();
-                
+
 
                 var build = services.BuildServiceProvider();
 
@@ -51,7 +49,7 @@ namespace Eatagram.Core.Api.Tests.Helper
         }
 
         protected override void ConfigureClient(HttpClient client)
-         
+
         {
             base.ConfigureClient(client);
             string token = SetAuthHeader(client).Result;

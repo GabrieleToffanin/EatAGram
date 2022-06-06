@@ -66,7 +66,7 @@ namespace Eatagram.Core.Api.Tests.Helper
                 EmailConfirmed = true,
                 FirstName = "Gabriele",
                 LastName = "Admin",
-                
+
             };
 
             await userManager.CreateAsync(adminUser, ApplicationIdenityConstants.DefaultPassword);

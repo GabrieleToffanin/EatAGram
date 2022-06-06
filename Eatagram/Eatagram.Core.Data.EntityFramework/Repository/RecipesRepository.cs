@@ -2,11 +2,6 @@
 using Eatagram.Core.Entities;
 using Eatagram.Core.Repository;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Eatagram.Core.Data.EntityFramework.Repository
 {
@@ -87,7 +82,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         {
             var current = await FindRecipeById(id);
 
-            if(current == null) return null;
+            if (current == null) return null;
 
             await DeleteRecipe(current);
             await _dbContext.SaveChangesAsync();

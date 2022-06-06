@@ -16,6 +16,6 @@ namespace Eatagram.Core.Entities
 
         public virtual string User_Id { get; set; }
         public virtual ApplicationUser Owner { get; set; }
-        
+
     }
 }

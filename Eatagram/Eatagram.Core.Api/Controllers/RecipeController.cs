@@ -19,9 +19,9 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Member")]
+        [Authorize(Roles = "Member, Administrator")]
         [Route("GetRecipes")]
-        [ProducesResponseType(200,Type = typeof(Recipe))]
+        [ProducesResponseType(200, Type = typeof(Recipe))]
         public async Task<IActionResult> GetRecipes() //Status code 200 Ok status code 400 BadRequest status 500 internal server error 
         {
             var recipes = await _recipeLogic.GetAllRecipes();
@@ -30,7 +30,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Member")]
+        [Authorize(Roles = "Member, Administrator")]
         [Route("CreateRecipe")]
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> CreateRecipe([FromBody] RecipeCreationRequest recipeToAdd)
@@ -48,12 +48,12 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Member")]
+        [Authorize(Roles = "Member, Administrator")]
         [Route("DeleteRecipe/{id:int}")]
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
-        public async Task<IActionResult> DeleteRecipe([FromRoute]int id)
+        public async Task<IActionResult> DeleteRecipe([FromRoute] int id)
         {
-            
+
             var result = await _recipeLogic.DeleteRecipe(id);
 
             if (result == null)
@@ -63,10 +63,10 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Member")]
+        [Authorize(Roles = "Member, Administrator")]
         [Route("UpdateRecipe/{id:int}")]
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
-        public async Task<IActionResult> UpdateRecipe([FromRoute] int id, [FromBody]RecipeUpdateRequest recipeUpdateRequest)
+        public async Task<IActionResult> UpdateRecipe([FromRoute] int id, [FromBody] RecipeUpdateRequest recipeUpdateRequest)
         {
             var toUpdate = recipeUpdateRequest.GetContract();
 

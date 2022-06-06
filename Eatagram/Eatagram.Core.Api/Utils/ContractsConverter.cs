@@ -20,11 +20,11 @@ namespace Eatagram.Core.Api.Utils
         /// <param name="converter">Actual type converter</param>
         /// <returns>The list of entity Contracts</returns>
         public static IEnumerable<TResult> AsContracts<TEntity, TResult>(
-            this IEnumerable<TEntity> entities, 
+            this IEnumerable<TEntity> entities,
             Func<TEntity, TResult> converter) where TEntity : class
                                               where TResult : class
         {
-            foreach(var entity in entities)
+            foreach (var entity in entities)
                 yield return converter(entity);
         }
 
@@ -34,13 +34,13 @@ namespace Eatagram.Core.Api.Utils
         /// <param name="recipe">Current recipe to be translated</param>
         /// <returns></returns>
         public static RecipeContract GetContract(this Recipe recipe)
-            =>  new RecipeContract
-                {
-                    Name = recipe.Name,
-                    Description = recipe.Description,
-                    Ingredients = recipe.Ingredients.Select(x => x.Name).ToList(),
-                    User_Name = recipe.Owner.UserName
-                };
+            => new RecipeContract
+            {
+                Name = recipe.Name,
+                Description = recipe.Description,
+                Ingredients = recipe.Ingredients.Select(x => x.Name).ToList(),
+                User_Name = recipe.Owner.UserName
+            };
 
         /// <summary>
         /// Converts request entity to his base Entity
@@ -97,6 +97,6 @@ namespace Eatagram.Core.Api.Utils
                 Recipes = ingredient.Recipes.Select(x => x.Name).ToList()
             };
         }
-        
+
     }
 }
