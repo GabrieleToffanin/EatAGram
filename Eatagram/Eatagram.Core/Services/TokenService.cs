@@ -1,4 +1,5 @@
-﻿using Eatagram.Core.Entities;
+﻿using Eatagram.Core.Configuration;
+using Eatagram.Core.Entities;
 using Eatagram.Core.Entities.Token;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +26,36 @@ namespace Eatagram.Core.Services
             _httpContext = httpContext.HttpContext;
         }
 
+        public async Task<UserRegistrationResponse> Register(UserRegistrationRequest request)
+        {
+            UserRegistrationResponse response = new UserRegistrationResponse();
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if(user != null)
+            {
+                response.Message = $"User already registered with {request.Email}";
+                response.Success = false; 
+                return response;
+            }
+
+            ApplicationUser userToCreate = new ApplicationUser
+            {
+                Email = request.Email,
+                UserName = request.UserName,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+            };
+
+            var result = await _userManager.CreateAsync(userToCreate, request.Password);
+            if (result.Succeded)
+                await _userManager.AddToRoleAsync(userToCreate, ApplicationIdenityConstants.Roles.Member);
+
+            response.Message = $"User registerd with Email: {userToCreate.Email}";
+            response.Success = true;
+
+            return response;
+        }
+
         public async Task<JwtTokenResponse> Authenticate(JwtTokenRequest request, string ipAddress)
         {
             if (await IsValidUser(request.Username, request.Password))
@@ -39,8 +70,8 @@ namespace Eatagram.Core.Services
                     await _userManager.UpdateAsync(user);
 
                     return new JwtTokenResponse(user,
-                        role,
-                        jwtToken); //""//refreshToken.Token);
+                                                role,
+                                                jwtToken);
                 }
             }
 
@@ -52,6 +83,7 @@ namespace Eatagram.Core.Services
             byte[] secret = Encoding.ASCII.GetBytes(_token.Secret);
 
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor
             {
                 Issuer = _token.Issuer,

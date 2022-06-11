@@ -35,8 +35,6 @@ namespace Eatagram.Core.Api.Config
                     options.Password.RequiredLength = 6;
                     options.Password.RequiredUniqueChars = 1;
 
-
-
                 });
 
             services.AddScoped<ITokenService, TokenService>();
