@@ -56,6 +56,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
                                                 .Include(x => x.Owner)
                                                 .OrderBy(x => x.Name)
                                                 .ToListAsync();
+
             return items ?? Enumerable.Empty<Recipe>();
         }
 
@@ -70,6 +71,15 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
                                            .Include(x => x.Owner)
                                            .Where(x => x.Id == id)
                                            .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Recipe>> GetUserRecipe(Func<Recipe, bool> filter)
+        {
+            return _dbContext.Recipes.Include(x => x.Ingredients)
+                                     .Include(x => x.Owner)
+                                     .Where(filter)
+                                     .OrderBy(x => x.Name);
+                                           
         }
 
         /// <summary>

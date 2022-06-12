@@ -21,10 +21,23 @@ namespace Eatagram.Core.Api.Controllers
         [HttpGet]
         [Authorize(Roles = "Member, Administrator")]
         [Route("GetRecipes")]
-        [ProducesResponseType(200, Type = typeof(Recipe))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<RecipeContract>))]
         public async Task<IActionResult> GetRecipes() //Status code 200 Ok status code 400 BadRequest status 500 internal server error 
         {
             var recipes = await _recipeLogic.GetAllRecipes();
+
+            return Ok(recipes.AsContracts(x => x.GetContract()));
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Member, Administrator")]
+        [Route("GetUserRecipes")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<RecipeContract>))]
+        public async Task<IActionResult> GetUserRecipes([FromQuery]string? userId = null)
+        {
+            userId ??= User.GetUserId();
+
+            var recipes = await _recipeLogic.GetUserRecipes(x => x.User_Id == userId);
 
             return Ok(recipes.AsContracts(x => x.GetContract()));
         }

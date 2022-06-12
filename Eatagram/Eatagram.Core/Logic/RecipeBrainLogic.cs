@@ -60,6 +60,13 @@ namespace Eatagram.Core.Logic
             return recipes ?? Enumerable.Empty<Recipe>();
         }
 
+        public async Task<IEnumerable<Recipe>> GetUserRecipes(Func<Recipe, bool> userFilter)
+        {
+            var result = await _recipeRepository.GetUserRecipe(userFilter);
+
+            return result;
+        }
+
         /// <summary>
         /// Updates the recipe in the database
         /// </summary>

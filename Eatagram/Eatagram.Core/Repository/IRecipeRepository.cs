@@ -36,5 +36,7 @@ namespace Eatagram.Core.Repository
         /// <param name="toUpdate">Current data that will update the already present recipe</param>
         /// <returns>The recipe with updated values</returns>
         Task<Recipe> UpdateRecipe(int id, Recipe toUpdate);
+
+        Task<IEnumerable<Recipe>> GetUserRecipe(Func<Recipe, bool> filter);
     }
 }

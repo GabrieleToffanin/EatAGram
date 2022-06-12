@@ -32,7 +32,5 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
                 .HasForeignKey(x => x.User_Id)
                 .OnDelete(DeleteBehavior.Cascade);
         }
-
-
     }
 }

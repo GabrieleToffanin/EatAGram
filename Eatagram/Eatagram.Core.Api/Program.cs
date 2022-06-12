@@ -22,6 +22,8 @@ public partial class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
 
+        builder.Services.AddCors();
+
         builder.Services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Animals", Version = "v1" });
@@ -36,23 +38,23 @@ public partial class Program
                 Scheme = "Bearer"
             });
             c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-        {
-{
-    new OpenApiSecurityScheme
-    {
-    Reference = new OpenApiReference
-        {
-        Type = ReferenceType.SecurityScheme,
-        Id = "Bearer"
-        },
-        Scheme = "oauth2",
-        Name = "Bearer",
-        In = ParameterLocation.Header,
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header,
 
-        },
-    new List<string>()
-    }
-        });
+                    },
+                    new List<string>()
+                }
+            });
 
         });
 
@@ -91,7 +93,6 @@ public partial class Program
             });
 
 
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -110,7 +111,13 @@ public partial class Program
         app.UseAuthentication();
         app.UseAuthorization();
 
-
+        app.UseCors(options =>
+        {
+            options.AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowAnyOrigin()
+                   .AllowCredentials();
+        });
 
         app.MapControllers();
 

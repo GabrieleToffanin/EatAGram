@@ -18,8 +18,6 @@ namespace Eatagram.Core.Api.Tests.Helper
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-
-
             builder.ConfigureServices(services =>
             {
                 var serviceDescriptor = services.SingleOrDefault(serv => serv.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));

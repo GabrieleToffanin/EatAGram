@@ -11,6 +11,7 @@ namespace Eatagram.Core.Repository
     {
         //Gets all the recipes
         Task<IEnumerable<Recipe>> GetAllRecipes();
+        Task<IEnumerable<Recipe>> GetUserRecipes(Func<Recipe, bool> userFilter);
         //Creates a new Recipe if goes well returns the latter else null
         Task<Recipe> CreateRecipe(Recipe currentRecipe);
         //Deletes the wanted Recipe from the db

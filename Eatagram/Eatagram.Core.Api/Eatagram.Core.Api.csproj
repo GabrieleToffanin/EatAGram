@@ -25,7 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Eatagram.Core.Data.EntityFramework\Eatagram.Core.Data.EntityFramework.csproj" />
     <ProjectReference Include="..\Eatagram.Core\Eatagram.Core.csproj" />
-	  <InternalsVisibleTo Include="Eatagram.Core.Api.Tests"/>
+	  <InternalsVisibleTo Include="Eatagram.Core.Api.Tests" />
   </ItemGroup>
 
 </Project>
