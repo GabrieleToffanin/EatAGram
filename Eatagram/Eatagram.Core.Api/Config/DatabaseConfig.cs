@@ -11,8 +11,7 @@ namespace Eatagram.Core.Api.Config
         public static void SetupIdentityDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration["ConnectionStrings:LocalSqlServer"],
-                migrations => migrations.MigrationsAssembly("Eatagram.Core.Api")));
+                options.UseSqlServer(configuration["ConnectionStrings:LocalSqlServer"]));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultTokenProviders()
