@@ -8,6 +8,6 @@ namespace Eatagram.Core.Entities
         public int Id { get; set; }
         [MaxLength(255)]
         public string Name { get; set; }
-        public virtual ICollection<Recipe> Recipes { get; set; }
+        public ICollection<Recipe> Recipes { get; set; }
     }
 }

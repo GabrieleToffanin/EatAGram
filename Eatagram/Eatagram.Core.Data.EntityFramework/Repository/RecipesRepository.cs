@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Eatagram.Core.Data.EntityFramework.Repository
 {
     /// <summary>
-    /// Defines the Recipes repository
+    /// Defines the Recipes repository, uses Eager Loading
     /// </summary>
     public class RecipesRepository : IRecipeRepository
     {
@@ -84,13 +84,13 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
 
             if (current == null) return null;
 
-            await DeleteRecipe(current);
+            current.Description = toUpdate.Description;
+            current.Name = toUpdate.Name;
+            current.Ingredients = toUpdate.Ingredients;
+
             await _dbContext.SaveChangesAsync();
 
-            await CreateRecipe(toUpdate);
-            await _dbContext.SaveChangesAsync();
-
-            return await FindRecipeById(toUpdate.Id);
+            return await FindRecipeById(current.Id);
         }
     }
 }

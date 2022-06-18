@@ -10,8 +10,8 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         //DbSet representing Recipes Table
-        public DbSet<Recipe> Recipes { get; set; }
-        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Recipe> Recipes { get; set; } = null!;
+        public DbSet<Ingredient> Ingredients { get; set; } = null!;
 
         //Uses the default dbContext options
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbOptions) : base(dbOptions)
@@ -31,6 +31,8 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
                 .WithOne(x => x.Owner)
                 .HasForeignKey(x => x.User_Id)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Ingredient>().HasIndex(x => x.Name).IsUnique();
         }
 
 

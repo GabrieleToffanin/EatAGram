@@ -20,10 +20,6 @@ namespace Eatagram.Core.Api.Tests
             _factory = factory;
             _client = _factory.CreateDefaultClient();
         }
-
-
-
-
         [Fact]
         public async Task ShouldFetchAllRecipesFromDbIfAny()
         {
@@ -77,6 +73,7 @@ namespace Eatagram.Core.Api.Tests
             //*** Assert
 
             Assert.True(@object != null);
+            Assert.True(@object is RecipeContract);
         }
         [Fact]
         public async Task SouldUpdateRecipeWhenGoodIdAndDataProvided()
@@ -104,6 +101,7 @@ namespace Eatagram.Core.Api.Tests
 
             //*** Assert
             Assert.True(@object != null);
+            Assert.True(@object.Name.Equals(request.Name));
 
         }
 
