@@ -105,5 +105,18 @@ namespace Eatagram.Core.Api.Tests
 
         }
 
+        [Fact]
+        public async Task ShouldFetchOnlyRequestedUserRecipes()
+        {
+            var response = await _client.GetAsync("api/Recipe/GetUserRecipes");
+            var content = await response.Content.ReadAsStringAsync();
+
+            var currentReponse = JsonConvert.DeserializeObject<IEnumerable<RecipeContract>>(content);
+            var checkIfRightUser = currentReponse.Where(x => x.User_Name == "GT@outlook.it");
+
+            Assert.True(currentReponse != null);
+            Assert.True(currentReponse.Count() == checkIfRightUser.Count());
+        }
+
     }
 }
