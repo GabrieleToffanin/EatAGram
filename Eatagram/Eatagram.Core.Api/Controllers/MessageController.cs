@@ -2,6 +2,8 @@
 using Eatagram.Core.Api.Utils;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -21,23 +23,26 @@ namespace Eatagram.Core.Api.Controllers
 
         [HttpGet]
         [Route("GetMessages")]
+        [Authorize(Roles = "Member, Administrator")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Message>))]
         public async Task<IActionResult> LoadMessages()
         {
             return Ok(await _messagingLogic.LoadConversationMessages());
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("SendMessage")]
         [ProducesResponseType(200, Type = typeof(Message))]
-        public async Task<IActionResult> SendMessage(string message, string userId)
+        public async Task<IActionResult> SendMessage([FromBody]string message)
         {
             var content = new Message()
             {
                 Text = message,
-                FromUser = User.GetUserId(),
-                ToUser = userId
+                FromUser = "1",
+                ToUser = "9e6a9837-df20-4778-aa57-0387b8838ef9"
             };
+
+            await _hubContext.Clients.All.SendAsync("messageReceived", message);
 
             await _messagingLogic.SaveMessage(content);
 

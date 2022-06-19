@@ -123,15 +123,16 @@ public partial class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
-
+         
         app.UseCors(options =>
-        {
-            options.AllowAnyHeader()
-                   .AllowAnyMethod()
-                   .AllowAnyOrigin();
-        });
+         options.WithOrigins("http://localhost:3000")
+         .AllowAnyMethod()
+         .AllowAnyHeader()
+         .AllowCredentials());
+       
 
         app.MapControllers();
+        app.UseWebSockets();
         app.MapHub<MessagingHub>("/Chat");
 
         app.Run();
