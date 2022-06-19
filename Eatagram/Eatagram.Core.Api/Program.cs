@@ -120,6 +120,7 @@ public partial class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseRouting();
 
         app.UseAuthentication();
         app.UseAuthorization();
@@ -131,9 +132,15 @@ public partial class Program
          .AllowCredentials());
        
 
-        app.MapControllers();
         app.UseWebSockets();
-        app.MapHub<MessagingHub>("/Chat");
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapHub<MessagingHub>("/Chat");
+
+            endpoints.MapControllerRoute(
+                name: "default",
+                pattern: "{controller}/{action=index}/{id?}");
+        });
 
         app.Run();
     }

@@ -1,4 +1,5 @@
 ﻿using Eatagram.Core.Api.Hubs;
+using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Utils;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Repository;
@@ -33,16 +34,16 @@ namespace Eatagram.Core.Api.Controllers
         [HttpPost]
         [Route("SendMessage")]
         [ProducesResponseType(200, Type = typeof(Message))]
-        public async Task<IActionResult> SendMessage([FromBody]string message)
+        public async Task<IActionResult> SendMessage([FromBody]MessageRequest request)
         {
             var content = new Message()
             {
-                Text = message,
+                Text = request.Message,
                 FromUser = "1",
                 ToUser = "9e6a9837-df20-4778-aa57-0387b8838ef9"
             };
 
-            await _hubContext.Clients.All.SendAsync("messageReceived", message);
+            await _hubContext.Clients.All.SendAsync("receiveMessage", request.User, request.Message);
 
             await _messagingLogic.SaveMessage(content);
 
