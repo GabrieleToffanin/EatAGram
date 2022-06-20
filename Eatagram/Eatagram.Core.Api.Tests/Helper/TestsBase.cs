@@ -12,7 +12,7 @@ using System.Net.Http.Json;
 
 namespace Eatagram.Core.Api.Tests.Helper
 {
-    public class TestsBase<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
+    public sealed class TestsBase<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {

@@ -20,10 +20,6 @@ namespace Eatagram.Core.Api.Tests
             _factory = factory;
             _client = _factory.CreateDefaultClient();
         }
-
-
-
-
         [Fact]
         public async Task ShouldFetchAllRecipesFromDbIfAny()
         {
@@ -77,6 +73,7 @@ namespace Eatagram.Core.Api.Tests
             //*** Assert
 
             Assert.True(@object != null);
+            Assert.True(@object is RecipeContract);
         }
         [Fact]
         public async Task SouldUpdateRecipeWhenGoodIdAndDataProvided()
@@ -104,7 +101,21 @@ namespace Eatagram.Core.Api.Tests
 
             //*** Assert
             Assert.True(@object != null);
+            Assert.True(@object.Name.Equals(request.Name));
 
+        }
+
+        [Fact]
+        public async Task ShouldFetchOnlyRequestedUserRecipes()
+        {
+            var response = await _client.GetAsync("api/Recipe/GetUserRecipes");
+            var content = await response.Content.ReadAsStringAsync();
+
+            var currentReponse = JsonConvert.DeserializeObject<IEnumerable<RecipeContract>>(content);
+            var checkIfRightUser = currentReponse.Where(x => x.User_Name == "GT@outlook.it");
+
+            Assert.True(currentReponse != null);
+            Assert.True(currentReponse.Count() == checkIfRightUser.Count());
         }
 
     }

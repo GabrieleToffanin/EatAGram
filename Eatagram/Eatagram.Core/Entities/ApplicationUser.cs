@@ -17,6 +17,6 @@ namespace Eatagram.Core.Entities
             }
         }
 
-        public virtual ICollection<Recipe> Recipes { get; set; }
+        public ICollection<Recipe> Recipes { get; set; }
     }
 }

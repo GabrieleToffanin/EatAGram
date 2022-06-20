@@ -47,6 +47,20 @@ namespace Eatagram.Core.Api.Tests.Helper
                     },
                     Name = "Pasta",
                     User_Id = "1"
+                },
+                new Recipe
+                {
+                    Description = "Fighi",
+                    Id = 3,
+                    Ingredients = new List<Ingredient>
+                    {
+                        new Ingredient {
+                            Name = "Fango",
+                            Id = 3
+                        }
+                    },
+                    Name = "Pasta",
+                    User_Id = "2"
                 }
             };
         }
@@ -69,9 +83,23 @@ namespace Eatagram.Core.Api.Tests.Helper
 
             };
 
+            var normalUser = new ApplicationUser
+            {
+                Id = "2",
+                UserName = "Testing@test.testing",
+                Email = "Testing@test.testing",
+                EmailConfirmed = true,
+                FirstName = "Gabri",
+                LastName = "Normal",
+
+            };
+
             await userManager.CreateAsync(adminUser, ApplicationIdenityConstants.DefaultPassword);
             adminUser = await userManager.FindByNameAsync(adminUserName);
             await userManager.AddToRoleAsync(adminUser, ApplicationIdenityConstants.Roles.Member);
+            await userManager.CreateAsync(normalUser, ApplicationIdenityConstants.DefaultPassword);
+            adminUser = await userManager.FindByNameAsync(normalUser.UserName);
+            await userManager.AddToRoleAsync(normalUser, ApplicationIdenityConstants.Roles.Member);
         }
     }
 }
