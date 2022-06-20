@@ -115,8 +115,7 @@ public partial class Program
         {
             options.AllowAnyHeader()
                    .AllowAnyMethod()
-                   .AllowAnyOrigin()
-                   .AllowCredentials();
+                   .AllowAnyOrigin();
         });
 
         app.MapControllers();

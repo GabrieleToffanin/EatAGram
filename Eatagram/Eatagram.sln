@@ -13,10 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.Api", "Eatagr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet", "dotnet", "{0A85676F-ED41-471F-81C0-FF1E0A62A097}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "client", "client", "{20BDA47A-72FB-4CF8-9ED0-A70F69C8A8AA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eatagram.Client.Blazor", "Eatagram.Client.Blazor\Eatagram.Client.Blazor.csproj", "{64BEBB1E-292B-4217-868B-038278893F80}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,10 +35,6 @@ Global
 		{756E9D8E-D9A4-4E47-8823-AECE0F115921}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{756E9D8E-D9A4-4E47-8823-AECE0F115921}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{756E9D8E-D9A4-4E47-8823-AECE0F115921}.Release|Any CPU.Build.0 = Release|Any CPU
-		{64BEBB1E-292B-4217-868B-038278893F80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{64BEBB1E-292B-4217-868B-038278893F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{64BEBB1E-292B-4217-868B-038278893F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{64BEBB1E-292B-4217-868B-038278893F80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,7 +44,6 @@ Global
 		{56168C2B-E134-4981-978D-E79E876E948E} = {0A85676F-ED41-471F-81C0-FF1E0A62A097}
 		{8AFCC55C-EB04-4D72-A132-C865A8A46126} = {0A85676F-ED41-471F-81C0-FF1E0A62A097}
 		{756E9D8E-D9A4-4E47-8823-AECE0F115921} = {0A85676F-ED41-471F-81C0-FF1E0A62A097}
-		{64BEBB1E-292B-4217-868B-038278893F80} = {20BDA47A-72FB-4CF8-9ED0-A70F69C8A8AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5CC2804B-EB90-439C-AD3C-E99FAC1362D0}

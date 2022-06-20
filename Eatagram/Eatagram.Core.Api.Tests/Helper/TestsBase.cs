@@ -14,8 +14,6 @@ namespace Eatagram.Core.Api.Tests.Helper
 {
     public class TestsBase<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
-
-
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
