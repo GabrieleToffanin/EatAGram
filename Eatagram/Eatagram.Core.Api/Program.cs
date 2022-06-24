@@ -66,8 +66,13 @@ public partial class Program
 
         builder.Services.SetupIdentityDatabase(builder.Configuration);
 
-        builder.Services.Configure<MessagesStoreDatabaseSettings>(
-            builder.Configuration.GetSection("MessageStoreDatabase"));
+        builder.Services.Configure<MessagesStoreDatabaseSettings>( 
+            config => {
+                config.ConnectionString = builder.Configuration.GetConnectionString("EatagramMongoDB");
+                config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
+                config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
+            });
+            
 
 
         builder.Services.AddHttpContextAccessor();
