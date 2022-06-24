@@ -6,8 +6,6 @@ COPY . .
 
 RUN dotnet restore 
 
-RUN dotnet test
-
 RUN dotnet build ./Eatagram.Core.Api/Eatagram.Core.Api.csproj -c Release
 
 RUN dotnet publish ./Eatagram.Core.Api/Eatagram.Core.Api.csproj -c Release -o output
@@ -15,7 +13,11 @@ RUN dotnet publish ./Eatagram.Core.Api/Eatagram.Core.Api.csproj -c Release -o ou
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 
+WORKDIR /app
+
+COPY --from=build-env /src/output .
+
 EXPOSE 80 
 EXPOSE 443
 
-ENTRYPOINT ["dotnet", "Msc.Amazon.Api.dll"]
+ENTRYPOINT ["dotnet", "Eatagram.Core.Api.dll"]
