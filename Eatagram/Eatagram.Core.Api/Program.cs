@@ -124,12 +124,12 @@ public partial class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
-         
+
         app.UseCors(options =>
-         options.WithOrigins("http://localhost:3000")
-         .AllowAnyMethod()
+         options.AllowAnyMethod()
          .AllowAnyHeader()
-         .AllowCredentials());
+         .AllowCredentials()
+         .SetIsOriginAllowed(origin => true));
        
 
         app.UseWebSockets();
