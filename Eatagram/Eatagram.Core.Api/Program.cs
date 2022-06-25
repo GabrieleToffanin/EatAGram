@@ -70,7 +70,7 @@ public partial class Program
 
         builder.Services.Configure<MessagesStoreDatabaseSettings>( 
             config => {
-                config.ConnectionString = builder.Configuration.GetConnectionString("CUSTOMCONNSTR_EatagramMongoDB");
+                config.ConnectionString = builder.Configuration.GetConnectionString("AZURE_COSMOSDB_CONNECTIONSTRING");
                 config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
                 config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
             });
