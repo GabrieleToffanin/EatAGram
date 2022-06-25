@@ -1,5 +1,0 @@
-{
-  "Eatagram.Core.Data.EntityFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "~",
-  "Eatagram.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "~",
-  "Eatagram.Core.MongoDb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null": "~"
-}
