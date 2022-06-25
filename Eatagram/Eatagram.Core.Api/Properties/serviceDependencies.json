@@ -2,7 +2,17 @@
   "dependencies": {
     "secrets1": {
       "type": "secrets",
-      "connectionId": "SqlAzureConnectionString"
+      "connectionId": "SqlAzureConnectionString",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:AZURE_SQL_CONNECTIONSTRING",
+      "dynamicId": null
+    },
+    "cosmosdb1": {
+      "type": "cosmosdb",
+      "connectionId": "ConnectionStrings:AZURE_COSMOSDB_CONNECTIONSTRING"
     }
   }
 }
