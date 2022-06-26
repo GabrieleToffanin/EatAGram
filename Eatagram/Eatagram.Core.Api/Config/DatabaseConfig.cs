@@ -8,10 +8,10 @@ namespace Eatagram.Core.Api.Config
 {
     public static class DatabaseConfig
     {
-        public static void SetupIdentityDatabase(this IServiceCollection services, IConfiguration configuration)
+        public static void SetupIdentityDatabase(this IServiceCollection services, IConfiguration configuration, string connectionString)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING")));
+                options.UseSqlServer(connectionString));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddDefaultTokenProviders()

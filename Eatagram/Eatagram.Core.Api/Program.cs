@@ -66,11 +66,14 @@ public partial class Program
 
         builder.Services.Configure<JwtToken>(builder.Configuration.GetSection("token"));
 
-        builder.Services.SetupIdentityDatabase(builder.Configuration);
+        AzureKeyVaultConfig.SetupAzureSecrets(out string sql, out string mongo);
+
+
+        builder.Services.SetupIdentityDatabase(builder.Configuration, sql);
 
         builder.Services.Configure<MessagesStoreDatabaseSettings>( 
             config => {
-                config.ConnectionString = builder.Configuration.GetConnectionString("AZURE_COSMOSDB_CONNECTIONSTRING");
+                config.ConnectionString = mongo;
                 config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
                 config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
             });
@@ -118,13 +121,13 @@ public partial class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-
             app.EnsureIdentityDbIsCreated();
             app.SeedIdentityDataAsync().Wait();
 
         }
+
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
         app.UseHttpsRedirection();
         app.UseRouting();
@@ -149,12 +152,7 @@ public partial class Program
                 pattern: "{controller}/{action=index}/{id?}");
         });
 
-        using(var scoped = app.Services.CreateScope()){
-            var provider = scoped.ServiceProvider;
-            var database = provider.GetRequiredService<ApplicationDbContext>();
-
-            database.Database.Migrate();
-        }
+        
 
         app.Run();
     }
