@@ -32,7 +32,7 @@ public partial class Program
 
         builder.Services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Animals", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Recipes", Version = "1.0.0" });
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = @"JWT Authorization header using the Bearer scheme. <br>
@@ -140,17 +140,10 @@ public partial class Program
          .AllowAnyHeader()
          .AllowCredentials()
          .SetIsOriginAllowed(origin => true));
-       
+        app.MapControllers();
 
         app.UseWebSockets();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapHub<MessagingHub>("/Chat");
-
-            endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller}/{action=index}/{id?}");
-        });
+        app.MapHub<MessagingHub>("/Chat");
 
         
 
