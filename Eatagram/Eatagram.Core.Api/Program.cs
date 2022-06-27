@@ -1,6 +1,7 @@
 using Eatagram.Core.Api.Config;
 using Eatagram.Core.Api.Extensions;
 using Eatagram.Core.Api.Hubs;
+using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Data.EntityFramework.Repository;
 using Eatagram.Core.Entities.Token;
 using Eatagram.Core.Logic;
@@ -9,6 +10,7 @@ using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
 using Eatagram.Core.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -124,10 +126,10 @@ public partial class Program
         app.UseAuthorization();
          
         app.UseCors(options =>
-         options.WithOrigins("http://localhost:3000")
-         .AllowAnyMethod()
+         options.AllowAnyMethod()
          .AllowAnyHeader()
-         .AllowCredentials());
+         .AllowCredentials()
+         .SetIsOriginAllowed(origin => true));
        
 
         app.UseWebSockets();
@@ -139,6 +141,13 @@ public partial class Program
                 name: "default",
                 pattern: "{controller}/{action=index}/{id?}");
         });
+
+        using(var scoped = app.Services.CreateScope()){
+            var provider = scoped.ServiceProvider;
+            var database = provider.GetRequiredService<ApplicationDbContext>();
+
+            database.Database.Migrate();
+        }
 
         app.Run();
     }
