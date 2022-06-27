@@ -2,7 +2,7 @@
 using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Utils;
 using Eatagram.Core.Entities;
-using Eatagram.Core.Repository;
+using Eatagram.Core.Interfaces.Logic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,6 @@
 ﻿using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Entities;
-using Eatagram.Core.Repository;
+using Eatagram.Core.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Eatagram.Core.Data.EntityFramework.Repository

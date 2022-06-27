@@ -3,12 +3,16 @@ using Eatagram.Core.Api.Extensions;
 using Eatagram.Core.Api.Hubs;
 using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Data.EntityFramework.Repository;
+using Eatagram.Core.Entities.Azure;
 using Eatagram.Core.Entities.Token;
+using Eatagram.Core.Interfaces.Auth;
+using Eatagram.Core.Interfaces.Azure;
+using Eatagram.Core.Interfaces.Logic;
+using Eatagram.Core.Interfaces.Repository;
 using Eatagram.Core.Logic;
 using Eatagram.Core.MongoDb.Configuration;
 using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
-using Eatagram.Core.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -32,7 +36,7 @@ public partial class Program
 
         builder.Services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Animals", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Recipes", Version = "1.0.0" });
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = @"JWT Authorization header using the Bearer scheme. <br>
@@ -66,14 +70,20 @@ public partial class Program
 
         builder.Services.Configure<JwtToken>(builder.Configuration.GetSection("token"));
 
+        builder.Services.Configure<AzureKeys>(builder.Configuration.GetSection("VaultUrl"));
+
+
         builder.Services.SetupIdentityDatabase(builder.Configuration);
 
-        builder.Services.Configure<MessagesStoreDatabaseSettings>(
-            builder.Configuration.GetSection("MessageStoreDatabase"));
+        builder.Services.Configure<MessagesStoreDatabaseSettings>( 
+            config => {
+                config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
+                config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
+            });
+            
 
 
         builder.Services.AddHttpContextAccessor();
-
 
         builder.Services.AddScoped<IRecipeRepository, RecipesRepository>();
         builder.Services.AddScoped<IRecipeBrainLogic, RecipeBrainLogic>();
@@ -82,6 +92,7 @@ public partial class Program
         builder.Services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
         builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
         builder.Services.AddScoped<IMessagingLogic, MessagingLogic>();
+        builder.Services.AddSingleton<IConnectionStringsProvider, AzureKeyVaultConfig>();
         builder.Services.AddSingleton<MessagesDb>();
 
         builder.Services.AddAuthentication(options =>
@@ -115,13 +126,13 @@ public partial class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-
             app.EnsureIdentityDbIsCreated();
             app.SeedIdentityDataAsync().Wait();
 
         }
+
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
         app.UseHttpsRedirection();
         app.UseRouting();
@@ -134,25 +145,15 @@ public partial class Program
          .AllowAnyHeader()
          .AllowCredentials()
          .SetIsOriginAllowed(origin => true));
-       
+        app.MapControllers();
 
         app.UseWebSockets();
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapHub<MessagingHub>("/Chat");
+        app.MapHub<MessagingHub>("/Chat");
 
-            endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller}/{action=index}/{id?}");
-        });
-
-        using(var scoped = app.Services.CreateScope()){
-            var provider = scoped.ServiceProvider;
-            var database = provider.GetRequiredService<ApplicationDbContext>();
-
-            database.Database.Migrate();
-        }
+        
 
         app.Run();
     }
 }
+
+

@@ -1,6 +1,6 @@
 ﻿using Eatagram.Core.Entities;
 
-namespace Eatagram.Core.Repository
+namespace Eatagram.Core.Interfaces.Repository
 {
     /// <summary>
     /// Interface representing the recipes repostiory

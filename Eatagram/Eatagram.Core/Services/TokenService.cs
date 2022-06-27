@@ -2,6 +2,7 @@
 using Eatagram.Core.Entities;
 using Eatagram.Core.Entities.Token;
 using Eatagram.Core.Entities.User;
+using Eatagram.Core.Interfaces.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
