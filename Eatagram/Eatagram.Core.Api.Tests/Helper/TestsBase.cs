@@ -1,6 +1,8 @@
-﻿using Eatagram.Core.Data.EntityFramework.Contexts;
+﻿using Eatagram.Core.Api.Tests.Helper.Mock;
+using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Entities.Token;
+using Eatagram.Core.Interfaces.Azure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -19,14 +21,19 @@ namespace Eatagram.Core.Api.Tests.Helper
             builder.ConfigureServices(services =>
             {
                 var serviceDescriptor = services.SingleOrDefault(serv => serv.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
+                var connStringsProviderDescriptor = services.SingleOrDefault(serv => serv.ServiceType == typeof(IConnectionStringsProvider));
 
                 services.Remove(serviceDescriptor);
+                services.Remove(connStringsProviderDescriptor);
+
+
 
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseInMemoryDatabase("InMemoryDbForTesting"));
 
                 services.AddEntityFrameworkInMemoryDatabase();
 
+                services.AddSingleton<IConnectionStringsProvider, MockConnectionStringProvider>();
 
                 var build = services.BuildServiceProvider();
 

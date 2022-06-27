@@ -15,6 +15,7 @@ using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -68,10 +69,10 @@ public partial class Program
 
         });
 
+       
+
         builder.Services.Configure<JwtToken>(builder.Configuration.GetSection("token"));
-
         builder.Services.Configure<AzureKeys>(builder.Configuration.GetSection("VaultUrl"));
-
 
         builder.Services.SetupIdentityDatabase(builder.Configuration);
 
@@ -80,11 +81,8 @@ public partial class Program
                 config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
                 config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
             });
-            
-
 
         builder.Services.AddHttpContextAccessor();
-
 
         builder.Services.AddScoped<IRecipeRepository, RecipesRepository>();
         builder.Services.AddScoped<IRecipeBrainLogic, RecipeBrainLogic>();
