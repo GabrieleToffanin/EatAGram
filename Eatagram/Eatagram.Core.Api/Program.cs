@@ -30,7 +30,7 @@ public partial class Program
 
         builder.Services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Animals", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Eatagram", Version = "v1" });
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = @"JWT Authorization header using the Bearer scheme. <br>
@@ -69,9 +69,7 @@ public partial class Program
         builder.Services.Configure<MessagesStoreDatabaseSettings>(
             builder.Configuration.GetSection("MessageStoreDatabase"));
 
-
         builder.Services.AddHttpContextAccessor();
-
 
         builder.Services.AddScoped<IRecipeRepository, RecipesRepository>();
         builder.Services.AddScoped<IRecipeBrainLogic, RecipeBrainLogic>();
@@ -145,3 +143,5 @@ public partial class Program
         app.Run();
     }
 }
+
+
