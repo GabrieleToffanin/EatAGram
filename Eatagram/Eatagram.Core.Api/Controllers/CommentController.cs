@@ -1,4 +1,5 @@
 ﻿using Eatagram.Core.Api.Models.Contracts;
+using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Utils;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Repository;
@@ -37,8 +38,8 @@ namespace Eatagram.Core.Api.Controllers
         [HttpPost]
         [Authorize(Roles = "Member, Administrator")]
         [Route("PostComment")]
-        [ProducesResponseType(200, Type = typeof(Comment))]
-        public async Task<IActionResult> PostComment([FromBody] CommentContract comment)
+        [ProducesResponseType(200, Type = typeof(CommentContract))]
+        public async Task<IActionResult> PostComment([FromBody] CommentRequest comment)
         {
             if (!ModelState.IsValid)
                 return BadRequest("Provided request has unvalid data");
@@ -46,7 +47,9 @@ namespace Eatagram.Core.Api.Controllers
             var current = comment.GetContract();
             current.User_Id = User.GetUserId();
 
-            return Ok(await _commentsLogic.AddCommentOnRecipe(current));
+            var result = await _commentsLogic.AddCommentOnRecipe(current);
+
+            return Ok(result.GetContract());
         }
     }
 }

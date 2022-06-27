@@ -99,12 +99,24 @@ namespace Eatagram.Core.Api.Utils
             };
         }
 
-        public static Comment GetContract(this CommentContract commentContract)
+        public static Comment GetContract(this CommentRequest commentContract)
         {
             return new Comment()
             {
                 Content = commentContract.Content,
                 RecipeId = commentContract.RecipeId
+            };
+        }
+
+        public static CommentContract GetContract(this Comment comment)
+        {
+            return new CommentContract
+            {
+                Id = comment.Id,
+                Content = comment.Content,
+                UpVotes = comment.UpVoted,
+                User = comment.User.UserName,
+                Recipe = comment.OfRecipe.Name
             };
         }
 
