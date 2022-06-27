@@ -53,11 +53,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Restoring the solution
+        run: dotnet restore ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Building the solution
+        run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release
+        
+      - name: Running tests
+        run: dotnet test ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj
+
+      - name: Building publishing package 
+        run: dotnet ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
