@@ -23,6 +23,9 @@ namespace Eatagram.Core.Api.Controllers
         [ProducesResponseType(200, Type = typeof(JwtTokenResponse))]
         public async Task<IActionResult> AuthenticateAsync([FromBody] JwtTokenRequest request)
         {
+            if (!ModelState.IsValid)
+                return BadRequest("Provided data is not correct");
+
             var response = await _logic.AuthenticateAsync(request);
 
             return Ok(response);
@@ -38,7 +41,6 @@ namespace Eatagram.Core.Api.Controllers
 
             if (response is null)
                 return BadRequest("Provided data is not valid for registration");
-
 
             return Ok(response);
         }

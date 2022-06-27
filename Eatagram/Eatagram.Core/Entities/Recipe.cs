@@ -12,7 +12,7 @@ namespace Eatagram.Core.Entities
         public string Description { get; set; }
 
         public ICollection<Ingredient> Ingredients { get; set; }
-
+        public ICollection<Comment> Comments { get; set; }
 
         public string User_Id { get; set; }
         public ApplicationUser Owner { get; set; }

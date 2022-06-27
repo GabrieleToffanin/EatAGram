@@ -31,6 +31,8 @@ namespace Eatagram.Core.Api.Controllers
             return Ok(await _messagingLogic.LoadConversationMessages());
         }
 
+        
+
         [HttpPost]
         [Route("SendMessage")]
         [ProducesResponseType(200, Type = typeof(Message))]

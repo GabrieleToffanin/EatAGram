@@ -13,6 +13,7 @@ using Eatagram.Core.Logic;
 using Eatagram.Core.MongoDb.Configuration;
 using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
+using Eatagram.Core.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -86,6 +87,8 @@ public partial class Program
 
         builder.Services.AddScoped<IRecipeRepository, RecipesRepository>();
         builder.Services.AddScoped<IRecipeBrainLogic, RecipeBrainLogic>();
+        builder.Services.AddScoped<ICommentsRepository, CommentsRepository>();
+        builder.Services.AddScoped<ICommentsLogic, CommentsLogic>();
         builder.Services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
         builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
         builder.Services.AddScoped<IMessagingLogic, MessagingLogic>();
@@ -136,7 +139,7 @@ public partial class Program
 
         app.UseAuthentication();
         app.UseAuthorization();
-
+         
         app.UseCors(options =>
          options.AllowAnyMethod()
          .AllowAnyHeader()
@@ -152,3 +155,5 @@ public partial class Program
         app.Run();
     }
 }
+
+

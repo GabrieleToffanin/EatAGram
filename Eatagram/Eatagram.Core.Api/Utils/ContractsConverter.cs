@@ -36,6 +36,7 @@ namespace Eatagram.Core.Api.Utils
         public static RecipeContract GetContract(this Recipe recipe)
             => new RecipeContract
             {
+                Id = recipe.Id,
                 Name = recipe.Name,
                 Description = recipe.Description,
                 Ingredients = recipe.Ingredients.Select(x => x.Name).ToList(),
@@ -95,6 +96,15 @@ namespace Eatagram.Core.Api.Utils
             {
                 Name = ingredient.Name,
                 Recipes = ingredient.Recipes.Select(x => x.Name).ToList()
+            };
+        }
+
+        public static Comment GetContract(this CommentContract commentContract)
+        {
+            return new Comment()
+            {
+                Content = commentContract.Content,
+                RecipeId = commentContract.RecipeId
             };
         }
 

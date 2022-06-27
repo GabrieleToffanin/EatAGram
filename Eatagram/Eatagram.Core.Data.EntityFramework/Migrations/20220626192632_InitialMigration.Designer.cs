@@ -12,17 +12,32 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Eatagram.Core.Data.EntityFramework.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220611131323_InitialMigration")]
+    [Migration("20220626192632_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ApplicationUserConversationRoom", b =>
+                {
+                    b.Property<string>("RoomsRoomName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("RoomsRoomName", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserConversationRoom");
+                });
 
             modelBuilder.Entity("Eatagram.Core.Entities.ApplicationUser", b =>
                 {
@@ -97,6 +112,70 @@ namespace Eatagram.Core.Data.EntityFramework.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Eatagram.Core.Entities.Chat.Connection", b =>
+                {
+                    b.Property<string>("ConnectionID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Connected")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserAgent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ConnectionID");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Connections");
+                });
+
+            modelBuilder.Entity("Eatagram.Core.Entities.Chat.ConversationRoom", b =>
+                {
+                    b.Property<string>("RoomName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("RoomName");
+
+                    b.ToTable("ConversationRooms");
+                });
+
+            modelBuilder.Entity("Eatagram.Core.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UpVoted")
+                        .HasColumnType("int");
+
+                    b.Property<string>("User_Id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
+
+                    b.HasIndex("User_Id");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("Eatagram.Core.Entities.Ingredient", b =>
                 {
                     b.Property<int>("Id")
@@ -111,6 +190,9 @@ namespace Eatagram.Core.Data.EntityFramework.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("Ingredients");
                 });
@@ -292,6 +374,47 @@ namespace Eatagram.Core.Data.EntityFramework.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ApplicationUserConversationRoom", b =>
+                {
+                    b.HasOne("Eatagram.Core.Entities.Chat.ConversationRoom", null)
+                        .WithMany()
+                        .HasForeignKey("RoomsRoomName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Eatagram.Core.Entities.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Eatagram.Core.Entities.Chat.Connection", b =>
+                {
+                    b.HasOne("Eatagram.Core.Entities.ApplicationUser", null)
+                        .WithMany("MyProperty")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("Eatagram.Core.Entities.Comment", b =>
+                {
+                    b.HasOne("Eatagram.Core.Entities.Recipe", "OfRecipe")
+                        .WithMany("Comments")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Eatagram.Core.Entities.ApplicationUser", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("User_Id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("OfRecipe");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Eatagram.Core.Entities.Recipe", b =>
                 {
                     b.HasOne("Eatagram.Core.Entities.ApplicationUser", "Owner")
@@ -371,7 +494,16 @@ namespace Eatagram.Core.Data.EntityFramework.Migrations
 
             modelBuilder.Entity("Eatagram.Core.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("Comments");
+
+                    b.Navigation("MyProperty");
+
                     b.Navigation("Recipes");
+                });
+
+            modelBuilder.Entity("Eatagram.Core.Entities.Recipe", b =>
+                {
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }
