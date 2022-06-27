@@ -1,19 +1,48 @@
 ﻿using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Eatagram.Core.Entities.Azure;
+using Eatagram.Core.Interfaces.Azure;
+using Microsoft.Extensions.Options;
 
 namespace Eatagram.Core.Api.Config
 {
-    public static class AzureKeyVaultConfig
+    public sealed class AzureKeyVaultConfig : IConnectionStringsProvider
     {
-        public static void SetupAzureSecrets(out string sql, out string mongo)
+        private readonly SecretClient _secretClient;
+        private readonly AzureKeys _azureKeys;
+        private readonly Dictionary<string, string> connStrings = new Dictionary<string, string>();
+
+        public AzureKeyVaultConfig(IOptions<AzureKeys> keys)
         {
-            var client = new SecretClient(new Uri("https://eatagramapikeyvault.vault.azure.net/"), new DefaultAzureCredential());
+            _azureKeys = keys.Value;
 
-            KeyVaultSecret mongoSecret = client.GetSecret("Eatagram-Api-MongoDB-Connection");
-            KeyVaultSecret sqlSecret = client.GetSecret("Eatagram-Api-Sql-Connection");
+            _secretClient = new SecretClient(new Uri(_azureKeys.Url), new DefaultAzureCredential());
 
-            mongo = mongoSecret.Value;
-            sql = sqlSecret.Value;
+        }
+
+        public async ValueTask<string> GetMongoConnectionString()
+        {
+            if (!connStrings.ContainsKey("Mongo"))
+            {
+                KeyVaultSecret connectionString = await _secretClient.GetSecretAsync("Eatagram-Api-MongoDB-Connection");
+
+                connStrings["Mongo"] = connectionString.Value;
+            }
+
+            return connStrings["Mongo"];
+        }
+
+        public async ValueTask<string> GetSqlConnectionString()
+        {
+            if (!connStrings.ContainsKey("Sql"))
+            {
+                KeyVaultSecret connectionString = await
+                    _secretClient.GetSecretAsync("Eatagram-Api-Sql-Connection");
+
+                connStrings["Sql"] = connectionString.Value;
+            }
+
+            return connStrings["Sql"];
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Eatagram.Core.Entities;
-using Eatagram.Core.Repository;
+using Eatagram.Core.Interfaces.Logic;
+using Eatagram.Core.Interfaces.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

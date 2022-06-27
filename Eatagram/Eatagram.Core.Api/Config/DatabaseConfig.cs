@@ -1,5 +1,6 @@
 ﻿using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Entities;
+using Eatagram.Core.Interfaces.Auth;
 using Eatagram.Core.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,16 +9,15 @@ namespace Eatagram.Core.Api.Config
 {
     public static class DatabaseConfig
     {
-        public static void SetupIdentityDatabase(this IServiceCollection services, IConfiguration configuration, string connectionString)
+        public static void SetupIdentityDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationDbContext>();
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddDefaultTokenProviders()
-                .AddUserManager<UserManager<ApplicationUser>>()
-                .AddSignInManager<SignInManager<ApplicationUser>>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                    .AddDefaultTokenProviders()
+                    .AddUserManager<UserManager<ApplicationUser>>()
+                    .AddSignInManager<SignInManager<ApplicationUser>>()
+                    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.Configure<IdentityOptions>(
                 options =>

@@ -3,12 +3,16 @@ using Eatagram.Core.Api.Extensions;
 using Eatagram.Core.Api.Hubs;
 using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Data.EntityFramework.Repository;
+using Eatagram.Core.Entities.Azure;
 using Eatagram.Core.Entities.Token;
+using Eatagram.Core.Interfaces.Auth;
+using Eatagram.Core.Interfaces.Azure;
+using Eatagram.Core.Interfaces.Logic;
+using Eatagram.Core.Interfaces.Repository;
 using Eatagram.Core.Logic;
 using Eatagram.Core.MongoDb.Configuration;
 using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
-using Eatagram.Core.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -66,14 +70,13 @@ public partial class Program
 
         builder.Services.Configure<JwtToken>(builder.Configuration.GetSection("token"));
 
-        AzureKeyVaultConfig.SetupAzureSecrets(out string sql, out string mongo);
+        builder.Services.Configure<AzureKeys>(builder.Configuration.GetSection("VaultUrl"));
 
 
-        builder.Services.SetupIdentityDatabase(builder.Configuration, sql);
+        builder.Services.SetupIdentityDatabase(builder.Configuration);
 
         builder.Services.Configure<MessagesStoreDatabaseSettings>( 
             config => {
-                config.ConnectionString = mongo;
                 config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
                 config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
             });
@@ -88,6 +91,7 @@ public partial class Program
         builder.Services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
         builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
         builder.Services.AddScoped<IMessagingLogic, MessagingLogic>();
+        builder.Services.AddSingleton<IConnectionStringsProvider, AzureKeyVaultConfig>();
         builder.Services.AddSingleton<MessagesDb>();
 
         builder.Services.AddAuthentication(options =>
