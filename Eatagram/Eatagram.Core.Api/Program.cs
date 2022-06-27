@@ -13,6 +13,7 @@ using Eatagram.Core.Logic;
 using Eatagram.Core.MongoDb.Configuration;
 using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
+using Eatagram.Core.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
