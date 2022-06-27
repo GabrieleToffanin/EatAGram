@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Eatagram.Core.Entities.Chat;
+using Microsoft.AspNetCore.Identity;
 using System.Runtime.Serialization;
 
 namespace Eatagram.Core.Entities
@@ -8,6 +9,8 @@ namespace Eatagram.Core.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+
+
         [IgnoreDataMember]
         public string FullName
         {
@@ -16,6 +19,10 @@ namespace Eatagram.Core.Entities
                 return $"{FirstName} {LastName}";
             }
         }
+
+        public ICollection<Connection> MyProperty { get; set; }
+
+        public virtual ICollection<ConversationRoom> Rooms { get; set; }
 
         public ICollection<Recipe> Recipes { get; set; }
     }

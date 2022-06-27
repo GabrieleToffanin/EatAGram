@@ -1,4 +1,5 @@
 ﻿using Eatagram.Core.Entities;
+using Eatagram.Core.Entities.Chat;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
         //DbSet representing Recipes Table
         public DbSet<Recipe> Recipes { get; set; } = null!;
         public DbSet<Ingredient> Ingredients { get; set; } = null!;
+        public DbSet<Connection> Connections { get; set; } = null!;
+        public DbSet<ConversationRoom> ConversationRooms { get; set; } = null!;
 
         //Uses the default dbContext options
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbOptions) : base(dbOptions)
