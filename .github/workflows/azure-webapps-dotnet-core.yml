@@ -60,7 +60,7 @@ jobs:
         run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release
         
       - name: Running tests
-        run: dotnet test ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj
+        run: dotnet test ./Eatagram
 
       - name: Building publishing package 
         run: dotnet publish ./Eatagram -c Release -o ${{env.DOTNET_ROOT}}/myapp
