@@ -63,7 +63,7 @@ jobs:
         run: dotnet test ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj
 
       - name: Building publishing package 
-        run: dotnet ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
