@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eatagram.Core.Repository
+namespace Eatagram.Core.Interfaces.Logic
 {
     public interface IMessagingLogic
     {

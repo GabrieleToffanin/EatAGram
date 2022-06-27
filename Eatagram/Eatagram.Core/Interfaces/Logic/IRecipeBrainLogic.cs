@@ -1,6 +1,6 @@
 ﻿using Eatagram.Core.Entities;
 
-namespace Eatagram.Core.Repository
+namespace Eatagram.Core.Interfaces.Logic
 {
     /// <summary>
     /// This interface has the task of describing

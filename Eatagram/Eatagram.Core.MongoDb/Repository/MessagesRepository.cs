@@ -1,6 +1,6 @@
 ﻿using Eatagram.Core.Entities;
+using Eatagram.Core.Interfaces.Repository;
 using Eatagram.Core.MongoDb.DatabaseService;
-using Eatagram.Core.Repository;
 using MongoDB.Driver;
 
 namespace Eatagram.Core.MongoDb.Repository

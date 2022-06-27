@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": "SqlAzureConnectionString",
+      "dynamicId": null
+    },
+    "secrets2": {
+      "type": "secrets",
+      "connectionId": "EatagramKeyVault",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:AZURE_SQL_CONNECTIONSTRING",
+      "dynamicId": null
+    },
+    "cosmosdb1": {
+      "type": "cosmosdb",
+      "connectionId": "ConnectionStrings:AZURE_COSMOSDB_CONNECTIONSTRING",
+      "dynamicId": null
+    }
+  }
+}
