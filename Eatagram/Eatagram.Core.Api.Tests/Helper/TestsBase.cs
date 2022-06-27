@@ -28,8 +28,7 @@ namespace Eatagram.Core.Api.Tests.Helper
 
 
 
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseInMemoryDatabase("InMemoryDbForTesting"));
+                services.AddDbContext<ApplicationDbContext>();
 
                 services.AddEntityFrameworkInMemoryDatabase();
 

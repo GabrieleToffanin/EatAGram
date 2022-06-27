@@ -123,7 +123,6 @@ public partial class Program
 
         var app = builder.Build();
 
-        app.UseWelcomePage();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -135,6 +134,7 @@ public partial class Program
 
         app.UseSwagger();
         app.UseSwaggerUI();
+
 
         app.UseHttpsRedirection();
         app.UseRouting();
