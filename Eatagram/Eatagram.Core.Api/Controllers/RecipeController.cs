@@ -24,6 +24,7 @@ namespace Eatagram.Core.Api.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<RecipeContract>))]
         public async Task<IActionResult> GetRecipes() //Status code 200 Ok status code 400 BadRequest status 500 internal server error 
         {
+
             var recipes = await _recipeLogic.GetAllRecipes();
 
             return Ok(recipes.AsContracts(x => x.GetContract()));
@@ -48,6 +49,9 @@ namespace Eatagram.Core.Api.Controllers
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> CreateRecipe([FromBody] RecipeCreationRequest recipeToAdd)
         {
+            if (!ModelState.IsValid)
+                return BadRequest("Provided RecipeCreationRequest contains bad data");
+
             var currentRecipe = recipeToAdd.GetContract();
 
             currentRecipe.User_Id = User.GetUserId();
@@ -66,6 +70,8 @@ namespace Eatagram.Core.Api.Controllers
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> DeleteRecipe([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+                return NotFound("Provided Id is not valid");
 
             var result = await _recipeLogic.DeleteRecipe(id);
 
@@ -81,6 +87,10 @@ namespace Eatagram.Core.Api.Controllers
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> UpdateRecipe([FromRoute] int id, [FromBody] RecipeUpdateRequest recipeUpdateRequest)
         {
+
+            if (!ModelState.IsValid)
+                return BadRequest("Provided data for the update is not valid");
+
             var toUpdate = recipeUpdateRequest.GetContract();
 
             toUpdate.User_Id = User.GetUserId();

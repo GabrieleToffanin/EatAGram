@@ -77,6 +77,8 @@ public partial class Program
 
         builder.Services.AddScoped<IRecipeRepository, RecipesRepository>();
         builder.Services.AddScoped<IRecipeBrainLogic, RecipeBrainLogic>();
+        builder.Services.AddScoped<ICommentsRepository, CommentsRepository>();
+        builder.Services.AddScoped<ICommentsLogic, CommentsLogic>();
         builder.Services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
         builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
         builder.Services.AddScoped<IMessagingLogic, MessagingLogic>();

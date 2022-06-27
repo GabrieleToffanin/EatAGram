@@ -25,5 +25,6 @@ namespace Eatagram.Core.Entities
         public virtual ICollection<ConversationRoom> Rooms { get; set; }
 
         public ICollection<Recipe> Recipes { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }
