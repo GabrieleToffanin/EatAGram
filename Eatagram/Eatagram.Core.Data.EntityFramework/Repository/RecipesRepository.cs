@@ -53,6 +53,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         public async Task<IEnumerable<Recipe>> FetchAllRecipes()
         {
             var items = await _dbContext.Recipes.Include(x => x.Ingredients)
+                                                .Include(x => x.Comments)
                                                 .Include(x => x.Owner)
                                                 .OrderBy(x => x.Name)
                                                 .ToListAsync();
@@ -68,6 +69,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         public async Task<Recipe> FindRecipeById(int id)
         {
             return await _dbContext.Recipes.Include(x => x.Ingredients)
+                                           .Include(x => x.Comments)
                                            .Include(x => x.Owner)
                                            .Where(x => x.Id == id)
                                            .FirstOrDefaultAsync();

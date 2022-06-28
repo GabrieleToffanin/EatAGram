@@ -1,10 +1,8 @@
+using Eatagram.Core.Api.Controllers;
 using Eatagram.Core.Api.Models.Contracts;
 using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Tests.Fixtures;
 using Eatagram.Core.Api.Tests.Fixtures.Common;
-using Eatagram.Core.Data.EntityFramework.Contexts;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 
@@ -24,6 +22,7 @@ namespace Eatagram.Core.Api.Tests
             _factory = factory;
             _client = _factory.CreateDefaultClient();
         }
+
         [Fact]
         public async Task ShouldFetchAllRecipesFromDbIfAny()
         {
@@ -37,8 +36,10 @@ namespace Eatagram.Core.Api.Tests
 
             //*** Assert
             Assert.True(itemsCollection != null);
+            Assert.IsAssignableFrom(typeof(IEnumerable<RecipeContract>), itemsCollection);
             Assert.True(itemsCollection.Count() > 0);
         }
+
         [Fact]
         public async Task ShouldCreateRecipeWhenGoodDataProvided()
         {

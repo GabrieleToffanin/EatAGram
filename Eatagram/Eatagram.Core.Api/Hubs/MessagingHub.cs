@@ -5,6 +5,7 @@ namespace Eatagram.Core.Api.Hubs
 {
     public class MessagingHub : Hub
     {   
+        
         public async Task JoinRoom(string roomName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);

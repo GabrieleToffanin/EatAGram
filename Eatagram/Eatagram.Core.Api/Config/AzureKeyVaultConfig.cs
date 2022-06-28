@@ -1,4 +1,5 @@
-﻿using Azure.Identity;
+﻿using Azure.Core;
+using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Options;
 
@@ -8,11 +9,21 @@ namespace Eatagram.Core.Api.Config
     {
         private static readonly SecretClient _secretClient;
         private static readonly Dictionary<string, string> connStrings = new Dictionary<string, string>();
+        private static readonly SecretClientOptions options = new SecretClientOptions
+        {
+            Retry =
+            {
+                Delay = TimeSpan.FromSeconds(2),
+                MaxDelay = TimeSpan.FromSeconds(16),
+                MaxRetries = 5,
+                Mode = RetryMode.Exponential
+            }
+        };
 
         static AzureKeyVaultConfig()
         {
 
-            _secretClient = new SecretClient(new Uri("https://eatagramapikeyvault.vault.azure.net/"), new DefaultAzureCredential());
+            _secretClient = new SecretClient(new Uri("https://eatagramapikeyvault.vault.azure.net/"), new DefaultAzureCredential(), options);
 
         }
 
