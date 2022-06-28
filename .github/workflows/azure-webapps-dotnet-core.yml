@@ -27,9 +27,6 @@ jobs:
 
       - name: Build with dotnet
         run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release
-        
-      - name: Testing with dotnet
-        run: dotnet test ./Eatagram
 
       - name: dotnet publish
         run: dotnet publish ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
