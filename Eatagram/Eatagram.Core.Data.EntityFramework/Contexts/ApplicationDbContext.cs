@@ -1,5 +1,4 @@
 ﻿using Eatagram.Core.Entities;
-using Eatagram.Core.Interfaces.Azure;
 using Eatagram.Core.Entities.Chat;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +12,6 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         
-        private readonly IConnectionStringsProvider _connectionStringsProvider;
         //DbSet representing Recipes Table
         public DbSet<Recipe> Recipes { get; set; } = null!;
         public DbSet<Ingredient> Ingredients { get; set; } = null!;
@@ -21,21 +19,9 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
         public DbSet<Connection> Connections { get; set; } = null!;
         public DbSet<ConversationRoom> ConversationRooms { get; set; } = null!;
 
-        public ApplicationDbContext(IConnectionStringsProvider connectionStringsProvider)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            _connectionStringsProvider = connectionStringsProvider;
-        }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var connStr = _connectionStringsProvider.GetSqlConnectionString().Result;
-            
-            if (!(connStr == string.Empty))
-                optionsBuilder.UseSqlServer(connStr);
-
-            else optionsBuilder.UseInMemoryDatabase("Testing");
-
-            base.OnConfiguring(optionsBuilder);
         }
 
 

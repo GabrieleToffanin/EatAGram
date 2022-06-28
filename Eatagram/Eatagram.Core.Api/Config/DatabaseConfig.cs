@@ -11,7 +11,8 @@ namespace Eatagram.Core.Api.Config
     {
         public static void SetupIdentityDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>();
+            services.AddDbContext<ApplicationDbContext>(options => 
+                options.UseSqlServer(AzureKeyVaultConfig.GetSqlConnectionString()));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddDefaultTokenProviders()

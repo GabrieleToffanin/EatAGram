@@ -1,5 +1,6 @@
 ﻿using Eatagram.Core.Api.Models.Contracts;
-using Eatagram.Core.Api.Tests.Helper;
+using Eatagram.Core.Api.Tests.Fixtures;
+using Eatagram.Core.Api.Tests.Fixtures.Common;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Eatagram.Core.Api.Tests
 {
-    public class CommentControllerTests : IClassFixture<CommentControllerTestFixture<Program>>
+    public class CommentControllerTests : IClassFixture<CommentTestsFixture<Program>>
     {
-        private readonly CommentControllerTestFixture<Program> _factory;
+        private readonly TestsBase<Program> _factory;
         private readonly HttpClient _client;
 
-        public CommentControllerTests(CommentControllerTestFixture<Program> factory)
+        public CommentControllerTests(CommentTestsFixture<Program> factory)
         {
             _factory = factory;
             _client = factory.CreateDefaultClient();

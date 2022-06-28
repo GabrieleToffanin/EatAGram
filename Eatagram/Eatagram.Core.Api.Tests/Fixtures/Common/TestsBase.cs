@@ -1,33 +1,30 @@
-﻿using Eatagram.Core.Api.Tests.Helper.Mock;
+﻿using Eatagram.Core.Api.Tests.Helper;
 using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Entities.Token;
-using Eatagram.Core.Interfaces.Azure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 
-namespace Eatagram.Core.Api.Tests.Helper
+namespace Eatagram.Core.Api.Tests.Fixtures.Common
 {
-    public class TestsBase<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
+    public abstract class TestsBase<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
             {
-                
-                var connStringsProviderDescriptor = services.SingleOrDefault(serv => serv.ServiceType == typeof(IConnectionStringsProvider));
+                var serviceDescriptor = services.SingleOrDefault(serv => serv.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
 
-                services.Remove(connStringsProviderDescriptor);
+                services.Remove(serviceDescriptor);
+
+                ConfigureDb(services);
 
                 services.AddEntityFrameworkInMemoryDatabase();
-
-                services.AddSingleton<IConnectionStringsProvider, MockConnectionStringProvider>();
 
                 var build = services.BuildServiceProvider();
 
@@ -44,7 +41,6 @@ namespace Eatagram.Core.Api.Tests.Helper
             });
 
         }
-
 
         protected override void ConfigureClient(HttpClient client)
 
@@ -71,7 +67,6 @@ namespace Eatagram.Core.Api.Tests.Helper
             return wanted.Token;
         }
 
-        
-
+        private protected abstract void ConfigureDb(IServiceCollection services);
     }
 }

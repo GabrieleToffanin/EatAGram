@@ -1,5 +1,4 @@
 ﻿using Eatagram.Core.Entities;
-using Eatagram.Core.Interfaces.Azure;
 using Eatagram.Core.MongoDb.Configuration;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -14,11 +13,10 @@ namespace Eatagram.Core.MongoDb.DatabaseService
     public class MessagesDb
     {
         public IMongoCollection<Message> Messages { get; set; }
-        
 
-        public MessagesDb(IOptions<MessagesStoreDatabaseSettings> messagesDBSettings, IConnectionStringsProvider connectionStringsProvider) 
+        public MessagesDb(IOptions<MessagesStoreDatabaseSettings> messagesDBSettings) 
         {
-            var mongoClient = new MongoClient(connectionStringsProvider.GetMongoConnectionString().GetAwaiter().GetResult());
+            var mongoClient = new MongoClient(messagesDBSettings.Value.ConnectionString);
             var mongoDb = mongoClient.GetDatabase(
                 messagesDBSettings.Value.DatabaseName);
 

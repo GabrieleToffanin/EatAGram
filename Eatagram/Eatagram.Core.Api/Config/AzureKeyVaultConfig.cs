@@ -1,30 +1,26 @@
 ﻿using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
-using Eatagram.Core.Entities.Azure;
-using Eatagram.Core.Interfaces.Azure;
 using Microsoft.Extensions.Options;
 
 namespace Eatagram.Core.Api.Config
 {
-    public sealed class AzureKeyVaultConfig : IConnectionStringsProvider
+    public static class AzureKeyVaultConfig
     {
-        private readonly SecretClient _secretClient;
-        private readonly AzureKeys _azureKeys;
-        private readonly Dictionary<string, string> connStrings = new Dictionary<string, string>();
+        private static readonly SecretClient _secretClient;
+        private static readonly Dictionary<string, string> connStrings = new Dictionary<string, string>();
 
-        public AzureKeyVaultConfig(IOptions<AzureKeys> keys)
+        static AzureKeyVaultConfig()
         {
-            _azureKeys = keys.Value;
 
-            _secretClient = new SecretClient(new Uri(_azureKeys.Url), new DefaultAzureCredential());
+            _secretClient = new SecretClient(new Uri("https://eatagramapikeyvault.vault.azure.net/"), new DefaultAzureCredential());
 
         }
 
-        public async ValueTask<string> GetMongoConnectionString()
+        public static string GetMongoConnectionString()
         {
             if (!connStrings.ContainsKey("Mongo"))
             {
-                KeyVaultSecret connectionString = await _secretClient.GetSecretAsync("Eatagram-Api-MongoDB-Connection");
+                KeyVaultSecret connectionString =  _secretClient.GetSecret("Eatagram-Api-MongoDB-Connection");
 
                 connStrings["Mongo"] = connectionString.Value;
             }
@@ -32,12 +28,12 @@ namespace Eatagram.Core.Api.Config
             return connStrings["Mongo"];
         }
 
-        public async ValueTask<string> GetSqlConnectionString()
+        public static string GetSqlConnectionString()
         {
             if (!connStrings.ContainsKey("Sql"))
             {
-                KeyVaultSecret connectionString = await
-                    _secretClient.GetSecretAsync("Eatagram-Api-Sql-Connection");
+                KeyVaultSecret connectionString = 
+                    _secretClient.GetSecret("Eatagram-Api-Sql-Connection");
 
                 connStrings["Sql"] = connectionString.Value;
             }

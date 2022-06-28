@@ -1,6 +1,7 @@
 using Eatagram.Core.Api.Models.Contracts;
 using Eatagram.Core.Api.Models.Requests;
-using Eatagram.Core.Api.Tests.Helper;
+using Eatagram.Core.Api.Tests.Fixtures;
+using Eatagram.Core.Api.Tests.Fixtures.Common;
 using Eatagram.Core.Data.EntityFramework.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,13 +13,13 @@ namespace Eatagram.Core.Api.Tests
     /// <summary>
     /// Class that has the task of testing RecipeController
     /// </summary>
-    public class RecipeControllerTest : IClassFixture<RecipeControllerTestsFixture<Program>>
+    public class RecipeControllerTest : IClassFixture<RecipeTestsFixture<Program>>
     {
         private readonly TestsBase<Program> _factory;
         private readonly HttpClient _client;
 
 
-        public RecipeControllerTest(RecipeControllerTestsFixture<Program> factory)
+        public RecipeControllerTest(RecipeTestsFixture<Program> factory)
         {
             _factory = factory;
             _client = _factory.CreateDefaultClient();
