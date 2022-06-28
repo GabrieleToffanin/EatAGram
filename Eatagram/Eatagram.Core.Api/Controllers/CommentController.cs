@@ -32,7 +32,7 @@ namespace Eatagram.Core.Api.Controllers
             if(result == null)
                 return NotFound("Could not found comments for this recipe");
 
-            return Ok(result);
+            return Ok(result.AsContracts(x => x.GetContract()));
         }
 
         [HttpPost]
