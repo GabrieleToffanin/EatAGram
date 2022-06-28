@@ -14,21 +14,16 @@ using System.Net.Http.Json;
 
 namespace Eatagram.Core.Api.Tests.Helper
 {
-    public sealed class TestsBase<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
+    public class TestsBase<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             builder.ConfigureServices(services =>
             {
-                var serviceDescriptor = services.SingleOrDefault(serv => serv.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
+                
                 var connStringsProviderDescriptor = services.SingleOrDefault(serv => serv.ServiceType == typeof(IConnectionStringsProvider));
 
-                services.Remove(serviceDescriptor);
                 services.Remove(connStringsProviderDescriptor);
-
-
-
-                services.AddDbContext<ApplicationDbContext>();
 
                 services.AddEntityFrameworkInMemoryDatabase();
 
@@ -49,6 +44,7 @@ namespace Eatagram.Core.Api.Tests.Helper
             });
 
         }
+
 
         protected override void ConfigureClient(HttpClient client)
 
@@ -75,6 +71,7 @@ namespace Eatagram.Core.Api.Tests.Helper
             return wanted.Token;
         }
 
+        
 
     }
 }

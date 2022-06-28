@@ -147,6 +147,7 @@ public partial class Program
          .AllowAnyHeader()
          .AllowCredentials()
          .SetIsOriginAllowed(origin => true));
+
         app.MapControllers();
 
         app.UseWebSockets();

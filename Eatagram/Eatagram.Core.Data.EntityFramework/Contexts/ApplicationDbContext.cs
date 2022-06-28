@@ -29,11 +29,11 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var connStr = _connectionStringsProvider.GetSqlConnectionString().Result;
-
+            
             if (!(connStr == string.Empty))
                 optionsBuilder.UseSqlServer(connStr);
 
-            else optionsBuilder.UseInMemoryDatabase("InMemoryDevelop");
+            else optionsBuilder.UseInMemoryDatabase("Testing");
 
             base.OnConfiguring(optionsBuilder);
         }

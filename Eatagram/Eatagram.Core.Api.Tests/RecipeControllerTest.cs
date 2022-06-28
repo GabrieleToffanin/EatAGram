@@ -1,6 +1,9 @@
 using Eatagram.Core.Api.Models.Contracts;
 using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Tests.Helper;
+using Eatagram.Core.Data.EntityFramework.Contexts;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 
@@ -9,13 +12,13 @@ namespace Eatagram.Core.Api.Tests
     /// <summary>
     /// Class that has the task of testing RecipeController
     /// </summary>
-    public class RecipeControllerTest : IClassFixture<TestsBase<Program>>
+    public class RecipeControllerTest : IClassFixture<RecipeControllerTestsFixture<Program>>
     {
         private readonly TestsBase<Program> _factory;
         private readonly HttpClient _client;
 
 
-        public RecipeControllerTest(TestsBase<Program> factory)
+        public RecipeControllerTest(RecipeControllerTestsFixture<Program> factory)
         {
             _factory = factory;
             _client = _factory.CreateDefaultClient();
@@ -29,9 +32,11 @@ namespace Eatagram.Core.Api.Tests
 
             //*** Act
             var content = await respnse.Content.ReadAsStringAsync();
+            var itemsCollection = JsonConvert.DeserializeObject<IEnumerable<RecipeContract>>(content);
 
             //*** Assert
-            Assert.True(content != null);
+            Assert.True(itemsCollection != null);
+            Assert.True(itemsCollection.Count() > 0);
         }
         [Fact]
         public async Task ShouldCreateRecipeWhenGoodDataProvided()
@@ -108,15 +113,20 @@ namespace Eatagram.Core.Api.Tests
         [Fact]
         public async Task ShouldFetchOnlyRequestedUserRecipes()
         {
+            //*** Arrange
             var response = await _client.GetAsync("api/Recipe/GetUserRecipes");
+
+            //*** Act
             var content = await response.Content.ReadAsStringAsync();
 
             var currentReponse = JsonConvert.DeserializeObject<IEnumerable<RecipeContract>>(content);
             var checkIfRightUser = currentReponse.Where(x => x.User_Name == "GT@outlook.it");
 
+            //*** Assert
             Assert.True(currentReponse != null);
             Assert.True(currentReponse.Count() == checkIfRightUser.Count());
         }
 
+        
     }
 }

@@ -19,7 +19,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Memeber, Administrator")]
+        [Authorize(Roles = "Member, Administrator")]
         [Route("GetRecipeComments/{id:int}")]
         [ProducesResponseType(200, Type= typeof(IEnumerable<Comment>))]
         public async Task<IActionResult> GetRecipeComments([FromRoute] int id)

@@ -7,13 +7,27 @@ namespace Eatagram.Core.Api.Tests.Helper
 {
     internal sealed class Utilities
     {
-        private readonly UserManager<ApplicationUser> userManager;
-
         internal static void InitIdentityDb(ApplicationDbContext db, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            AddDefaultAuthenticatedUser(userManager, roleManager);
-            db.Recipes.AddRange(GetRecipesSeeding());
-            db.SaveChanges();
+            if(!db.Recipes.Any())
+                AddDefaultAuthenticatedUser(userManager, roleManager);
+                db.Recipes.AddRange(GetRecipesSeeding());
+                db.Comments.Add(SeedComments());
+                db.SaveChanges();
+            
+        }
+
+
+        private static Comment SeedComments()
+        {
+            return new Comment()
+            {
+                Content = "Zao zao",
+                Id = 1,
+                RecipeId = 4,
+                UpVoted = 1,
+                User_Id = "5"
+            };
         }
 
         private static Recipe[] GetRecipesSeeding()
