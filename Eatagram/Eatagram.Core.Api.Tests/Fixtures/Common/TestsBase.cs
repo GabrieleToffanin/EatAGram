@@ -2,6 +2,7 @@
 using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Entities.Token;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;

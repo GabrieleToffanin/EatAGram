@@ -31,7 +31,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Member, Administrator")]
+        [Authorize]
         [Route("GetUserRecipes")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<RecipeContract>))]
         public async Task<IActionResult> GetUserRecipes([FromQuery]string? userId = null)

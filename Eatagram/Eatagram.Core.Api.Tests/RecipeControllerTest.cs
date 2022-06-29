@@ -3,6 +3,7 @@ using Eatagram.Core.Api.Models.Contracts;
 using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Tests.Fixtures;
 using Eatagram.Core.Api.Tests.Fixtures.Common;
+using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 
