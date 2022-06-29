@@ -36,8 +36,8 @@ namespace Eatagram.Core.Api.Tests
             var itemsCollection = JsonConvert.DeserializeObject<IEnumerable<RecipeContract>>(content);
 
             //*** Assert
-            Assert.True(itemsCollection != null);
-            Assert.IsAssignableFrom(typeof(IEnumerable<RecipeContract>), itemsCollection);
+            Assert.NotNull(itemsCollection);
+            Assert.IsAssignableFrom<IEnumerable<RecipeContract>>(itemsCollection);
             Assert.True(itemsCollection.Count() > 0);
         }
 
@@ -64,8 +64,8 @@ namespace Eatagram.Core.Api.Tests
             var @object = JsonConvert.DeserializeObject<RecipeContract>(content);
 
             //*** Assert
-            Assert.True(@object != null);
-            Assert.True(@object.Name.Equals(toCreate.Name));
+            Assert.NotNull(@object);
+            Assert.StrictEqual(@object.Name, toCreate.Name);
 
         }
 
@@ -80,8 +80,8 @@ namespace Eatagram.Core.Api.Tests
             var @object = JsonConvert.DeserializeObject<RecipeContract>(content);
             //*** Assert
 
-            Assert.True(@object != null);
-            Assert.True(@object is RecipeContract);
+            Assert.NotNull(@object);
+            Assert.IsAssignableFrom<RecipeContract>(@object);
         }
         [Fact]
         public async Task SouldUpdateRecipeWhenGoodIdAndDataProvided()
@@ -108,8 +108,8 @@ namespace Eatagram.Core.Api.Tests
             var @object = JsonConvert.DeserializeObject<RecipeContract>(content);
 
             //*** Assert
-            Assert.True(@object != null);
-            Assert.True(@object.Name.Equals(request.Name));
+            Assert.NotNull(@object);
+            Assert.StrictEqual(@object.Name, request.Name);
 
         }
 
@@ -126,8 +126,8 @@ namespace Eatagram.Core.Api.Tests
             var checkIfRightUser = currentReponse.Where(x => x.User_Name == "GT@outlook.it");
 
             //*** Assert
-            Assert.True(currentReponse != null);
-            Assert.True(currentReponse.Count() == checkIfRightUser.Count());
+            Assert.NotNull(currentReponse);
+            Assert.Equal(currentReponse.Count(),checkIfRightUser.Count());
         }
 
         

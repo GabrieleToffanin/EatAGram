@@ -30,9 +30,11 @@ namespace Eatagram.Core.Api.Tests
             var content = await response.Content.ReadAsStringAsync();
 
             var itemsCollection = JsonConvert.DeserializeObject<IEnumerable<CommentContract>>(content);
-            
+
             //*** Assert
 
+            Assert.NotNull(itemsCollection);
+            Assert.IsAssignableFrom<IEnumerable<CommentContract>>(itemsCollection);
             Assert.True(itemsCollection.Count() >= 0);
             
         }

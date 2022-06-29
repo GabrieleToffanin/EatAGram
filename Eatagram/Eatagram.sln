@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet", "dotnet", "{0A8567
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.MongoDb", "Eatagram.Core.MongoDb\Eatagram.Core.MongoDb.csproj", "{AA063767-C122-45C1-BB6F-B35D9A1E8C48}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "framework", "framework", "{9ABB63F8-D839-4950-A6C3-793D5ABDEC06}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
