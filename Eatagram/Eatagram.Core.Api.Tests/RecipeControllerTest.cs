@@ -24,12 +24,14 @@ namespace Eatagram.Core.Api.Tests
             _client = _factory.CreateDefaultClient();
         }
 
-        [Fact]
-        public async Task ShouldFetchAllRecipesFromDbIfAny()
+        [Theory]
+        [InlineData("api/Recipe/GetRecipes")]
+        [Trait("BDD", "GET")]
+        public async Task ShouldFetchAllRecipesFromDbIfAny(string url)
         {
 
             //*** Arrange
-            var respnse = await _client.GetAsync("api/Recipe/GetRecipes");
+            var respnse = await _client.GetAsync(url);
 
             //*** Act
             var content = await respnse.Content.ReadAsStringAsync();
@@ -41,8 +43,10 @@ namespace Eatagram.Core.Api.Tests
             Assert.True(itemsCollection.Count() > 0);
         }
 
-        [Fact]
-        public async Task ShouldCreateRecipeWhenGoodDataProvided()
+        [Theory]
+        [InlineData("api/Recipe/CreateRecipe")]
+        [Trait("BDD", "POST")]
+        public async Task ShouldCreateRecipeWhenGoodDataProvided(string url)
         {
             //*** Arrange
             var toCreate = new RecipeCreationRequest()
@@ -58,7 +62,7 @@ namespace Eatagram.Core.Api.Tests
                 }
             };
             //*** Act 
-            var response = await _client.PostAsJsonAsync("api/Recipe/CreateRecipe", toCreate);
+            var response = await _client.PostAsJsonAsync(url, toCreate);
             var content = await response.Content.ReadAsStringAsync();
 
             var @object = JsonConvert.DeserializeObject<RecipeContract>(content);
@@ -69,13 +73,15 @@ namespace Eatagram.Core.Api.Tests
 
         }
 
-        [Fact]
-        public async Task ShouldDeleteRecipeIfIdFound()
+        [Theory]
+        [InlineData("api/Recipe/DeleteRecipe/")]
+        [Trait("BDD", "DELETE")]
+        public async Task ShouldDeleteRecipeIfIdFound(string url)
         {
             //*** Arrange
             int id = 1;
             //*** Act
-            var response = await _client.DeleteAsync($"api/Recipe/DeleteRecipe/{id}");
+            var response = await _client.DeleteAsync($"{url}{id}");
             var content = await response.Content.ReadAsStringAsync();
             var @object = JsonConvert.DeserializeObject<RecipeContract>(content);
             //*** Assert
@@ -83,8 +89,10 @@ namespace Eatagram.Core.Api.Tests
             Assert.NotNull(@object);
             Assert.IsAssignableFrom<RecipeContract>(@object);
         }
-        [Fact]
-        public async Task SouldUpdateRecipeWhenGoodIdAndDataProvided()
+        [Theory]
+        [InlineData("api/Recipe/UpdateRecipe/")]
+        [Trait("BDD", "POST")]
+        public async Task SouldUpdateRecipeWhenGoodIdAndDataProvided(string url)
         {
             //*** Arrange
             int id = 2;
@@ -103,7 +111,7 @@ namespace Eatagram.Core.Api.Tests
             };
 
             //*** Act
-            var response = await _client.PutAsJsonAsync($"api/Recipe/UpdateRecipe/{id}", request);
+            var response = await _client.PutAsJsonAsync($"{url}{id}", request);
             var content = await response.Content.ReadAsStringAsync();
             var @object = JsonConvert.DeserializeObject<RecipeContract>(content);
 
@@ -113,11 +121,13 @@ namespace Eatagram.Core.Api.Tests
 
         }
 
-        [Fact]
-        public async Task ShouldFetchOnlyRequestedUserRecipes()
+        [Theory]
+        [InlineData("api/Recipe/GetUserRecipes")]
+        [Trait("BDD", "GET")]
+        public async Task ShouldFetchOnlyRequestedUserRecipes(string url)
         {
             //*** Arrange
-            var response = await _client.GetAsync("api/Recipe/GetUserRecipes");
+            var response = await _client.GetAsync(url);
 
             //*** Act
             var content = await response.Content.ReadAsStringAsync();

@@ -68,8 +68,6 @@ public partial class Program
 
         });
 
-       
-
         builder.Services.Configure<JwtToken>(builder.Configuration.GetSection("token"));
 
         builder.Services.SetupIdentityDatabase(builder.Configuration);

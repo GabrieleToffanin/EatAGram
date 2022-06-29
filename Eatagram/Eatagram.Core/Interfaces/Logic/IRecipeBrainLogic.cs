@@ -9,13 +9,35 @@ namespace Eatagram.Core.Interfaces.Logic
     /// </summary>
     public interface IRecipeBrainLogic
     {
-        //Gets all the recipes
+        /// <summary>
+        /// Gets all the recipes from the DB
+        /// </summary>
+        /// <returns>An <see cref="IEnumerable{T}"/> where <see cref="{T}"/> is <seealso cref="Recipe"/></returns>
         Task<IEnumerable<Recipe>> GetAllRecipes();
+        /// <summary>
+        /// Filters and return the collection of recipes for a single User
+        /// </summary>
+        /// <param name="userFilter"><see cref="Func{T, TResult}"/> where <see cref="{T}"/> is <see cref="Recipe"/> and <see cref="{TResult}"/> is <see cref="bool"/></param>
+        /// <returns>An <see cref="IEnumerable{T}"/> where T is <see cref="Recipe"/></returns>
         Task<IEnumerable<Recipe>> GetUserRecipes(Func<Recipe, bool> userFilter);
-        //Creates a new Recipe if goes well returns the latter else null
+        /// <summary>
+        /// Creates a recipe and inserts into db
+        /// </summary>
+        /// <param name="currentRecipe">Recipe to be created</param>
+        /// <returns>The created Recipe</returns>
         Task<Recipe> CreateRecipe(Recipe currentRecipe);
-        //Deletes the wanted Recipe from the db
+        /// <summary>
+        /// Deletes the recipe from the db from the DB
+        /// </summary>
+        /// <param name="id">Id to be searched and will delete the recipe with this ID</param>
+        /// <returns>The deleted recipe</returns>
         Task<Recipe> DeleteRecipe(int id);
+        /// <summary>
+        /// Updates the recipe with the new content
+        /// </summary>
+        /// <param name="id">Id for faster search trough Put method</param>
+        /// <param name="toUpdate">Recipe with updated content</param>
+        /// <returns>The updated recipe with updated values</returns>
         Task<Recipe> UpdateRecipe(int id, Recipe toUpdate);
     }
 }
