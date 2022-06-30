@@ -30,7 +30,7 @@ jobs:
       run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release --no-restore
     
     - name: Test
-      run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --no-restore --verbosity verbose
+      run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --no-restore --verbosity detailed
       
   Creates-Artifact:
     runs-on: windows-latest
