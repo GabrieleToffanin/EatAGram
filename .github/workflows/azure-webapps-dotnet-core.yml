@@ -34,6 +34,7 @@ jobs:
       
   Creates-Artifact:
     runs-on: windows-latest
+    needs: Build-and-Test
 
     steps:
       - uses: actions/checkout@v2
