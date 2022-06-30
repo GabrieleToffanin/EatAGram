@@ -17,9 +17,9 @@ jobs:
       - name: Running Tests
         uses: zyborg/dotnet-tests-report@v1
         with:
-          project_path: tests/Contoso.Business.Tests
-          report_name: contoso_business_tests
-          report_title: Contos Business Tests
+          project_path: ./Eatagram/Eatagram.Core.Api.Tests
+          report_name: eatagram-tests
+          report_title: Eatagram BDD Tests
           github_token: ${{ secrets.GITHUB_TOKEN }}
           gist_name: eatagram_tests_report.md
           gist_badge_label: 'Eatagram API: %Counters_passed%/%Counters_total%'
