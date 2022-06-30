@@ -11,20 +11,28 @@ on:
 
 jobs:
     
-  test:
-    runs-on: ubuntu-latest
+  Build-and-Test:
+
+    name: Tester
+    runs-on: windows-latest
+
     steps:
-      - name: Running Tests
-        uses: zyborg/dotnet-tests-report@v1
-        with:
-          project_path: ./Eatagram/Eatagram.Core.Api.Tests
-          report_name: eatagram-tests
-          report_title: Eatagram BDD Tests
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          gist_name: eatagram_tests_report.md
-          gist_badge_label: 'Eatagram API: %Counters_passed%/%Counters_total%'
-          gist_token: ${{ secrets.GIST_TOKEN }}
-  build:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release --no-restore
+    
+    - name: Test
+      run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --no-restore --verbosity verbose
+      
+  Creates-Artifact:
     runs-on: windows-latest
 
     steps:
@@ -40,9 +48,9 @@ jobs:
         run: dotnet restore ./Eatagram
 
       - name: Build with dotnet
-        run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release
+        run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release --no-restore
 
-      - name: dotnet publish
+      - name: Dotnet publish
         run: dotnet publish ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
@@ -53,9 +61,9 @@ jobs:
 
         
 
-  deploy:
+  Deployment:
     runs-on: windows-latest
-    needs: build
+    needs: Creates-Artifact
     environment:
       name: "production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
