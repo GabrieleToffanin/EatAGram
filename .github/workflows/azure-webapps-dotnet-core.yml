@@ -47,7 +47,7 @@ jobs:
           # An array (comma separated) with hex or named colors of the badge value background. More than one creates gradient background.
           color: blue
           # The file path to store the badge image file. Only output to `badge` action output if undefined.
-          path: '.github/badges/coverage.svg'
+          path: '.github/build.svg'
 
   deploy:
     runs-on: windows-latest
