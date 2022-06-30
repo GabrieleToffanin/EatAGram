@@ -2,7 +2,7 @@
 
 ## Simple ASP .NET Core API for managing Recipes based social
 
-<img src=".github/badges/coverage.svg" alt="Build and Deploy - EatagramApi" width="100%">
+<img src=".github/build.svg" alt="Build and Deploy - EatagramApi" width="100%">
 
 ### Storage :
 
