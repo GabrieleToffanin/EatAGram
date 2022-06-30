@@ -10,28 +10,29 @@ on:
   workflow_dispatch:
 
 jobs:
-    
   Build-and-Test:
-
     name: Tester
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Install dependencies
-      run: dotnet restore ./Eatagram
-      
-    - name: Build
-      run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release --no-restore
-    
-    - name: Test
-      run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --no-restore 
-      
+      - name: Install dependencies
+        run: dotnet restore ./Eatagram
+
+      - name: Build
+        run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release --no-restore
+
+      - name: Test RecipesController
+        run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --filter Eatagram.Core.Api.Tests.RecipeControllerTests  --no-restore
+
+      - name: Test CommentController
+        run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --filter Eatagram.Core.Api.Tests.CommentControllerTests  --no-restore
+
   Creates-Artifact:
     runs-on: windows-latest
     needs: Build-and-Test
@@ -59,8 +60,6 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
-
-        
 
   Deployment:
     runs-on: windows-latest
