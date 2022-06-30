@@ -36,40 +36,7 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
-          
-      - name: Badge Action
-        # You may pin to the exact commit or the version.
-        # uses: emibcn/badge-action@d6f51ff11b5c3382b3b88689ae2d6db22d9737d1
-        uses: emibcn/badge-action@v1.2.4
-        with:
-          # The left label of the badge, usually static.
-          label: Build
-          # An array (comma separated) with hex or named colors of the badge value background. More than one creates gradient background.
-          color: blue
-          # The file path to store the badge image file. Only output to `badge` action output if undefined.
-          path: '.github/build.svg'
-          
-      - name: Upload badge artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: badge
-          path: '.github/build.svg'
-          if-no-files-found: error
-      - name: Commit Badge
-        continue-on-error: true
-        env:
-          BADGE: '.github/build.svg'
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add "${BADGE}"
-          git commit -m "Add/Update badge"
-      - name: Push badge commit
-        uses: ad-m/github-push-action@master
-        if: ${{ success() }}
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          branch: main
+
         
 
   deploy:
