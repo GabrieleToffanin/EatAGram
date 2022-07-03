@@ -67,11 +67,26 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         {
 
             var result = await _dbContext.Comments.Include(x => x.User)
-                                            .Include(x => x.OfRecipe)
-                                            .ThenInclude(x => x.Ingredients)
-                                            .Where(x => x.Id == id)
-                                            .FirstOrDefaultAsync();
+                                                  .Include(x => x.OfRecipe)
+                                                  .ThenInclude(x => x.Ingredients)
+                                                  .Where(x => x.Id == id)
+                                                  .FirstOrDefaultAsync();
             return result;
+        }
+
+        public async Task<Comment> UpVoteCommentByIdAsync(int commentId)
+        {
+            var commentFound = await _dbContext.Comments.Where(x => x.Id == commentId)
+                                                        .FirstOrDefaultAsync();
+
+            if (commentFound is null)
+                return null;
+
+            commentFound.UpVoted += 1;
+
+            await _dbContext.SaveChangesAsync();
+
+            return await FindCommentById(commentId);                  
         }
     }
 }

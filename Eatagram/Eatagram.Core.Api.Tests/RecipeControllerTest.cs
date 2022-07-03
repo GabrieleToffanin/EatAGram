@@ -91,7 +91,7 @@ namespace Eatagram.Core.Api.Tests
         }
         [Theory]
         [InlineData("api/Recipe/UpdateRecipe/")]
-        [Trait("BDD", "POST")]
+        [Trait("BDD", "PUT")]
         public async Task SouldUpdateRecipeWhenGoodIdAndDataProvided(string url)
         {
             //*** Arrange

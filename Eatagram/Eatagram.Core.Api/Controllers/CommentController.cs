@@ -51,5 +51,23 @@ namespace Eatagram.Core.Api.Controllers
 
             return Ok(result.GetContract());
         }
+
+        [HttpPost]
+        [Authorize(Roles = "Member, Administrator")]
+        [Route("UpvoteComment")]
+        [ProducesResponseType(200, Type= typeof(CommentContract))]
+        public async Task<IActionResult> UpVoteComment([FromBody] int commentId)
+        {
+            if (commentId < 0)
+                return BadRequest("Id must be greater than 0");
+
+            Comment result = await _commentsLogic.UpVoteCommentByIdAsync(commentId);
+
+
+            if (result is null)
+                return NotFound($"No comment with {commentId} id found");
+
+            return Ok(result.GetContract());
+        }
     }
 }

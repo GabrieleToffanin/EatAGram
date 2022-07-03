@@ -14,5 +14,6 @@ namespace Eatagram.Core.Repository
 
         Task<Comment> AddCommentOnRecipe(Comment comment);
         Task<Comment> DeleteCommentOnRecipe(int commentId);
+        Task<Comment> UpVoteCommentByIdAsync(int commentId);
     }
 }

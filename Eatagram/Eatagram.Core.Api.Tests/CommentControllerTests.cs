@@ -41,7 +41,7 @@ namespace Eatagram.Core.Api.Tests
             Assert.NotNull(itemsCollection);
             Assert.IsAssignableFrom<IEnumerable<CommentContract>>(itemsCollection);
             Assert.True(itemsCollection.Count() >= 0);
-            
+
         }
 
         [Theory]
@@ -70,6 +70,27 @@ namespace Eatagram.Core.Api.Tests
             Assert.IsAssignableFrom<CommentContract>(current);
             Assert.Equal(current.Content, content);
             Assert.NotEqual(current.Recipe, string.Empty);
+        }
+
+        [Theory]
+        [InlineData("api/Comment/UpvoteComment")]
+        [Trait("BDD", "POST")]
+        public async Task ShouldUpvotePostIfIdFound(string url)
+        {
+            //*** Arrange
+            var request = 1;
+
+            //*** Act
+            var response = await _client.PostAsJsonAsync(url, request);
+            var retrieveContent = await response.Content.ReadAsStringAsync();
+            var current = JsonConvert.DeserializeObject<CommentContract>(retrieveContent);
+
+            //*** Assert
+            Assert.True(response.IsSuccessStatusCode);
+            Assert.NotNull(current);
+            Assert.Equal(2, current.UpVotes);
+            Assert.IsType<CommentContract>(current);
+
         }
     }
 }

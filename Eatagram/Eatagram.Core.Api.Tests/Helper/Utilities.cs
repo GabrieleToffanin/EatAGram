@@ -24,9 +24,9 @@ namespace Eatagram.Core.Api.Tests.Helper
             {
                 Content = "Zao zao",
                 Id = 1,
-                RecipeId = 4,
+                RecipeId = 3,
                 UpVoted = 1,
-                User_Id = "5"
+                User_Id = "2"
             };
         }
 

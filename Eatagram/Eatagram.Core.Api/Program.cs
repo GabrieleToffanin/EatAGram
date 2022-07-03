@@ -88,6 +88,7 @@ public partial class Program
         builder.Services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
         builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
         builder.Services.AddScoped<IMessagingLogic, MessagingLogic>();
+        
         builder.Services.AddSingleton<MessagesDb>();
         builder.Services.AddAuthentication(options =>
         {

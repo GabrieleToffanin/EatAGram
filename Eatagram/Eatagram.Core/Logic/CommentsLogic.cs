@@ -28,17 +28,31 @@ namespace Eatagram.Core.Logic
 
         public async Task<Comment> DeleteCommentOnRecipe(int commentId)
         {
+            if (commentId < 0)
+                return null;
+
             return await _commentsRepository.DeleteRecipeComment(commentId);
         }
 
         public async Task<IEnumerable<Comment>> FetchFirstFiveMostUpvotedComments(int recipeId)
         {
+            if (recipeId < 0)
+                return null;
+
             return await _commentsRepository.FetchMostUpVotedRecipeComment(recipeId);
         }
 
         public async Task<IEnumerable<Comment>> FetchRecipeComments(int recipeId)
         {
+            if (recipeId < 0)
+                return null;
+
             return await _commentsRepository.FetchMostUpVotedRecipeComment(recipeId);
+        }
+
+        public async Task<Comment> UpVoteCommentByIdAsync(int commentId)
+        {
+            return await _commentsRepository.UpVoteCommentByIdAsync(commentId);
         }
     }
 }
