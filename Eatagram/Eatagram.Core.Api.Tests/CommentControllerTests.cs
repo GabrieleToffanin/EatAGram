@@ -6,6 +6,7 @@ using Eatagram.Core.Api.Tests.Scenario.Comment;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Eatagram.Core.Api.Tests
 {
+    [DisplayName("CommentTests")]
     public class CommentControllerTests : IClassFixture<CommentTestsFixture<Program>>
     {
         private readonly TestsBase<Program> _factory;
