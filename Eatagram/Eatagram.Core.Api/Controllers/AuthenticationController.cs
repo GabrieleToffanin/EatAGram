@@ -1,6 +1,6 @@
 ﻿using Eatagram.Core.Api.Models.Contracts;
+using Eatagram.Core.Api.Utils;
 using Eatagram.Core.Entities.Authentication;
-using Eatagram.Core.Entities.Token;
 using Eatagram.Core.Interfaces.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,7 @@ namespace Eatagram.Core.Api.Controllers
         [HttpPost]
         [Route("Authenticate")]
         [AllowAnonymous]
-        [ProducesResponseType(200, Type = typeof(JwtToken))]
+        [ProducesResponseType(200, Type = typeof(JwtTokenContract))]
         public async Task<IActionResult> AuthenticateAsync([FromBody] UserAuthentication request)
         {
             if (!ModelState.IsValid)
@@ -29,26 +29,22 @@ namespace Eatagram.Core.Api.Controllers
 
             var response = await _logic.AuthenticateAsync(request);
 
-            return Ok(response);
+            return Ok(response.GetContract());
         }
 
         [HttpPost]
         [Route("Register")]
         [AllowAnonymous]
-        [ProducesResponseType(200, Type = typeof(JwtTokenContract))]
-        public async Task<IActionResult> RegisterAsync([FromBody] UserRegistration request)
+        [ProducesResponseType(200, Type = typeof(RegistrationContract))]
+        public async Task<IActionResult> RegisterAsync([FromBody]UserRegistrationRequest request)
         {
             var response = await _logic.RegisterAsync(request);
 
             if (response is null)
                 return BadRequest("Provided data is not valid for registration");
 
-            JwtTokenContract token = new JwtTokenContract
-            {
-                Token = response,
-            };
 
-            return Ok(token);
+            return Ok(response.GetContract());
         }
     }
 }

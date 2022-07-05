@@ -29,12 +29,12 @@ namespace Eatagram.Core.Logic
             return jwtTokenResponse;
         }
 
-        public async Task<string> RegisterAsync(UserRegistration request)
+        public async Task<RegistrationStatus> RegisterAsync(UserRegistrationRequest request)
         {
             if (ValidationUtils.Validate(request).Count() > 0)
                 return null;
 
-            string response = await _tokenService.RegisterAsync(request);
+            var response = await _tokenService.RegisterAsync(request);
 
             return response;
 

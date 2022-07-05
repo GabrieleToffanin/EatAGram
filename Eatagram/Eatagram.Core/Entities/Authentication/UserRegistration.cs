@@ -2,7 +2,7 @@
 
 namespace Eatagram.Core.Entities.Authentication
 {
-    public class UserRegistration
+    public class UserRegistrationRequest
     {
         [Required]
         public string UserName { get; set; }

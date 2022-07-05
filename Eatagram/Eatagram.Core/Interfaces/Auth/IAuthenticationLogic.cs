@@ -15,10 +15,10 @@ namespace Eatagram.Core.Interfaces.Auth
         /// <returns>The JWT token or null if user not found</returns>
         Task<JwtToken> AuthenticateAsync(UserAuthentication request);
         /// <summary>
-        /// Registers and user into the ASP NET identity, providing <see cref="UserRegistration"/> 
+        /// Registers and user into the ASP NET identity, providing <see cref="UserRegistrationRequest"/> 
         /// </summary>
         /// <param name="request">Asks for the data for asking the registration</param>
         /// <returns>Returns a registration Response <see cref="RegistrationResponse"/></returns>
-        Task<string> RegisterAsync(UserRegistration request);
+        Task<RegistrationStatus> RegisterAsync(UserRegistrationRequest request);
     }
 }

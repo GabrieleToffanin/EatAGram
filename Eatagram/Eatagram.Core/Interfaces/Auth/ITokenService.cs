@@ -10,6 +10,6 @@ namespace Eatagram.Core.Interfaces.Auth
     {
         
         Task<JwtToken> Authenticate(UserAuthentication request);
-        Task<string> RegisterAsync(UserRegistration request);
+        Task<RegistrationStatus> RegisterAsync(UserRegistrationRequest request);
     }
 }

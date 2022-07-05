@@ -37,14 +37,19 @@ namespace Eatagram.Core.Services
         /// </summary>
         /// <param name="request">Actual request of registration coming from the endpoint</param>
         /// <returns>Returns true if the user does not exists in the database either false</returns>
-        public async Task<string> RegisterAsync(UserRegistration request)
+        public async Task<RegistrationStatus> RegisterAsync(UserRegistrationRequest request)
         {
-            var response = new UserRegistration();
+            
             var alreadyUser = await GetUserByEmail(request.Email);
+
+            RegistrationStatus reg = new RegistrationStatus();
 
             if (alreadyUser != null)
             {
-                return $"An user is already registered with {request.Email}";
+                reg.Message = $"An user is already registered with {request.Email}";
+                reg.Succedeed = false;
+
+                return reg;
             }
 
             ApplicationUser user = new ApplicationUser
@@ -56,21 +61,25 @@ namespace Eatagram.Core.Services
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
             };
-            string message = string.Empty;
+
+            reg.Email = user.Email;
+
             var registration = await _userManager.CreateAsync(user, request.Password);
+
             if (registration.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, ApplicationIdenityConstants.Roles.Member);
-                message = $"User registered with {request.Email}";
-                
+                reg.Message = $"User registered with {request.Email}";
+                reg.Succedeed = true;
+                return reg;
             }
-            else
-            {
-                message = $" Unable to create user with provided data";
-                
-            }
+            
+            reg.Message = $" Unable to create user with provided data";
+            reg.Succedeed = false;
 
-            return message;
+            return reg;
+                
+            
         }
 
         /// <summary>
@@ -80,7 +89,7 @@ namespace Eatagram.Core.Services
         /// <param name="request">Request for the authentication</param>
         /// <param name="ipAddress">Current ipAddres where the request is coming from</param>
         /// <returns>returns an object with a token property in it, and some more general infos</returns>
-        public async Task<Entities.Token.JwtToken> Authenticate(UserAuthentication request)
+        public async Task<JwtToken> Authenticate(UserAuthentication request)
         {
             if (await IsValidUser(request.Email, request.Password))
             {
@@ -95,7 +104,8 @@ namespace Eatagram.Core.Services
 
                     Entities.Token.JwtToken token = new()
                     {
-                        Token = jwtToken
+                        Token = jwtToken, 
+                        
                     };
 
                     return token;  //""//refreshToken.Token); can be implemented for auto refresh of the token

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Eatagram.Core.Entities.Token
+namespace Eatagram.Core.Entities.Authentication
 {
     public class UserAuthentication
     {
