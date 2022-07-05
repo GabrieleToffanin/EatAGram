@@ -1,5 +1,5 @@
-﻿using Eatagram.Core.Entities.Token;
-using Eatagram.Core.Entities.User;
+﻿using Eatagram.Core.Entities.Authentication;
+using Eatagram.Core.Entities.Token;
 
 namespace Eatagram.Core.Interfaces.Auth
 {
@@ -9,7 +9,7 @@ namespace Eatagram.Core.Interfaces.Auth
     public interface ITokenService
     {
         
-        Task<JwtTokenResponse> Authenticate(JwtTokenRequest request, string ipAddress);
-        Task<RegistrationResponse> RegisterAsync(RegistrationRequest request);
+        Task<JwtToken> Authenticate(UserAuthentication request);
+        Task<string> RegisterAsync(UserRegistration request);
     }
 }

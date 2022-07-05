@@ -1,5 +1,5 @@
-﻿using Eatagram.Core.Entities.Token;
-using Eatagram.Core.Entities.User;
+﻿using Eatagram.Core.Entities.Authentication;
+using Eatagram.Core.Entities.Token;
 
 namespace Eatagram.Core.Interfaces.Auth
 {
@@ -13,12 +13,12 @@ namespace Eatagram.Core.Interfaces.Auth
         /// </summary>
         /// <param name="request">Asks for username and password</param>
         /// <returns>The JWT token or null if user not found</returns>
-        Task<JwtTokenResponse> AuthenticateAsync(JwtTokenRequest request);
+        Task<JwtToken> AuthenticateAsync(UserAuthentication request);
         /// <summary>
-        /// Registers and user into the ASP NET identity, providing <see cref="RegistrationRequest"/> 
+        /// Registers and user into the ASP NET identity, providing <see cref="UserRegistration"/> 
         /// </summary>
         /// <param name="request">Asks for the data for asking the registration</param>
         /// <returns>Returns a registration Response <see cref="RegistrationResponse"/></returns>
-        Task<RegistrationResponse> RegisterAsync(RegistrationRequest request);
+        Task<string> RegisterAsync(UserRegistration request);
     }
 }

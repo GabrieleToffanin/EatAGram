@@ -1,6 +1,7 @@
 using Eatagram.Core.Api.Config;
 using Eatagram.Core.Api.Extensions;
 using Eatagram.Core.Api.Hubs;
+using Eatagram.Core.Configuration;
 using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Data.EntityFramework.Repository;
 using Eatagram.Core.Entities.Token;
@@ -68,7 +69,7 @@ public partial class Program
 
         });
 
-        builder.Services.Configure<JwtToken>(builder.Configuration.GetSection("token"));
+        builder.Services.Configure<JwtTokenConfiguration>(builder.Configuration.GetSection("token"));
 
         builder.Services.SetupIdentityDatabase(builder.Configuration);
 

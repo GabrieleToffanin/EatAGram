@@ -1,7 +1,7 @@
 ﻿using Eatagram.Core.Configuration;
 using Eatagram.Core.Entities;
+using Eatagram.Core.Entities.Authentication;
 using Eatagram.Core.Entities.Token;
-using Eatagram.Core.Entities.User;
 using Eatagram.Core.Interfaces.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -20,10 +20,10 @@ namespace Eatagram.Core.Services
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly JwtToken _token;
+        private readonly JwtTokenConfiguration _token;
         private readonly HttpContext _httpContext;
 
-        public TokenService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtToken> token, IHttpContextAccessor httpContext)
+        public TokenService(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, IOptions<JwtTokenConfiguration> token, IHttpContextAccessor httpContext)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -37,16 +37,14 @@ namespace Eatagram.Core.Services
         /// </summary>
         /// <param name="request">Actual request of registration coming from the endpoint</param>
         /// <returns>Returns true if the user does not exists in the database either false</returns>
-        public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
+        public async Task<string> RegisterAsync(UserRegistration request)
         {
-            var response = new RegistrationResponse();
+            var response = new UserRegistration();
             var alreadyUser = await GetUserByEmail(request.Email);
 
             if (alreadyUser != null)
             {
-                response.Message = $"An user is already registered with {request.Email}";
-                response.Registered = false;
-                return response;
+                return $"An user is already registered with {request.Email}";
             }
 
             ApplicationUser user = new ApplicationUser
@@ -58,15 +56,21 @@ namespace Eatagram.Core.Services
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
             };
-
+            string message = string.Empty;
             var registration = await _userManager.CreateAsync(user, request.Password);
             if (registration.Succeeded)
+            {
                 await _userManager.AddToRoleAsync(user, ApplicationIdenityConstants.Roles.Member);
+                message = $"User registered with {request.Email}";
+                
+            }
+            else
+            {
+                message = $" Unable to create user with provided data";
+                
+            }
 
-            response.Message = $"User registered with {request.Email}";
-            response.Registered = true;
-
-            return response;
+            return message;
         }
 
         /// <summary>
@@ -76,11 +80,11 @@ namespace Eatagram.Core.Services
         /// <param name="request">Request for the authentication</param>
         /// <param name="ipAddress">Current ipAddres where the request is coming from</param>
         /// <returns>returns an object with a token property in it, and some more general infos</returns>
-        public async Task<JwtTokenResponse> Authenticate(JwtTokenRequest request, string ipAddress)
+        public async Task<Entities.Token.JwtToken> Authenticate(UserAuthentication request)
         {
-            if (await IsValidUser(request.Username, request.Password))
+            if (await IsValidUser(request.Email, request.Password))
             {
-                ApplicationUser user = await GetUserByEmail(request.Username);
+                ApplicationUser user = await GetUserByEmail(request.Email);
 
                 if (user is not null)
                 {
@@ -89,9 +93,12 @@ namespace Eatagram.Core.Services
 
                     await _userManager.UpdateAsync(user);
 
-                    return new JwtTokenResponse(user,
-                        role,
-                        jwtToken); //""//refreshToken.Token);
+                    Entities.Token.JwtToken token = new()
+                    {
+                        Token = jwtToken
+                    };
+
+                    return token;  //""//refreshToken.Token); can be implemented for auto refresh of the token
                 }
             }
 
