@@ -30,33 +30,11 @@ jobs:
         run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release --no-restore
         
       - name: Test RecipesController
-        run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --filter Eatagram.Core.Api.Tests.RecipeControllerTest  --no-restore --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+        run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --filter Eatagram.Core.Api.Tests.RecipeControllerTest  --no-restore
 
       - name: Test CommentController
-        run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --filter Eatagram.Core.Api.Tests.CommentControllerTests  --no-restore --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+        run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --filter Eatagram.Core.Api.Tests.CommentControllerTests  --no-restore
 
-      - name: Copy Coverage To Predictable Location
-        run: cp coverage/**/coverage.cobertura.xml coverage.cobertura.xml
-
-      - name: Code Coverage Summary Report
-        uses: irongut/CodeCoverageSummary@v1.2.0
-        with:
-          filename: coverage.cobertura.xml
-          badge: true
-          fail_below_min: false
-          format: markdown
-          hide_branch_rate: false
-          hide_complexity: true
-          indicators: true
-          output: both
-          thresholds: '60 80'
-
-      - name: Add Coverage PR Comment
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: github.event_name == 'pull_request'
-        with:
-          recreate: true
-          path: code-coverage-results.md
 
       - name: Dotnet publish
         run: dotnet publish ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
