@@ -10,59 +10,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  
-  Coverage:
-    runs-on: windows-latest
-    name: CI Build
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: "6.0.x"
-        include-prerelease: true
-
-    - name: Restore Dependencies
-      run: dotnet restore ./Eatagram
-
-    - name: Build
-      run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release --no-restore
-      
-      
-    #- name: Test RecipesController
-      #run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --filter Eatagram.Core.Api.Tests.RecipeControllerTest  --no-restore --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
-
-    #- name: Test CommentController
-     # run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --filter Eatagram.Core.Api.Tests.CommentControllerTests  --no-restore --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
-
-    - name: Test
-      run: dotnet test Eatagram/Eatagram.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
-
-    - name: Copy Coverage To Predictable Location
-      run: cp coverage/**/coverage.cobertura.xml coverage.cobertura.xml
-
-    - name: Code Coverage Summary Report
-      uses: irongut/CodeCoverageSummary@v1.2.0
-      with:
-        filename: coverage.cobertura.xml
-        badge: true
-        fail_below_min: false
-        format: markdown
-        hide_branch_rate: false
-        hide_complexity: true
-        indicators: true
-        output: both
-        thresholds: '60 80'
-
-    - name: Add Coverage PR Comment
-      uses: marocchino/sticky-pull-request-comment@v2
-      if: github.event_name == 'pull_request'
-      with:
-        recreate: true
-        path: code-coverage-results.md
-
 
   Creates-Artifact:
     runs-on: windows-latest
@@ -76,11 +23,40 @@ jobs:
           dotnet-version: "6.0.x"
           include-prerelease: true
 
-      #- name: Restore with dotnet
-        #run: dotnet restore ./Eatagram
+      - name: Restore with dotnet
+        run: dotnet restore ./Eatagram
 
-      #- name: Build with dotnet
-        #run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release --no-restore
+      - name: Build with dotnet
+        run: dotnet build ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj --configuration Release --no-restore
+        
+      - name: Test RecipesController
+        run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --filter Eatagram.Core.Api.Tests.RecipeControllerTest  --no-restore --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+      - name: Test CommentController
+        run: dotnet test ./Eatagram/Eatagram.Core.Api.Tests --filter Eatagram.Core.Api.Tests.CommentControllerTests  --no-restore --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+      - name: Copy Coverage To Predictable Location
+        run: cp coverage/**/coverage.cobertura.xml coverage.cobertura.xml
+
+      - name: Code Coverage Summary Report
+        uses: irongut/CodeCoverageSummary@v1.2.0
+        with:
+          filename: coverage.cobertura.xml
+          badge: true
+          fail_below_min: false
+          format: markdown
+          hide_branch_rate: false
+          hide_complexity: true
+          indicators: true
+          output: both
+          thresholds: '60 80'
+
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          recreate: true
+          path: code-coverage-results.md
 
       - name: Dotnet publish
         run: dotnet publish ./Eatagram/Eatagram.Core.Api/Eatagram.Core.Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
@@ -90,10 +66,11 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
+  
 
   Deployment:
     runs-on: windows-latest
-    needs: [Creates-Artifact, Coverage]
+    needs: Creates-Artifact
     environment:
       name: "production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
