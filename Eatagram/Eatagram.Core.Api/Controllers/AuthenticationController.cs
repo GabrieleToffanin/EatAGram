@@ -1,4 +1,5 @@
-﻿using Eatagram.Core.Entities.Authentication;
+﻿using Eatagram.Core.Api.Models.Contracts;
+using Eatagram.Core.Entities.Authentication;
 using Eatagram.Core.Entities.Token;
 using Eatagram.Core.Interfaces.Auth;
 using Microsoft.AspNetCore.Authorization;
@@ -34,7 +35,7 @@ namespace Eatagram.Core.Api.Controllers
         [HttpPost]
         [Route("Register")]
         [AllowAnonymous]
-        [ProducesResponseType(200, Type = typeof(string))]
+        [ProducesResponseType(200, Type = typeof(JwtTokenContract))]
         public async Task<IActionResult> RegisterAsync([FromBody] UserRegistration request)
         {
             var response = await _logic.RegisterAsync(request);
@@ -42,7 +43,12 @@ namespace Eatagram.Core.Api.Controllers
             if (response is null)
                 return BadRequest("Provided data is not valid for registration");
 
-            return Ok(response);
+            JwtTokenContract token = new JwtTokenContract
+            {
+                Token = response,
+            };
+
+            return Ok(token);
         }
     }
 }
