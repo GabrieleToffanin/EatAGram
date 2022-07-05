@@ -1,5 +1,5 @@
 ﻿using Eatagram.Core.Entities;
-using Eatagram.Core.Repository;
+using Eatagram.Core.Interfaces.Comments;
 using Eatagram.Core.Utils;
 using System;
 using System.Collections.Generic;

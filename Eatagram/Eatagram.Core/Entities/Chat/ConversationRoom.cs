@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,8 +10,9 @@ namespace Eatagram.Core.Entities.Chat
 {
     public class ConversationRoom
     {
-        [Key]
+        [BsonId]
+        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string RoomName { get; set; }
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public ICollection<ChatUser> Users { get; set; }
     }
 }

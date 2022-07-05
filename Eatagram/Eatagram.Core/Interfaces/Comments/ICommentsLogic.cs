@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eatagram.Core.Repository
+namespace Eatagram.Core.Interfaces.Comments
 {
     public interface ICommentsLogic
     {

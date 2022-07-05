@@ -1,6 +1,6 @@
 ﻿using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Entities;
-using Eatagram.Core.Repository;
+using Eatagram.Core.Interfaces.Comments;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
