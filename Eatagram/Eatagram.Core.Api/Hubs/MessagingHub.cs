@@ -34,7 +34,7 @@ namespace Eatagram.Core.Api.Hubs
                     await Groups.AddToGroupAsync(Context.ConnectionId, item.RoomName);
             }
 
-            return (await base.OnConnectedAsync());
+            await base.OnConnectedAsync();
         }
     }
 }

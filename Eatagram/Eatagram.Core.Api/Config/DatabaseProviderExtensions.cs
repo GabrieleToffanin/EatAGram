@@ -7,30 +7,22 @@ namespace Eatagram.Core.Api.Config
 
         public static void ConfigureDatabases(this WebApplicationBuilder builder)
         {
-            if (!builder.Environment.IsDevelopment())
-            {
-                builder.Services.SetupIdentityDatabase(builder.Configuration, AzureKeyVaultConfig.GetSqlConnectionString());
-                builder.Services.Configure<MessagesStoreDatabaseSettings>(
-                    config =>
-                    {
-                        config.ConnectionString = AzureKeyVaultConfig.GetMongoConnectionString();
-                        config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
-                        config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
-                    });
-            }
-            else 
-            {
-                builder.Services.SetupIdentityDatabase(builder.Configuration, 
-                    builder.Configuration["ConnectionStrings:SqlLocal"]);
+            string sqlConnection = !builder.Environment.IsDevelopment() 
+                ? AzureKeyVaultConfig.GetSqlConnectionString() : builder.Configuration["ConnectionStrings:SqlLocal"];
+            string mongoDbConnection = !builder.Environment.IsDevelopment() 
+                ? AzureKeyVaultConfig.GetMongoConnectionString() : builder.Configuration["MessagesStoreDatabase:ConnectionString"];
 
-                builder.Services.Configure<MessagesStoreDatabaseSettings>(
-                    config =>
-                    {
-                        config.ConnectionString = builder.Configuration["MessagesStoreDatabase:ConnectionString"];
-                        config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
-                        config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
-                    });
-            }
+
+
+            builder.Services.SetupIdentityDatabase(builder.Configuration, sqlConnection);
+            builder.Services.Configure<MessagesStoreDatabaseSettings>(
+                config =>
+                {
+                    config.ConnectionString = mongoDbConnection;
+                    config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
+                    config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
+                });
+            
 
 
         }

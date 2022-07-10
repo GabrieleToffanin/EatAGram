@@ -30,7 +30,7 @@ namespace Eatagram.Core.MongoDb.Repository
             var currentUser = await _messagesDb.Users.FindAsync<ChatUser>(Builders<ChatUser>.Filter.Where(x => x.UserName == username));
 
             if (currentUser != null)
-                return currentUser;
+                return await currentUser.FirstOrDefaultAsync();
 
             return null;
         }

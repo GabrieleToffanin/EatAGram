@@ -89,9 +89,10 @@ namespace Eatagram.Core.Services
 
                     await _userManager.UpdateAsync(user);
 
-                    return new JwtTokenResponse(user,
-                        role,
-                        jwtToken); //""//refreshToken.Token);
+                    return new JwtTokenResponse()
+                    {
+                        Token = jwtToken 
+                    }; //""//refreshToken.Token);
                 }
             }
 
