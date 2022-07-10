@@ -1,8 +1,8 @@
 ﻿using Eatagram.Core.Api.Tests.Helper;
 using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Entities;
+using Eatagram.Core.Entities.Authentication;
 using Eatagram.Core.Entities.Token;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -53,10 +53,10 @@ namespace Eatagram.Core.Api.Tests.Fixtures.Common
 
         private async Task<string> SetAuthHeader(HttpClient client)
         {
-            var user = new JwtTokenRequest
+            var user = new UserAuthentication
             {
                 Password = "Unicorn-12",
-                Username = "GT@outlook.it"
+                Email = "GT@outlook.it"
             };
 
             var request = await client.PostAsJsonAsync("api/Authentication/Authenticate", user);

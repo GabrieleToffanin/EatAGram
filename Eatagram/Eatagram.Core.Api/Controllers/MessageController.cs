@@ -54,7 +54,7 @@ namespace Eatagram.Core.Api.Controllers
 
             await _messagingLogic.SaveMessage(content);
 
-            return Ok();
+            return Ok(content);
         }
     }
 }

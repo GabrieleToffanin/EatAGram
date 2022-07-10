@@ -1,5 +1,5 @@
-﻿using Eatagram.Core.Entities.Token;
-using Eatagram.Core.Entities.User;
+﻿using Eatagram.Core.Entities.Authentication;
+using Eatagram.Core.Entities.Token;
 using Eatagram.Core.Interfaces.Auth;
 using Eatagram.Core.Utils;
 using Microsoft.AspNetCore.Http;
@@ -17,11 +17,11 @@ namespace Eatagram.Core.Logic
             _httpContext = httpContext.HttpContext;
         }
 
-        public async Task<JwtTokenResponse> AuthenticateAsync(JwtTokenRequest request)
+        public async Task<JwtToken> AuthenticateAsync(UserAuthentication request)
         {
-            string ipAddress = _httpContext?.Connection?.RemoteIpAddress?.MapToIPv4().ToString() ?? string.Empty;
+            // string ipAddress = _httpContext?.Connection?.RemoteIpAddress?.MapToIPv4().ToString() ?? string.Empty;
 
-            JwtTokenResponse jwtTokenResponse = await _tokenService.Authenticate(request, ipAddress);
+            JwtToken jwtTokenResponse = await _tokenService.Authenticate(request);
 
             if (jwtTokenResponse is null)
                 return null;
@@ -29,12 +29,12 @@ namespace Eatagram.Core.Logic
             return jwtTokenResponse;
         }
 
-        public async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
+        public async Task<RegistrationStatus> RegisterAsync(UserRegistrationRequest request)
         {
             if (ValidationUtils.Validate(request).Count() > 0)
                 return null;
 
-            RegistrationResponse response = await _tokenService.RegisterAsync(request);
+            var response = await _tokenService.RegisterAsync(request);
 
             return response;
 

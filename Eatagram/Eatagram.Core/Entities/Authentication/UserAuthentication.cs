@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Eatagram.Core.Entities.Token
+namespace Eatagram.Core.Entities.Authentication
 {
-    public class JwtTokenRequest
+    public class UserAuthentication
     {
         [Required]
-        public string Username { get; set; }
+        public string Email { get; set; }
         [Required]
         public string Password { get; set; }
     }

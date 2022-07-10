@@ -1,6 +1,8 @@
 ﻿using Eatagram.Core.Api.Models.Contracts;
 using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Entities;
+using Eatagram.Core.Entities.Authentication;
+using Eatagram.Core.Entities.Token;
 
 namespace Eatagram.Core.Api.Utils
 {
@@ -120,13 +122,27 @@ namespace Eatagram.Core.Api.Utils
             };
         }
 
+        public static JwtTokenContract GetContract(this JwtToken token)
+        {
+            return new JwtTokenContract()
+            {
+                Token = token.Token
+            };
+        }
+
+        public static RegistrationContract GetContract(this RegistrationStatus status)
+        {
+            return new RegistrationContract()
+            {
+                Email = status.Email,
+                Message = status.Message,
+                Succeded = status.Succedeed
+            };
+        }
+
         public static Message GetContract(this MessageRequest request)
         {
-            return new Message()
-            {
-                ToUser = request.ToUser,
-                Text = request.Message
-            };
+            return new Message() with { ToUser = request.ToUser, Text = request.Message };
         }
 
     }

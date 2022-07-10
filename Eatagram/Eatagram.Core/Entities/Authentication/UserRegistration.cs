@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Eatagram.Core.Entities.User
+namespace Eatagram.Core.Entities.Authentication
 {
-    public class RegistrationRequest
+    public class UserRegistrationRequest
     {
         [Required]
         public string UserName { get; set; }
