@@ -70,14 +70,7 @@ public partial class Program
 
         builder.Services.Configure<JwtToken>(builder.Configuration.GetSection("token"));
 
-        builder.Services.SetupIdentityDatabase(builder.Configuration);
-
-        builder.Services.Configure<MessagesStoreDatabaseSettings>( 
-            config => {
-                config.ConnectionString = AzureKeyVaultConfig.GetMongoConnectionString();
-                config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
-                config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
-            });
+        builder.ConfigureDatabases();
 
         builder.Services.AddHttpContextAccessor();
 

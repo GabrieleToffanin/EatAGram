@@ -2,16 +2,6 @@
 {
     public class JwtTokenResponse
     {
-        public JwtTokenResponse(ApplicationUser user,
-                                string role,
-                                string token)
-        {
-            Id = user.Id;
-            FullName = user.FullName;
-            EmailAddress = user.Email;
-            Token = token;
-            Role = role;
-        }
 
         public string Id { get; set; }
         public string FullName { get; set; }

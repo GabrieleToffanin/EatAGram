@@ -115,7 +115,6 @@ namespace Eatagram.Core.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim("UserId", user.Id),
-                    new Claim("FullName", user.FullName),
                     new Claim(ClaimTypes.Name, user.Email),
                     new Claim(ClaimTypes.NameIdentifier, user.Email),
                     new Claim(ClaimTypes.Role, role)
