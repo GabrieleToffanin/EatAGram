@@ -5,13 +5,13 @@ using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Data.EntityFramework.Repository;
 using Eatagram.Core.Entities.Token;
 using Eatagram.Core.Interfaces.Auth;
+using Eatagram.Core.Interfaces.Comments;
 using Eatagram.Core.Interfaces.Logic;
 using Eatagram.Core.Interfaces.Repository;
 using Eatagram.Core.Logic;
 using Eatagram.Core.MongoDb.Configuration;
 using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
-using Eatagram.Core.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -88,6 +88,7 @@ public partial class Program
         builder.Services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
         builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
         builder.Services.AddScoped<IMessagingLogic, MessagingLogic>();
+        
         builder.Services.AddSingleton<MessagesDb>();
         builder.Services.AddAuthentication(options =>
         {

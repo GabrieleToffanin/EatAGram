@@ -16,8 +16,6 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
         public DbSet<Recipe> Recipes { get; set; } = null!;
         public DbSet<Ingredient> Ingredients { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
-        public DbSet<Connection> Connections { get; set; } = null!;
-        public DbSet<ConversationRoom> ConversationRooms { get; set; } = null!;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

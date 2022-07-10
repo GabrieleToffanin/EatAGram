@@ -120,5 +120,14 @@ namespace Eatagram.Core.Api.Utils
             };
         }
 
+        public static Message GetContract(this MessageRequest request)
+        {
+            return new Message()
+            {
+                ToUser = request.ToUser,
+                Text = request.Message
+            };
+        }
+
     }
 }

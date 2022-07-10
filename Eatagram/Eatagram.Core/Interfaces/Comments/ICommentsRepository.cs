@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eatagram.Core.Repository
+namespace Eatagram.Core.Interfaces.Comments
 {
     public interface ICommentsRepository
     {
@@ -14,5 +14,6 @@ namespace Eatagram.Core.Repository
 
         Task<Comment> PostRecipeComment(Comment comment);
         Task<Comment> DeleteRecipeComment(int commentId);
+        Task<Comment> UpVoteCommentByIdAsync(int commentId);
     }
 }

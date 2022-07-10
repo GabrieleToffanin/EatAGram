@@ -10,6 +10,11 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Eatagram.Core.Api.Controllers
 {
+
+    /// <summary>
+    /// 
+    /// </summary>
+
     [Route("api/[controller]")]
     public class MessageController : ControllerBase
     {
@@ -38,14 +43,14 @@ namespace Eatagram.Core.Api.Controllers
         [ProducesResponseType(200, Type = typeof(Message))]
         public async Task<IActionResult> SendMessage([FromBody]MessageRequest request)
         {
-            var content = new Message()
-            {
-                Text = request.Message,
-                FromUser = "1",
-                ToUser = "9e6a9837-df20-4778-aa57-0387b8838ef9"
-            };
+            var content = request.GetContract() with { FromUser = User.GetUserId() };
 
-            await _hubContext.Clients.All.SendAsync("receiveMessage", request.User, request.Message);
+            //Private Chat
+            await _hubContext.Clients.Group(request.GroupName!).SendAsync("sendPrivateMessage");
+
+            //Global chat
+            //await _hubContext.Clients.All.SendAsync("receiveMessage", request.User, request.Message);
+
 
             await _messagingLogic.SaveMessage(content);
 
