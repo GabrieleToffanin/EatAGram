@@ -27,7 +27,8 @@ namespace Eatagram.Core.MongoDb.Repository
 
         public async Task<ChatUser> GetUserByUsernameFromMongoAsync(string username)
         {
-            var currentUser = await _messagesDb.Users.FindAsync<ChatUser>(Builders<ChatUser>.Filter.Where(x => x.UserName == username));
+            var currentUser = await _messagesDb.Users
+                .FindAsync<ChatUser>(Builders<ChatUser>.Filter.Where(x => x.UserName == username));
 
             if (currentUser != null)
                 return await currentUser.FirstOrDefaultAsync();
