@@ -18,7 +18,7 @@
                 context.Response.Headers.Add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,PATCH,OPTIONS");
                 context.Response.Headers.Add("Access-Control-Allow-Headers", "Authorization, x-requested-with, x-signalr-user-agent");
                 context.Response.StatusCode = 200;
-                context.Response.WriteAsJsonAsync($"DioPORCO");
+                context.Response.WriteAsJsonAsync($"SomethingNotWorking");
                 return Task.CompletedTask;
             }));
             try
