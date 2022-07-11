@@ -80,7 +80,10 @@ namespace Eatagram.Core.Api.Tests
         public async Task ShouldUpvotePostIfIdFound(string url)
         {
             //*** Arrange
-            var request = 1;
+            var request = new CommentUpvoteRequest
+            {
+                CommentId = 1
+            };
 
             //*** Act
             var response = await _client.PostAsJsonAsync(url, request);

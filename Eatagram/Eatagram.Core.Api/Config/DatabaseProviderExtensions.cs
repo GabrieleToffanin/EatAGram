@@ -21,6 +21,8 @@ namespace Eatagram.Core.Api.Config
                     config.ConnectionString = mongoDbConnection;
                     config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
                     config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
+                    config.ChatUsersCollectionName = builder.Configuration["MessagesStoreDatabase:ChatUserCollectionName"];
+                    config.ConnectionsCollectionName = builder.Configuration["MessagesStoreDatabase:ConnectionsCollectionName"];
                 });
             
 

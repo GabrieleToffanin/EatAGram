@@ -22,6 +22,15 @@ namespace Eatagram.Core.MongoDb.DatabaseService
 
             Messages = mongoDb.GetCollection<Message>(
                 messagesDBSettings.Value.MessagesCollectionName);
+
+            Connections = mongoDb.GetCollection<Connection>(
+                messagesDBSettings.Value.ConnectionsCollectionName);
+
+            ConversationRooms = mongoDb.GetCollection<ConversationRoom>(
+                messagesDBSettings.Value.ConversationRoomsCollectionName);
+
+            Users = mongoDb.GetCollection<ChatUser>(
+                messagesDBSettings.Value.ChatUsersCollectionName);
         }
 
         

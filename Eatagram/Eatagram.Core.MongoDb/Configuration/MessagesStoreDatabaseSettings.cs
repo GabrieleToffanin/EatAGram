@@ -11,6 +11,9 @@ namespace Eatagram.Core.MongoDb.Configuration
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
         public string MessagesCollectionName { get; set; }
+        public string ConnectionsCollectionName { get; set; }
+        public string ConversationRoomsCollectionName { get; set; }
+        public string ChatUsersCollectionName { get; set; }
 
     }
 }
