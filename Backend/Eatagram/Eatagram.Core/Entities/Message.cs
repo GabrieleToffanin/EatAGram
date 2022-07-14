@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Eatagram.Core.Entities
 {
-    public record struct Message
+    public class Message
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

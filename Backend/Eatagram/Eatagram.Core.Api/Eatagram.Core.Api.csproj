@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Eatagram.Core.Data.EntityFramework\Eatagram.Core.Data.EntityFramework.csproj" />
     <ProjectReference Include="..\Eatagram.Core.MongoDb\Eatagram.Core.MongoDb.csproj" />
     <ProjectReference Include="..\Eatagram.Core\Eatagram.Core.csproj" />
+    <ProjectReference Include="..\Eatagram.Framework.Logger\Eatagram.Framework.Logger.csproj" />
 	  <InternalsVisibleTo Include="Eatagram.Core.Api.Tests" />
   </ItemGroup>
 

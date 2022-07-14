@@ -142,7 +142,11 @@ namespace Eatagram.Core.Api.Utils
 
         public static Message GetContract(this MessageRequest request)
         {
-            return new Message() with { ToUser = request.ToUser, Text = request.Message };
+            return new Message() 
+            { 
+                ToUser = request.ToUser, 
+                Text = request.Message 
+            };
         }
 
     }

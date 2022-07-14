@@ -10,7 +10,7 @@ namespace Eatagram.Core.Api.Config
             string sqlConnection = !builder.Environment.IsDevelopment() 
                 ? AzureKeyVaultConfig.GetSqlConnectionString() : builder.Configuration["ConnectionStrings:SqlLocal"];
             string mongoDbConnection = !builder.Environment.IsDevelopment() 
-                ? AzureKeyVaultConfig.GetMongoConnectionString() : builder.Configuration["MessagesStoreDatabase:ConnectionString"];
+                ? AzureKeyVaultConfig.GetMongoConnectionString() : builder.Configuration["MessageStoreDatabase:ConnectionString"];
 
 
 
@@ -21,8 +21,9 @@ namespace Eatagram.Core.Api.Config
                     config.ConnectionString = mongoDbConnection;
                     config.DatabaseName = builder.Configuration["MessageStoreDatabase:DatabaseName"];
                     config.MessagesCollectionName = builder.Configuration["MessageStoreDatabase:MessagesCollectionName"];
-                    config.ChatUsersCollectionName = builder.Configuration["MessagesStoreDatabase:ChatUserCollectionName"];
-                    config.ConnectionsCollectionName = builder.Configuration["MessagesStoreDatabase:ConnectionsCollectionName"];
+                    config.ChatUsersCollectionName = builder.Configuration["MessageStoreDatabase:ChatUserCollectionName"];
+                    config.ConnectionsCollectionName = builder.Configuration["MessageStoreDatabase:ConnectionsCollectionName"];
+                    config.ConversationRoomsCollectionName = builder.Configuration["MessageStoreDatabase:ConversationRoomsCollectionName"];
                 });
             
 

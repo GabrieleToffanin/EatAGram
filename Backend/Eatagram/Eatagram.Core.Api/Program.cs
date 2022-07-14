@@ -6,6 +6,7 @@ using Eatagram.Core.Data.EntityFramework.Repository;
 using Eatagram.Core.Interfaces.Auth;
 using Eatagram.Core.Interfaces.Comments;
 using Eatagram.Core.Interfaces.Logic;
+using Eatagram.Core.Interfaces.Messaging;
 using Eatagram.Core.Interfaces.Repository;
 using Eatagram.Core.Logic;
 using Eatagram.Core.MongoDb.Configuration;
@@ -75,6 +76,8 @@ public partial class Program
         builder.Services.AddScoped<IRecipeBrainLogic, RecipeBrainLogic>();
         builder.Services.AddScoped<ICommentsRepository, CommentsRepository>();
         builder.Services.AddScoped<ICommentsLogic, CommentsLogic>();
+        builder.Services.AddScoped<IUserMessaging, UserMessagingLogic>();
+        builder.Services.AddScoped<IUserMessagingRepository, UserMessagingRepository>();
         builder.Services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
         builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
         builder.Services.AddScoped<IMessagingLogic, MessagingLogic>();
@@ -85,23 +88,30 @@ public partial class Program
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-            .AddJwtBearer(options =>
+        .AddJwtBearer(options =>
+        {
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = false;
+            options.TokenValidationParameters = new TokenValidationParameters
             {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = false;
-                options.TokenValidationParameters = new TokenValidationParameters
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                ValidIssuer = builder.Configuration["token:issuer"],
+                ValidAudience = builder.Configuration["token:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["token:secret"]))
+            };
+            options.Events = new JwtBearerEvents()
+            {
+                OnMessageReceived = context =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero,
-
-                    ValidIssuer = builder.Configuration["token:issuer"],
-                    ValidAudience = builder.Configuration["token:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["token:secret"]))
-                };
-            });
+                    context.Token = context.Request.Query["access_token"];
+                    return Task.FromResult(0);
+                }
+            };
+        });
 
         builder.Services.AddSignalR();
 
@@ -124,19 +134,19 @@ public partial class Program
         app.UseHttpsRedirection();
         app.UseRouting();
 
-        app.UseAuthentication();
-        app.UseAuthorization();
 
         app.UseCors(options =>
          options.AllowAnyMethod()
          .AllowAnyHeader()
          .AllowCredentials()
          .SetIsOriginAllowed(origin => true));
+        app.UseAuthentication();
+        app.UseAuthorization();
+        app.UseWebSockets();
+        app.MapHub<MessagingHub>("/Chat");
 
         app.MapControllers();
 
-        app.UseWebSockets();
-        app.MapHub<MessagingHub>("/Chat");
 
 
 

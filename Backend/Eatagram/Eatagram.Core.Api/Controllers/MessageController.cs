@@ -40,10 +40,13 @@ namespace Eatagram.Core.Api.Controllers
 
         [HttpPost]
         [Route("SendMessage")]
+        [Authorize(Roles = "Member, Administrator")]
         [ProducesResponseType(200, Type = typeof(Message))]
         public async Task<IActionResult> SendMessage([FromBody]MessageRequest request)
         {
-            var content = request.GetContract() with { FromUser = User.GetUserId() };
+            var content = request.GetContract();
+
+            content.FromUser = User.GetUserId();
 
             //Private Chat
             await _hubContext.Clients.Group(request.GroupName!).SendAsync("sendPrivateMessage");
