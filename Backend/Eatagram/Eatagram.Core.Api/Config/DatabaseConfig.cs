@@ -1,7 +1,5 @@
 ﻿using Eatagram.Core.Data.EntityFramework.Contexts;
 using Eatagram.Core.Entities;
-using Eatagram.Core.Interfaces.Auth;
-using Eatagram.Core.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,8 +33,6 @@ namespace Eatagram.Core.Api.Config
                     options.Password.RequiredLength = 6;
                     options.Password.RequiredUniqueChars = 1;
                 });
-
-            services.AddScoped<ITokenService, TokenService>();
 
         }
     }
