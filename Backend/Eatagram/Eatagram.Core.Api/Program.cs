@@ -1,5 +1,4 @@
 using Eatagram.Core.Api.Config;
-using Eatagram.Core.Api.Extensions;
 using Eatagram.Core.Api.Hubs;
 using Eatagram.Core.Data.EntityFramework.Repository;
 using Eatagram.Core.Interfaces.Comments;
@@ -10,6 +9,7 @@ using Eatagram.Core.Logic;
 using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
 
 public partial class Program
 {
@@ -42,11 +42,10 @@ public partial class Program
         builder.Services.AddSingleton<MessagesDb>();
 
 
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-
-        }).AddAzureAdBearer(options => builder.Configuration.Bind("AzureAd", options));
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                        .AddMicrosoftIdentityWebApi(builder.Configuration)
+                        .EnableTokenAcquisitionToCallDownstreamApi()
+                        .AddInMemoryTokenCaches();
 
 
 
@@ -59,9 +58,7 @@ public partial class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.EnsureIdentityDbIsCreated();
-            app.SeedIdentityDataAsync().Wait();
-
+            
         }
 
         app.UseSwagger();

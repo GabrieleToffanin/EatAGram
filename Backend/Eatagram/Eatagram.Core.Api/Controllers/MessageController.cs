@@ -28,8 +28,8 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetMessages")]
-        [Authorize(Roles = "Member, Administrator")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Message>))]
         public async Task<IActionResult> LoadMessages()
         {
@@ -39,8 +39,8 @@ namespace Eatagram.Core.Api.Controllers
         
 
         [HttpPost]
+        [Authorize]
         [Route("SendMessage")]
-        [Authorize(Roles = "Member, Administrator")]
         [ProducesResponseType(200, Type = typeof(Message))]
         public async Task<IActionResult> SendMessage([FromBody]MessageRequest request)
         {

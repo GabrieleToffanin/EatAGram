@@ -1,4 +1,7 @@
-﻿using Eatagram.Core.MongoDb.Configuration;
+﻿using Eatagram.Core.Api.Config.Azure;
+using Eatagram.Core.Data.EntityFramework.Contexts;
+using Eatagram.Core.MongoDb.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace Eatagram.Core.Api.Config
 {
@@ -14,7 +17,9 @@ namespace Eatagram.Core.Api.Config
 
 
 
-            builder.Services.SetupIdentityDatabase(builder.Configuration, sqlConnection);
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(sqlConnection));
+
             builder.Services.Configure<MessagesStoreDatabaseSettings>(
                 config =>
                 {

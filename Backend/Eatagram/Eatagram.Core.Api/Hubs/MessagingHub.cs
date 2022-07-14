@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Eatagram.Core.Api.Hubs
 {
-    [Authorize(Roles = "Member, Administrator")]
+    [Authorize]
     public class MessagingHub : Hub
     {
         private readonly IUserMessaging userMessaging;

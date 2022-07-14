@@ -39,8 +39,7 @@ namespace Eatagram.Core.Api.Utils
                 Id = recipe.Id,
                 Name = recipe.Name,
                 Description = recipe.Description,
-                Ingredients = recipe.Ingredients.Select(x => x.Name).ToList(),
-                User_Name = recipe.Owner.UserName
+                Ingredients = recipe.Ingredients.Select(x => x.Name).ToList()
             };
 
         /// <summary>
@@ -115,7 +114,6 @@ namespace Eatagram.Core.Api.Utils
                 Id = comment.Id,
                 Content = comment.Content,
                 UpVotes = comment.UpVoted,
-                User = comment.User.UserName,
                 Recipe = comment.OfRecipe.Name
             };
         }

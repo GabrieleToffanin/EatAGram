@@ -45,7 +45,6 @@ namespace Eatagram.Core.Api.Controllers
                 return BadRequest("Provided request has unvalid data");
 
             var current = comment.GetContract();
-            current.User_Id = User.GetUserId();
 
             var result = await _commentsLogic.AddCommentOnRecipe(current);
 

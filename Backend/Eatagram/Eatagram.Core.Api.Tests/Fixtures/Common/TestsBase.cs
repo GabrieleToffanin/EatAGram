@@ -1,13 +1,8 @@
-﻿using Eatagram.Core.Api.Tests.Helper;
-using Eatagram.Core.Data.EntityFramework.Contexts;
-using Eatagram.Core.Entities;
+﻿using Eatagram.Core.Data.EntityFramework.Contexts;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using System.Net.Http.Json;
 
 namespace Eatagram.Core.Api.Tests.Fixtures.Common
 {
@@ -31,12 +26,8 @@ namespace Eatagram.Core.Api.Tests.Fixtures.Common
 
                 var current = scoped.ServiceProvider;
                 var db = current.GetRequiredService<ApplicationDbContext>();
-                var userManager = current.GetRequiredService<UserManager<ApplicationUser>>();
-                var roleManager = current.GetRequiredService<RoleManager<IdentityRole>>();
 
                 db.Database.EnsureCreated();
-
-                Utilities.InitIdentityDb(db, userManager, roleManager);
             });
 
         }

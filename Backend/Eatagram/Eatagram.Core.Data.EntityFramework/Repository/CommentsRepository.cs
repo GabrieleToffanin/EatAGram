@@ -34,8 +34,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
 
         public async Task<IEnumerable<Comment>> FetchMostUpVotedRecipeComment(int recipeId)
         {
-            return await _dbContext.Comments.Include(x => x.User)
-                                            .Include(x => x.OfRecipe)
+            return await _dbContext.Comments.Include(x => x.OfRecipe)
                                             .ThenInclude(x => x.Ingredients)
                                             .Where(x => x.RecipeId == recipeId)
                                             .OrderBy(x => x.UpVoted)
@@ -45,8 +44,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
 
         public async Task<IEnumerable<Comment>> FetchSpecificRecipeComments(int recipeId)
         {
-            return await _dbContext.Comments.Include(x => x.User)
-                                            .Include(x => x.OfRecipe)
+            return await _dbContext.Comments.Include(x => x.OfRecipe)
                                             .Where(x => x.RecipeId == recipeId)
                                             .ToListAsync();
         }
@@ -66,8 +64,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         public async Task<Comment> FindCommentById(int id)
         {
 
-            var result = await _dbContext.Comments.Include(x => x.User)
-                                                  .Include(x => x.OfRecipe)
+            var result = await _dbContext.Comments.Include(x => x.OfRecipe)
                                                   .ThenInclude(x => x.Ingredients)
                                                   .Where(x => x.Id == id)
                                                   .FirstOrDefaultAsync();

@@ -19,7 +19,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Member, Administrator")]
+        [Authorize]
         [Route("GetRecipes")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<RecipeContract>))]
         public async Task<IActionResult> GetRecipes() //Status code 200 Ok status code 400 BadRequest status 500 internal server error 
@@ -36,15 +36,11 @@ namespace Eatagram.Core.Api.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<RecipeContract>))]
         public async Task<IActionResult> GetUserRecipes([FromQuery]string? userId = null)
         {
-            userId ??= User.GetUserId();
-
-            var recipes = await _recipeLogic.GetUserRecipes(x => x.User_Id == userId);
-
-            return Ok(recipes.AsContracts(x => x.GetContract()));
+            throw new NotImplementedException();
         }
 
         [HttpPost]
-        [Authorize(Roles = "Member, Administrator")]
+        [Authorize]
         [Route("CreateRecipe")]
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> CreateRecipe([FromBody] RecipeCreationRequest recipeToAdd)
@@ -53,8 +49,6 @@ namespace Eatagram.Core.Api.Controllers
                 return BadRequest("Provided RecipeCreationRequest contains bad data");
 
             var currentRecipe = recipeToAdd.GetContract();
-
-            currentRecipe.User_Id = User.GetUserId();
 
             var result = await _recipeLogic.CreateRecipe(currentRecipe);
 
@@ -65,7 +59,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Member, Administrator")]
+        [Authorize]
         [Route("DeleteRecipe/{id:int}")]
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> DeleteRecipe([FromRoute] int id)
@@ -82,7 +76,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Member, Administrator")]
+        [Authorize]
         [Route("UpdateRecipe/{id:int}")]
         [ProducesResponseType(200, Type = typeof(RecipeContract))]
         public async Task<IActionResult> UpdateRecipe([FromRoute] int id, [FromBody] RecipeUpdateRequest recipeUpdateRequest)
@@ -93,7 +87,6 @@ namespace Eatagram.Core.Api.Controllers
 
             var toUpdate = recipeUpdateRequest.GetContract();
 
-            toUpdate.User_Id = User.GetUserId();
 
             Recipe result = await _recipeLogic.UpdateRecipe(id, toUpdate);
 
