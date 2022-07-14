@@ -9,7 +9,6 @@ using Eatagram.Core.Interfaces.Logic;
 using Eatagram.Core.Interfaces.Messaging;
 using Eatagram.Core.Interfaces.Repository;
 using Eatagram.Core.Logic;
-using Eatagram.Core.MongoDb.Configuration;
 using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -81,8 +80,9 @@ public partial class Program
         builder.Services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
         builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
         builder.Services.AddScoped<IMessagingLogic, MessagingLogic>();
-
         builder.Services.AddSingleton<MessagesDb>();
+
+
         builder.Services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -135,13 +135,14 @@ public partial class Program
         app.UseRouting();
 
 
-        app.UseCors(options =>
-         options.AllowAnyMethod()
-         .AllowAnyHeader()
-         .AllowCredentials()
-         .SetIsOriginAllowed(origin => true));
+        app.UseCors(options => options.AllowAnyMethod()
+                                      .AllowAnyHeader()
+                                      .AllowCredentials()
+                                      .SetIsOriginAllowed(origin => true));
+
         app.UseAuthentication();
         app.UseAuthorization();
+
         app.UseWebSockets();
         app.MapHub<MessagingHub>("/Chat");
 
