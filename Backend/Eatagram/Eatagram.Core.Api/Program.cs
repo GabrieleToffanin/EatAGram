@@ -85,23 +85,36 @@ public partial class Program
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-            .AddJwtBearer(options =>
+        .AddJwtBearer(options =>
+        {
+            options.Audience = builder.Configuration["token:Audience"];
+            options.Authority = "https://localhost:5000";
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = true;
+            options.TokenValidationParameters = new TokenValidationParameters
             {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = false;
-                options.TokenValidationParameters = new TokenValidationParameters
+                ValidateIssuerSigningKey = true,
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                ValidIssuer = "https://localhost:5000",
+                ValidAudience = builder.Configuration["token:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["token:secret"]))
+            };
+            options.Events = new JwtBearerEvents()
+            {
+                OnMessageReceived = context =>
                 {
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero,
+                    var accessToken = context.Request.Query["token"];
 
-                    ValidIssuer = builder.Configuration["token:issuer"],
-                    ValidAudience = builder.Configuration["token:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["token:secret"]))
-                };
-            });
+
+                    context.Token = accessToken; 
+                    return Task.FromResult(0);
+                }
+            };
+        });
+        
 
         builder.Services.AddSignalR();
 
@@ -124,8 +137,6 @@ public partial class Program
         app.UseHttpsRedirection();
         app.UseRouting();
 
-        app.UseAuthentication();
-        app.UseAuthorization();
 
         app.UseCors(options =>
          options.AllowAnyMethod()
@@ -133,10 +144,15 @@ public partial class Program
          .AllowCredentials()
          .SetIsOriginAllowed(origin => true));
 
-        app.MapControllers();
+        app.UseAuthorization();
+        app.UseAuthentication();
 
         app.UseWebSockets();
         app.MapHub<MessagingHub>("/Chat");
+
+
+
+        app.MapControllers();
 
 
 

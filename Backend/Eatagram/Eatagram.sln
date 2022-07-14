@@ -11,13 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.Data.EntityFr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.Api", "Eatagram.Core.Api\Eatagram.Core.Api.csproj", "{756E9D8E-D9A4-4E47-8823-AECE0F115921}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet", "dotnet", "{0A85676F-ED41-471F-81C0-FF1E0A62A097}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{0A85676F-ED41-471F-81C0-FF1E0A62A097}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.MongoDb", "Eatagram.Core.MongoDb\Eatagram.Core.MongoDb.csproj", "{AA063767-C122-45C1-BB6F-B35D9A1E8C48}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "framework", "framework", "{A6199AB4-DB85-4524-8556-7D191BBE3C1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eatagram.Framework.Logger", "Eatagram.Framework.Logger\Eatagram.Framework.Logger.csproj", "{17D8E211-B221-4606-8402-F0E734196EC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Framework.Logger", "Eatagram.Framework.Logger\Eatagram.Framework.Logger.csproj", "{17D8E211-B221-4606-8402-F0E734196EC5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
