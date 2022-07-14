@@ -1,15 +1,8 @@
-﻿using Eatagram.Core.Api.Tests.Helper;
-using Eatagram.Core.Data.EntityFramework.Contexts;
-using Eatagram.Core.Entities;
-using Eatagram.Core.Entities.Authentication;
-using Eatagram.Core.Entities.Token;
+﻿using Eatagram.Core.Data.EntityFramework.Contexts;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using System.Net.Http.Json;
 
 namespace Eatagram.Core.Api.Tests.Fixtures.Common
 {
@@ -21,7 +14,7 @@ namespace Eatagram.Core.Api.Tests.Fixtures.Common
             {
                 var serviceDescriptor = services.SingleOrDefault(serv => serv.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
 
-                services.Remove(serviceDescriptor);
+                services.Remove(serviceDescriptor!);
 
                 ConfigureDb(services);
 
@@ -33,39 +26,10 @@ namespace Eatagram.Core.Api.Tests.Fixtures.Common
 
                 var current = scoped.ServiceProvider;
                 var db = current.GetRequiredService<ApplicationDbContext>();
-                var userManager = current.GetRequiredService<UserManager<ApplicationUser>>();
-                var roleManager = current.GetRequiredService<RoleManager<IdentityRole>>();
 
                 db.Database.EnsureCreated();
-
-                Utilities.InitIdentityDb(db, userManager, roleManager);
             });
 
-        }
-
-        protected override void ConfigureClient(HttpClient client)
-
-        {
-            base.ConfigureClient(client);
-            string token = SetAuthHeader(client).Result;
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-        }
-
-        private async Task<string> SetAuthHeader(HttpClient client)
-        {
-            var user = new UserAuthentication
-            {
-                Password = "Unicorn-12",
-                Email = "GT@outlook.it"
-            };
-
-            var request = await client.PostAsJsonAsync("api/Authentication/Authenticate", user);
-            var content = await request.Content.ReadAsStringAsync();
-
-            var wanted = JsonConvert.DeserializeObject<TokenExtractor>(content);
-
-
-            return wanted.Token;
         }
 
         private protected abstract void ConfigureDb(IServiceCollection services);

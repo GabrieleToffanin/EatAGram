@@ -9,7 +9,7 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
     /// <summary>
     /// Defines the Db Context for the application Eatagram
     /// </summary>
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : DbContext
     {
         
         //DbSet representing Recipes Table
@@ -31,22 +31,10 @@ namespace Eatagram.Core.Data.EntityFramework.Contexts
                 .HasMany(x => x.Ingredients)
                 .WithMany(x => x.Recipes);
 
-            modelBuilder.Entity<ApplicationUser>()
-                .HasMany(x => x.Recipes)
-                .WithOne(x => x.Owner)
-                .HasForeignKey(x => x.User_Id)
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<Comment>()
                         .HasOne(x => x.OfRecipe)
                         .WithMany(x => x.Comments)
                         .HasForeignKey(x => x.RecipeId)
-                        .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<Comment>()
-                        .HasOne(x => x.User)
-                        .WithMany(x => x.Comments)
-                        .HasForeignKey(x => x.User_Id)
                         .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Ingredient>().HasIndex(x => x.Name).IsUnique();

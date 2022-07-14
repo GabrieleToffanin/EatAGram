@@ -15,10 +15,6 @@ namespace Eatagram.Core.Entities
         public string Content { get; set; }
         public int UpVoted { get; set; }
 
-
-        public string User_Id { get; set; }
-        public ApplicationUser User { get; set; }
-
         public int RecipeId { get; set; }
         public Recipe OfRecipe { get; set; }
 

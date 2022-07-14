@@ -1,6 +1,6 @@
 ﻿namespace Eatagram.Core.Api.Models.Requests
 {
-    public record struct MessageRequest
+    public class MessageRequest
     {
         public string Message { get; set; }
         public string ToUser { get; set; }

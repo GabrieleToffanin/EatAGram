@@ -17,6 +17,7 @@ namespace Eatagram.Core.MongoDb.DatabaseService
         public MessagesDb(IOptions<MessagesStoreDatabaseSettings> messagesDBSettings) 
         {
             var mongoClient = new MongoClient(messagesDBSettings.Value.ConnectionString);
+
             var mongoDb = mongoClient.GetDatabase(
                 messagesDBSettings.Value.DatabaseName);
 

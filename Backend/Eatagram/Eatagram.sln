@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.MongoDb", "Ea
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "framework", "framework", "{A6199AB4-DB85-4524-8556-7D191BBE3C1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eatagram.Framework.Logger", "Eatagram.Framework.Logger\Eatagram.Framework.Logger.csproj", "{17D8E211-B221-4606-8402-F0E734196EC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Framework.Logger", "Eatagram.Framework.Logger\Eatagram.Framework.Logger.csproj", "{17D8E211-B221-4606-8402-F0E734196EC5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "external", "external", "{E2111105-56BF-437E-9209-3A8DE09B6198}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
