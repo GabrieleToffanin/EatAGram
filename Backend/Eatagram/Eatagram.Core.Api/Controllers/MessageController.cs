@@ -28,8 +28,8 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("GetMessages")]
-        [Authorize(Roles = "Member, Administrator")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Message>))]
         public async Task<IActionResult> LoadMessages()
         {
@@ -39,11 +39,14 @@ namespace Eatagram.Core.Api.Controllers
         
 
         [HttpPost]
+        [Authorize]
         [Route("SendMessage")]
         [ProducesResponseType(200, Type = typeof(Message))]
         public async Task<IActionResult> SendMessage([FromBody]MessageRequest request)
         {
-            var content = request.GetContract() with { FromUser = User.GetUserId() };
+            var content = request.GetContract();
+
+            content.FromUser = User.GetUserId();
 
             //Private Chat
             await _hubContext.Clients.Group(request.GroupName!).SendAsync("sendPrivateMessage");

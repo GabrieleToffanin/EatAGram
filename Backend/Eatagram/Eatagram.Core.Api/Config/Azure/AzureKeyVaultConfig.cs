@@ -3,7 +3,7 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Options;
 
-namespace Eatagram.Core.Api.Config
+namespace Eatagram.Core.Api.Config.Azure
 {
     public static class AzureKeyVaultConfig
     {
@@ -31,7 +31,7 @@ namespace Eatagram.Core.Api.Config
         {
             if (!connStrings.ContainsKey("Mongo"))
             {
-                KeyVaultSecret connectionString =  _secretClient.GetSecret("Eatagram-Api-MongoDB-Connection");
+                KeyVaultSecret connectionString = _secretClient.GetSecret("Eatagram-Api-MongoDB-Connection");
 
                 connStrings["Mongo"] = connectionString.Value;
             }
@@ -43,7 +43,7 @@ namespace Eatagram.Core.Api.Config
         {
             if (!connStrings.ContainsKey("Sql"))
             {
-                KeyVaultSecret connectionString = 
+                KeyVaultSecret connectionString =
                     _secretClient.GetSecret("Eatagram-Api-Sql-Connection");
 
                 connStrings["Sql"] = connectionString.Value;

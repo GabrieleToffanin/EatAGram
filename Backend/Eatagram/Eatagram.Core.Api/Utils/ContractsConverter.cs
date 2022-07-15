@@ -1,8 +1,6 @@
 ﻿using Eatagram.Core.Api.Models.Contracts;
 using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Entities;
-using Eatagram.Core.Entities.Authentication;
-using Eatagram.Core.Entities.Token;
 
 namespace Eatagram.Core.Api.Utils
 {
@@ -41,8 +39,7 @@ namespace Eatagram.Core.Api.Utils
                 Id = recipe.Id,
                 Name = recipe.Name,
                 Description = recipe.Description,
-                Ingredients = recipe.Ingredients.Select(x => x.Name).ToList(),
-                User_Name = recipe.Owner.UserName
+                Ingredients = recipe.Ingredients.Select(x => x.Name).ToList()
             };
 
         /// <summary>
@@ -117,32 +114,17 @@ namespace Eatagram.Core.Api.Utils
                 Id = comment.Id,
                 Content = comment.Content,
                 UpVotes = comment.UpVoted,
-                User = comment.User.UserName,
                 Recipe = comment.OfRecipe.Name
-            };
-        }
-
-        public static JwtTokenContract GetContract(this JwtToken token)
-        {
-            return new JwtTokenContract()
-            {
-                Token = token.Token
-            };
-        }
-
-        public static RegistrationContract GetContract(this RegistrationStatus status)
-        {
-            return new RegistrationContract()
-            {
-                Email = status.Email,
-                Message = status.Message,
-                Succeded = status.Succedeed
             };
         }
 
         public static Message GetContract(this MessageRequest request)
         {
-            return new Message() with { ToUser = request.ToUser, Text = request.Message };
+            return new Message() 
+            { 
+                ToUser = request.ToUser, 
+                Text = request.Message 
+            };
         }
 
     }

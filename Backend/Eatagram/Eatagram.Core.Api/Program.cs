@@ -1,20 +1,15 @@
 using Eatagram.Core.Api.Config;
-using Eatagram.Core.Api.Extensions;
 using Eatagram.Core.Api.Hubs;
-using Eatagram.Core.Configuration;
 using Eatagram.Core.Data.EntityFramework.Repository;
-using Eatagram.Core.Interfaces.Auth;
 using Eatagram.Core.Interfaces.Comments;
 using Eatagram.Core.Interfaces.Logic;
+using Eatagram.Core.Interfaces.Messaging;
 using Eatagram.Core.Interfaces.Repository;
 using Eatagram.Core.Logic;
-using Eatagram.Core.MongoDb.Configuration;
 using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Text;
+using Microsoft.Identity.Web;
 
 public partial class Program
 {
@@ -24,48 +19,13 @@ public partial class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
 
         builder.Services.AddCors();
 
-        builder.Services.AddSwaggerGen(c =>
-        {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Recipes", Version = "1.0.0" });
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Description = @"JWT Authorization header using the Bearer scheme. <br>
-                Enter 'Bearer' [space] and then your token in the text input below.
-                <br>Example: 'Bearer 12345abcdef'",
-                Name = "Authorization",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey,
-                Scheme = "Bearer"
-            });
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                            Scheme = "oauth2",
-                            Name = "Bearer",
-                            In = ParameterLocation.Header,
-
-                    },
-                    new List<string>()
-                }
-            });
-
-        });
-
-        builder.Services.Configure<JwtTokenConfiguration>(builder.Configuration.GetSection("token"));
+        builder.Services.AddSwaggerGen(configuration => configuration.ConfigureSwagger());
 
         builder.ConfigureDatabases();
 
@@ -75,46 +35,19 @@ public partial class Program
         builder.Services.AddScoped<IRecipeBrainLogic, RecipeBrainLogic>();
         builder.Services.AddScoped<ICommentsRepository, CommentsRepository>();
         builder.Services.AddScoped<ICommentsLogic, CommentsLogic>();
-        builder.Services.AddScoped<IAuthenticationLogic, AuthenticationLogic>();
+        builder.Services.AddScoped<IUserMessaging, UserMessagingLogic>();
+        builder.Services.AddScoped<IUserMessagingRepository, UserMessagingRepository>();
         builder.Services.AddScoped<IMessagesRepository, MessagesRepository>();
         builder.Services.AddScoped<IMessagingLogic, MessagingLogic>();
-
         builder.Services.AddSingleton<MessagesDb>();
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(options =>
-        {
-            options.Audience = builder.Configuration["token:Audience"];
-            options.Authority = "https://localhost:5000";
-            options.RequireHttpsMetadata = false;
-            options.SaveToken = true;
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero,
-                ValidIssuer = "https://localhost:5000",
-                ValidAudience = builder.Configuration["token:Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["token:secret"]))
-            };
-            options.Events = new JwtBearerEvents()
-            {
-                OnMessageReceived = context =>
-                {
-                    var accessToken = context.Request.Query["token"];
 
 
-                    context.Token = accessToken; 
-                    return Task.FromResult(0);
-                }
-            };
-        });
-        
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                        .AddMicrosoftIdentityWebApi(builder.Configuration)
+                        .EnableTokenAcquisitionToCallDownstreamApi()
+                        .AddInMemoryTokenCaches();
+
+
 
         builder.Services.AddSignalR();
 
@@ -125,9 +58,7 @@ public partial class Program
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.EnsureIdentityDbIsCreated();
-            app.SeedIdentityDataAsync().Wait();
-
+            
         }
 
         app.UseSwagger();
@@ -138,17 +69,14 @@ public partial class Program
         app.UseRouting();
 
 
-        app.UseCors(options =>
-         options.AllowAnyMethod()
-         .AllowAnyHeader()
-         .AllowCredentials()
-         .SetIsOriginAllowed(origin => true));
+        app.UseCors(options => options
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials()
+                            .SetIsOriginAllowed(origin => true));
 
-        app.UseAuthorization();
-        app.UseAuthentication();
+        app.MapControllers();
 
-        app.UseWebSockets();
-        app.MapHub<MessagingHub>("/Chat");
 
 
 
