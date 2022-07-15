@@ -79,7 +79,8 @@ public partial class Program
         app.UseAuthorization();
 
         app.UseWebSockets();
-        app.MapHub<MessagingHub>("/Chat");
+
+        app.MapHub<MessagingHub>("/hubs/Chat");
 
         app.MapControllers();
 
