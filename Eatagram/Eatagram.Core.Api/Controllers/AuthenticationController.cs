@@ -1,11 +1,15 @@
-﻿using Eatagram.Core.Entities.Token;
-using Eatagram.Core.Entities.User;
+﻿using Eatagram.Core.Api.Filter;
+using Eatagram.Core.Api.Models.Contracts;
+using Eatagram.Core.Api.Utils;
+using Eatagram.Core.Entities.Authentication;
 using Eatagram.Core.Interfaces.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eatagram.Core.Api.Controllers
 {
+    [DurationFilter]
+    [ExceptionFilter]
     [ApiController]
     [Route("api/[controller]")]
     public class AuthenticationController : ControllerBase

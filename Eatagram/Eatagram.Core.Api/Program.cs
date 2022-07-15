@@ -12,11 +12,13 @@ using Eatagram.Core.Logic;
 using Eatagram.Core.MongoDb.Configuration;
 using Eatagram.Core.MongoDb.DatabaseService;
 using Eatagram.Core.MongoDb.Repository;
+using Eatagram.Framework.Logger.LogSetup;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 
 public partial class Program
@@ -25,6 +27,9 @@ public partial class Program
     {
 
         var builder = WebApplication.CreateBuilder(args);
+
+        SeriLogger.Information($"Application starting with " +
+            $"{Assembly.GetEntryAssembly().GetName().Version}...");
 
         // Add services to the container.
 

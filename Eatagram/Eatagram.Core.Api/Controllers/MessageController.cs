@@ -1,4 +1,5 @@
-﻿using Eatagram.Core.Api.Hubs;
+﻿using Eatagram.Core.Api.Filter;
+using Eatagram.Core.Api.Hubs;
 using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Utils;
 using Eatagram.Core.Entities;
@@ -14,7 +15,8 @@ namespace Eatagram.Core.Api.Controllers
     /// <summary>
     /// 
     /// </summary>
-
+    [DurationFilter]
+    [ExceptionFilter]
     [Route("api/[controller]")]
     public class MessageController : ControllerBase
     {

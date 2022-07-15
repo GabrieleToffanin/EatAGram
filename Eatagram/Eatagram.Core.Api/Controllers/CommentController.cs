@@ -1,4 +1,5 @@
-﻿using Eatagram.Core.Api.Models.Contracts;
+﻿using Eatagram.Core.Api.Filter;
+using Eatagram.Core.Api.Models.Contracts;
 using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Utils;
 using Eatagram.Core.Entities;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Eatagram.Core.Api.Controllers
 {
+    [DurationFilter]
+    [ExceptionFilter]
     [Route("api/[controller]")]
     public class CommentController : ControllerBase
     {
