@@ -68,6 +68,10 @@ public partial class Program
         app.UseHttpsRedirection();
         app.UseRouting();
 
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+
 
         app.UseCors(options => options
                             .AllowAnyMethod()
@@ -77,12 +81,8 @@ public partial class Program
 
         app.MapControllers();
 
-
-
-
-        app.MapControllers();
-
-
+        app.UseWebSockets();
+        app.MapHub<MessagingHub>("/Chat");
 
         app.Run();
     }
