@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Eatagram.SDK.Services.AuthenticationService
+namespace Eatagram.SDK.Services
 {
     public class AuthenticationProvider
     {
