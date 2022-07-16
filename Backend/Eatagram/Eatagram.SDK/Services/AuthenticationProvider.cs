@@ -1,4 +1,5 @@
 ﻿using Eatagram.SDK.Configuration.Authentication;
+using Eatagram.SDK.Interfaces;
 using Eatagram.SDK.Models.Authentication;
 using Microsoft.Identity.Client;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Eatagram.SDK.Services
 {
-    public class AuthenticationProvider
+    public class AuthenticationProvider : IAuthenticationProvider
     {
         private IPublicClientApplication IdentityClient { get; init; }
 
