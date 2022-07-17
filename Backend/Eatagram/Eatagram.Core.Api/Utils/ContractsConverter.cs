@@ -1,6 +1,6 @@
-﻿using Eatagram.Core.Api.Models.Contracts;
-using Eatagram.Core.Api.Models.Requests;
-using Eatagram.Core.Entities;
+﻿using Eatagram.Core.Entities;
+using Eatagram.SDK.Models.Contracts;
+using Eatagram.SDK.Models.Requests;
 
 namespace Eatagram.Core.Api.Utils
 {

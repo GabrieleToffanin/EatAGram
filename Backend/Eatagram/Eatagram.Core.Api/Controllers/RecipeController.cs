@@ -1,14 +1,17 @@
-﻿using Eatagram.Core.Api.Models.Contracts;
-using Eatagram.Core.Api.Models.Requests;
+﻿using Eatagram.Core.Api.Filter;
 using Eatagram.Core.Api.Utils;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Interfaces.Logic;
+using Eatagram.SDK.Models.Contracts;
+using Eatagram.SDK.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Eatagram.Core.Api.Controllers
 {
     [Route("api/[controller]")]
+    [DurationFilter]
+    [ExceptionFilter]
     public class RecipeController : ControllerBase
     {
         private readonly IRecipeBrainLogic _recipeLogic;
@@ -33,7 +36,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Member, Administrator")]
         [Route("GetUserRecipes")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<RecipeContract>))]
         public async Task<IActionResult> GetUserRecipes([FromQuery]string? userId = null)
@@ -93,7 +96,7 @@ namespace Eatagram.Core.Api.Controllers
             Recipe result = await _recipeLogic.UpdateRecipe(id, toUpdate);
 
             if (result == null)
-                return BadRequest("Can't update with provided data, or object not found");
+                return NotFound("Recipe not found");
 
             return Ok(result.GetContract());
         }

@@ -1,8 +1,8 @@
-﻿using Eatagram.Core.Api.Models.Contracts;
-using Eatagram.Core.Api.Models.Requests;
+﻿using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Tests.Fixtures;
 using Eatagram.Core.Api.Tests.Fixtures.Common;
 using Eatagram.Core.Api.Tests.Scenario.Comment;
+using Eatagram.SDK.Models.Contracts;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
