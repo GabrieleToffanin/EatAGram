@@ -1,9 +1,9 @@
 ﻿using Eatagram.Core.Api.Filter;
 using Eatagram.Core.Api.Hubs;
-using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Utils;
 using Eatagram.Core.Entities;
 using Eatagram.Core.Interfaces.Logic;
+using Eatagram.SDK.Models.Requests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;

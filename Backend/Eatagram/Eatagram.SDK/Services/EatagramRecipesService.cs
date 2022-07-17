@@ -1,6 +1,7 @@
-﻿using Eatagram.Core.Api.Models.Contracts;
+﻿using Eatagram.SDK.Interfaces;
 using Eatagram.SDK.Models;
 using Eatagram.SDK.Models.Authentication;
+using Eatagram.SDK.Models.Contracts;
 using Eatagram.SDK.Services.Common;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Eatagram.SDK.Services
 {
-    public sealed class EatagramRecipesService : HttpServiceBase
+    public sealed class EatagramRecipesService : HttpServiceBase, IEatagramRecipesService
     {
         public EatagramRecipesService(AuthenticationToken authUser) : base(authUser)
         {

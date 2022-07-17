@@ -1,4 +1,4 @@
-﻿namespace Eatagram.Core.Api.Models.Requests
+﻿namespace Eatagram.SDK.Models.Requests
 {
     public class IngredientCreationRequest
     {

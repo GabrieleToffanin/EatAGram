@@ -5,10 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Eatagram.WPF.Views"
         mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="HomeWindow" Height="450" Width="800">
     <Grid>
-        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding AccessToken}"/>
+        <ListView x:Name="recipes"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  ItemsSource="{Binding Path=Recipes, Mode=TwoWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <materialDesign:Card UniformCornerRadius="10" 
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center">
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="{Binding Name}"/>
+                        </StackPanel>
+                    </materialDesign:Card>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>

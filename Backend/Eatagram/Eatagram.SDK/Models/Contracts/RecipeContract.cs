@@ -1,4 +1,4 @@
-﻿namespace Eatagram.Core.Api.Models.Contracts
+﻿namespace Eatagram.SDK.Models.Contracts
 {
     public class RecipeContract
     {
