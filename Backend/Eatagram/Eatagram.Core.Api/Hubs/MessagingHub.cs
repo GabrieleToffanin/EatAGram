@@ -1,5 +1,4 @@
-﻿using Eatagram.Core.Api.Models.Requests;
-using Eatagram.Core.Entities.Chat;
+﻿using Eatagram.Core.Entities.Chat;
 using Eatagram.Core.Interfaces.Messaging;
 using Eatagram.Framework.Logger.LogSetup;
 using Microsoft.AspNetCore.Authorization;

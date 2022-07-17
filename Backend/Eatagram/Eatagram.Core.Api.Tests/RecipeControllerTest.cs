@@ -1,10 +1,12 @@
-using Eatagram.Core.Api.Controllers;
-using Eatagram.Core.Api.Models.Requests;
 using Eatagram.Core.Api.Tests.Fixtures;
 using Eatagram.Core.Api.Tests.Fixtures.Common;
+using Eatagram.Core.Mocks.Authentication;
 using Eatagram.SDK.Models.Contracts;
 using Eatagram.SDK.Models.Requests;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 
@@ -22,7 +24,10 @@ namespace Eatagram.Core.Api.Tests
         public RecipeControllerTest(RecipeTestsFixture<Program> factory)
         {
             _factory = factory;
-            _client = _factory.CreateDefaultClient();
+            _client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
         }
 
         [Theory]
@@ -60,7 +65,7 @@ namespace Eatagram.Core.Api.Tests
                     {
                         Name = "Cozze"
                     }
-                }
+                },
             };
             //*** Act 
             var response = await _client.PostAsJsonAsync(url, toCreate);
@@ -134,7 +139,7 @@ namespace Eatagram.Core.Api.Tests
             var content = await response.Content.ReadAsStringAsync();
 
             var currentReponse = JsonConvert.DeserializeObject<IEnumerable<RecipeContract>>(content);
-            var checkIfRightUser = currentReponse.Where(x => x.User_Name == "GT@outlook.it");
+            var checkIfRightUser = currentReponse.Where(x => x.User_Name == "Test user");
 
             //*** Assert
             Assert.NotNull(currentReponse);

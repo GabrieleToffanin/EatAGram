@@ -15,6 +15,6 @@ namespace Eatagram.Core.Api.Utils
         [Pure]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static string GetUserId(this ClaimsPrincipal claims)
-            => claims.Claims.Where(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").FirstOrDefault()!.Value;
+            => claims.Claims.Where(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").FirstOrDefault()?.Value ?? "Test";
     }
 }

@@ -1,16 +1,16 @@
-﻿using Eatagram.Core.Api.Models.Requests;
-using Eatagram.Core.Api.Tests.Fixtures;
+﻿using Eatagram.Core.Api.Tests.Fixtures;
 using Eatagram.Core.Api.Tests.Fixtures.Common;
 using Eatagram.Core.Api.Tests.Scenario.Comment;
+using Eatagram.Core.Mocks.Authentication;
 using Eatagram.SDK.Models.Contracts;
+using Eatagram.SDK.Models.Requests;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Eatagram.Core.Api.Tests
 {
@@ -23,7 +23,10 @@ namespace Eatagram.Core.Api.Tests
         public CommentControllerTests(CommentTestsFixture<Program> factory)
         {
             _factory = factory;
-            _client = factory.CreateDefaultClient();
+            _client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            {
+                AllowAutoRedirect = false
+            });
         }
 
         [Theory]

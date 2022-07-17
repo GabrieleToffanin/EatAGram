@@ -36,12 +36,17 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Member, Administrator")]
+        [Authorize]
         [Route("GetUserRecipes")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<RecipeContract>))]
         public async Task<IActionResult> GetUserRecipes([FromQuery]string? userId = null)
         {
-            throw new NotImplementedException();
+            var result = await _recipeLogic.GetUserRecipes(x => x.OwnerName == userId);
+
+            if (result == null)
+                return NotFound("Can't find any recipe with this user id");
+
+            return Ok(result);
         }
 
         [HttpPost]
@@ -54,6 +59,8 @@ namespace Eatagram.Core.Api.Controllers
                 return BadRequest("Provided RecipeCreationRequest contains bad data");
 
             var currentRecipe = recipeToAdd.GetContract();
+
+            currentRecipe.OwnerName = User.GetUserId();
 
             var result = await _recipeLogic.CreateRecipe(currentRecipe);
 

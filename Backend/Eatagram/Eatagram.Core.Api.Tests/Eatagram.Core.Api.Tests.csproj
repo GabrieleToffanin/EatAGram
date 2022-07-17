@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Eatagram.Core.Api\Eatagram.Core.Api.csproj" />
     <ProjectReference Include="..\Eatagram.Core.Data.EntityFramework\Eatagram.Core.Data.EntityFramework.csproj" />
+    <ProjectReference Include="..\Eatagram.Core.Mocks\Eatagram.Core.Mocks.csproj" />
   </ItemGroup>
 
 </Project>

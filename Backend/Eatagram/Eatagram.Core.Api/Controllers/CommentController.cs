@@ -22,7 +22,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Member, Administrator")]
+        [Authorize]
         [Route("GetRecipeComments/{id:int}")]
         [ProducesResponseType(200, Type= typeof(IEnumerable<Comment>))]
         public async Task<IActionResult> GetRecipeComments([FromRoute] int id)
@@ -39,7 +39,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Member, Administrator")]
+        [Authorize]
         [Route("PostComment")]
         [ProducesResponseType(200, Type = typeof(CommentContract))]
         public async Task<IActionResult> PostComment([FromBody] CommentRequest comment)
@@ -55,7 +55,7 @@ namespace Eatagram.Core.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Member, Administrator")]
+        [Authorize]
         [Route("UpvoteComment")]
         [ProducesResponseType(200, Type= typeof(CommentContract))]
         public async Task<IActionResult> UpVoteComment([FromBody]CommentUpvoteRequest commentUpvote)

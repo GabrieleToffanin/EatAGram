@@ -11,6 +11,8 @@ namespace Eatagram.Core.Entities
         [MaxLength(255)]
         public string Description { get; set; }
 
+        public string OwnerName { get; set; }
+
         public ICollection<Ingredient> Ingredients { get; set; }
         public ICollection<Comment> Comments { get; set; }
 
