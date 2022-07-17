@@ -10,5 +10,6 @@ namespace Eatagram.WPF.Events
 {
     public class AuthenticationSuccessfullEvent : PubSubEvent<AuthenticationToken>
     {
+
     }
 }

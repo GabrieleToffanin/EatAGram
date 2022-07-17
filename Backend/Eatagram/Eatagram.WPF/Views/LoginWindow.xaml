@@ -1,9 +1,9 @@
-﻿<Window x:Class="Eatagram.WPF.MainWindow"
+﻿<Window x:Class="Eatagram.WPF.Views.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Eatagram.WPF"
+        xmlns:local="clr-namespace:Eatagram.WPF.Views"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
         xmlns:prism="http://prismlibrary.com/"
@@ -54,6 +54,7 @@
                 </iconPacks:PackIconFontAwesome.Foreground>
             </iconPacks:PackIconFontAwesome>
             <Button x:Name="Authenticate"
+                    Command="{Binding MicrosoftAuthenticationCommand}"
                     Style="{StaticResource AuthenticationButton}"
                     Content="Authenticate with Microsoft"/>
         </StackPanel>

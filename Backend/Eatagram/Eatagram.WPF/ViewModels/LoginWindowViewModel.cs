@@ -5,6 +5,7 @@ using Eatagram.WPF.Events;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +14,18 @@ using System.Threading.Tasks;
 
 namespace Eatagram.WPF.ViewModels
 {
-    public class MainWindowViewModel : BindableBase
+    public class LoginWindowViewModel : BindableBase
     {
         private readonly IEventAggregator _events;
         private readonly IAuthenticationProvider _authenticationService;
         public DelegateCommand MicrosoftAuthenticationCommand { get; init; }
 
-        public MainWindowViewModel(IEventAggregator events, IAuthenticationProvider authenticationService)
+        public LoginWindowViewModel(IEventAggregator events, IAuthenticationProvider authenticationService)
         {
             _authenticationService = authenticationService;
             _events = events;
+
+            MicrosoftAuthenticationCommand = new DelegateCommand(async () => await AuthenticateUserThroughMicrosoft());
         }
 
         private async Task AuthenticateUserThroughMicrosoft()

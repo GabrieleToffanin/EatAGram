@@ -1,5 +1,7 @@
 ﻿using Eatagram.SDK.Interfaces;
 using Eatagram.SDK.Services;
+using Eatagram.WPF.Views;
+using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
 using System;
@@ -17,9 +19,10 @@ namespace Eatagram.WPF
     /// </summary>
     public partial class App : PrismApplication
     {
+
         protected override Window CreateShell()
         {
-            var startingView = Container.Resolve<MainWindow>();
+            var startingView = Container.Resolve<HomeWindow>();
 
             return startingView;
         }
@@ -27,6 +30,15 @@ namespace Eatagram.WPF
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IAuthenticationProvider, AuthenticationProvider>();
+        }
+
+        protected override void OnInitialized()
+        {
+            var login = Container.Resolve<LoginWindow>();
+            var result = login.ShowDialog();
+
+            if (result.Value)
+                base.OnInitialized();
         }
     }
 }

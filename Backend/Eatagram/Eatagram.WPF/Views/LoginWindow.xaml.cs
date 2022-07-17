@@ -16,16 +16,22 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Eatagram.WPF
+namespace Eatagram.WPF.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoginWindow : Window
     {
-        public MainWindow(IEventAggregator events)
+        public LoginWindow(IEventAggregator events)
         {
             InitializeComponent();
+            events.GetEvent<AuthenticationSuccessfullEvent>().Subscribe(_ => OnAuthSuccess(), ThreadOption.UIThread);
+        }
+
+        private void OnAuthSuccess()
+        {
+            DialogResult = true;
         }
 
     }
