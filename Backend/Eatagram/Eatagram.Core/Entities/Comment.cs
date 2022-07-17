@@ -18,5 +18,7 @@ namespace Eatagram.Core.Entities
         public int RecipeId { get; set; }
         public Recipe OfRecipe { get; set; }
 
+        public string OwnerName { get; set; }
+
     }
 }
