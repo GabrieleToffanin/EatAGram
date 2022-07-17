@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Identity.Client" Version="4.45.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="HttpClient\Common\" />
+  </ItemGroup>
+
 </Project>
