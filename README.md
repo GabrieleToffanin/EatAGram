@@ -29,4 +29,4 @@ This Api purpouse is to enable mostly `CRUD` operations persistent in the databa
   >Acutally did some reserch about kibana and elastic search working togheter. Fact is i have inserted a Tracer into the Eatagram API and let the logs into Kibana. I filtered Them using the following REGEX ```
   (?<timestamp>[\d+\-\:\.].{23})\+\d+\:\d+\s(?<LogLevel>\[+[\w+\]]+)\s\((?<RunningOn>[\w+]+)\|\)\s\(\w+\)\s(?<HttpMethod>\[+[\w+\]]+)\s(?<Endpoint>[\w+\/]+)\s\w+\s+\w+\s*\'(?<EndpointParameters>[\{\D+\W+\d+\}\-*\'*].*)\'\s*\(*\w+\:*(?<AuthenticatedUser>[\w+\s*]+)\)\s*\-*\s*\w+\:*\s*\-*\s*\w*\:*\s*(?<Duration>[\d+\.\s\w*+]+)```.
   There is a stupid but working graph about some api Stats
-  ![KibanaGraph](https://C:\Users\Gabri\Desktop\EatAGram\screenshots\KibanaGraphs.png)
+  ![KibanaGraph](https://github.com/GabrieleToffanin/EatAGram/blob/develop/screenshots/KibanaGraphs.png)
