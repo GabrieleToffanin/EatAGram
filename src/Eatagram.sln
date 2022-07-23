@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32519.111
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.Api.Tests", "Eatagram.Core.Api.Tests\Eatagram.Core.Api.Tests.csproj", "{30B54D68-C312-4B0E-A67E-DA1695B2BA2A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core", "Eatagram.Core\Eatagram.Core.csproj", "{56168C2B-E134-4981-978D-E79E876E948E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.Data.EntityFramework", "Eatagram.Core.Data.EntityFramework\Eatagram.Core.Data.EntityFramework.csproj", "{8AFCC55C-EB04-4D72-A132-C865A8A46126}"
@@ -33,16 +31,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.Mocks", "Eata
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{FC84CBE9-18BD-4E96-BB15-FEB071981C7C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eatagram.Core.Api.Tests", "..\tests\Eatagram.Core.Api.Tests\Eatagram.Core.Api.Tests.csproj", "{2C303F3E-8CF4-4E7A-BBFC-0E393FEE6645}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{30B54D68-C312-4B0E-A67E-DA1695B2BA2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{30B54D68-C312-4B0E-A67E-DA1695B2BA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30B54D68-C312-4B0E-A67E-DA1695B2BA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30B54D68-C312-4B0E-A67E-DA1695B2BA2A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{56168C2B-E134-4981-978D-E79E876E948E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{56168C2B-E134-4981-978D-E79E876E948E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56168C2B-E134-4981-978D-E79E876E948E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -79,12 +75,15 @@ Global
 		{C5159F29-5FBF-47B2-AE3E-921633CBDF2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5159F29-5FBF-47B2-AE3E-921633CBDF2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5159F29-5FBF-47B2-AE3E-921633CBDF2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C303F3E-8CF4-4E7A-BBFC-0E393FEE6645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C303F3E-8CF4-4E7A-BBFC-0E393FEE6645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C303F3E-8CF4-4E7A-BBFC-0E393FEE6645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C303F3E-8CF4-4E7A-BBFC-0E393FEE6645}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{30B54D68-C312-4B0E-A67E-DA1695B2BA2A} = {0A85676F-ED41-471F-81C0-FF1E0A62A097}
 		{56168C2B-E134-4981-978D-E79E876E948E} = {0A85676F-ED41-471F-81C0-FF1E0A62A097}
 		{8AFCC55C-EB04-4D72-A132-C865A8A46126} = {0A85676F-ED41-471F-81C0-FF1E0A62A097}
 		{756E9D8E-D9A4-4E47-8823-AECE0F115921} = {0A85676F-ED41-471F-81C0-FF1E0A62A097}
@@ -95,6 +94,7 @@ Global
 		{C7003DDC-B38B-49F9-8E19-FB433319AC38} = {FC84CBE9-18BD-4E96-BB15-FEB071981C7C}
 		{C5159F29-5FBF-47B2-AE3E-921633CBDF2F} = {0A85676F-ED41-471F-81C0-FF1E0A62A097}
 		{FC84CBE9-18BD-4E96-BB15-FEB071981C7C} = {EB9B9DE8-0841-4F5E-82AD-CCAFD08F1829}
+		{2C303F3E-8CF4-4E7A-BBFC-0E393FEE6645} = {0A85676F-ED41-471F-81C0-FF1E0A62A097}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5CC2804B-EB90-439C-AD3C-E99FAC1362D0}

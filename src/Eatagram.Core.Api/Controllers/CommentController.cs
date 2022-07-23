@@ -49,6 +49,8 @@ namespace Eatagram.Core.Api.Controllers
 
             var current = comment.GetContract();
 
+            current.OwnerName = User.GetUserId();
+
             var result = await _commentsLogic.AddCommentOnRecipe(current);
 
             return Ok(result.GetContract());

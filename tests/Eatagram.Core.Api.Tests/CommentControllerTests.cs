@@ -1,13 +1,9 @@
 ﻿using Eatagram.Core.Api.Tests.Fixtures;
 using Eatagram.Core.Api.Tests.Fixtures.Common;
 using Eatagram.Core.Api.Tests.Scenario.Comment;
-using Eatagram.Core.Mocks.Authentication;
 using Eatagram.SDK.Models.Contracts;
 using Eatagram.SDK.Models.Requests;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Net.Http.Json;
@@ -61,7 +57,8 @@ namespace Eatagram.Core.Api.Tests
             var request = new CommentRequest
             {
                 Content = content,
-                RecipeId = recipeId
+                RecipeId = recipeId,
+                
             };
 
             //*** Act

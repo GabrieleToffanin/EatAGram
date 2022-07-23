@@ -25,6 +25,7 @@ namespace Eatagram.Core.Mocks.Data
                 Id = 1,
                 RecipeId = 3,
                 UpVoted = 1,
+                OwnerName = "Test user"
             };
         }
         private static IEnumerable<Recipe> GetRecipesSeeding()

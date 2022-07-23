@@ -2,11 +2,7 @@
 using Eatagram.Core.Data.EntityFramework.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Eatagram.Core.Api.Tests.Fixtures
 {
