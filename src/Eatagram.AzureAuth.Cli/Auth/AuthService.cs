@@ -13,7 +13,7 @@ namespace Eatagram.AzureAuth.Cli.Auth
         {
             PublicClientApp = ConfidentialClientApplicationBuilder.Create(ClientId)
                 .WithClientSecret(ClientSecret)
-                .WithAuthority("https://login.microsoftonline.com/"+Tenant)
+                .WithAuthority("https://login.microsoftonline.com/"+ Tenant)
                 .Build();
         }
 

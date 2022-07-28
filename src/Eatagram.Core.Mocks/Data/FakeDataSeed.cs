@@ -12,8 +12,8 @@ namespace Eatagram.Core.Mocks.Data
     {
         public static void IntitDatabase(ApplicationDbContext db)
         {
-            db.Recipes.AddRange(GetRecipesSeeding());
-            db.Comments.Add(SeedComments());
+            db.Recipes.AddRange(entities: GetRecipesSeeding());
+            db.Comments.Add(entity: SeedComments());
 
             db.SaveChanges();
         }

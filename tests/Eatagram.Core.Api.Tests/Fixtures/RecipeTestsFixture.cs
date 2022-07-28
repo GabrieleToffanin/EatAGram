@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Eatagram.Core.Api.Tests.Fixtures
 {
-    public sealed class RecipeTestsFixture<TStartup> : TestsBase<Program>
+    public class RecipeTestsFixture<TStartup> : TestsBase<Program>
     {
         private protected override void ConfigureDb(IServiceCollection services)
         {

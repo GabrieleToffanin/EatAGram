@@ -15,12 +15,10 @@ namespace Eatagram.Core.Api.Controllers
     public class RecipeController : ControllerBase
     {
         private readonly IRecipeBrainLogic _recipeLogic;
-
         public RecipeController(IRecipeBrainLogic logic)
         {
             _recipeLogic = logic;
         }
-
         [HttpGet]
         [Authorize]
         [Route("GetRecipes")]
@@ -34,7 +32,6 @@ namespace Eatagram.Core.Api.Controllers
 
             return Ok(recipes.AsContracts(x => x.GetContract()));
         }
-
         [HttpGet]
         [Authorize]
         [Route("GetUserRecipes")]
@@ -48,7 +45,6 @@ namespace Eatagram.Core.Api.Controllers
 
             return Ok(result);
         }
-
         [HttpPost]
         [Authorize]
         [Route("CreateRecipe")]
@@ -100,7 +96,7 @@ namespace Eatagram.Core.Api.Controllers
             var toUpdate = recipeUpdateRequest.GetContract();
 
 
-            Recipe? result = await _recipeLogic.UpdateRecipe(id, toUpdate);
+            var result = await _recipeLogic.UpdateRecipe(id, toUpdate);
 
             if (result == null)
                 return NotFound("Recipe not found");

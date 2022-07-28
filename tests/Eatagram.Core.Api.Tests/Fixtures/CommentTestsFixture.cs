@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Eatagram.Core.Api.Tests.Fixtures
 {
-    public sealed class CommentTestsFixture<TStartup> : TestsBase<Program>
+    public class CommentTestsFixture<TStartup> : TestsBase<Program>
     {
         private protected override void ConfigureDb(IServiceCollection services)
         {

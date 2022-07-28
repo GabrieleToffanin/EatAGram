@@ -1,5 +1,4 @@
 ﻿using Eatagram.Core.Api.Tests.Fixtures;
-using Eatagram.Core.Api.Tests.Fixtures.Common;
 using Eatagram.Core.Api.Tests.Scenario.Comment;
 using Eatagram.SDK.Models.Contracts;
 using Eatagram.SDK.Models.Requests;
@@ -13,13 +12,10 @@ namespace Eatagram.Core.Api.Tests
     [DisplayName("CommentTests")]
     public class CommentControllerTests : IClassFixture<CommentTestsFixture<Program>>
     {
-        private readonly TestsBase<Program> _factory;
         private readonly HttpClient _client;
-
         public CommentControllerTests(CommentTestsFixture<Program> factory)
         {
-            _factory = factory;
-            _client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+            _client = factory.CreateClient(new WebApplicationFactoryClientOptions
             {
                 AllowAutoRedirect = false
             });
