@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Eatagram.SDK.Services
 {
-    public class AuthenticationProvider : IAuthenticationProvider
+    public abstract class AuthenticationProvider : IAuthenticationProvider
     {
-        private IPublicClientApplication IdentityClient { get; init; }
+        private IPublicClientApplication IdentityClient { get; }
 
-        public AuthenticationProvider()
+        protected AuthenticationProvider()
         {
             IdentityClient = PublicClientApplicationBuilder.Create(AuthenticationConstants.ApplicationId)
                                                            .WithAuthority("https://login.microsoftonline.com/66769b82-5df6-4623-997c-5ab2ab22b900")

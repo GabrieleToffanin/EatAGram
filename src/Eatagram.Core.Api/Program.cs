@@ -11,6 +11,8 @@ using Eatagram.Core.MongoDb.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 
+namespace Eatagram.Core.Api;
+
 public partial class Program
 {
     public static void Main(string[] args)
@@ -43,9 +45,9 @@ public partial class Program
 
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                        .AddMicrosoftIdentityWebApi(builder.Configuration)
-                        .EnableTokenAcquisitionToCallDownstreamApi()
-                        .AddInMemoryTokenCaches();
+            .AddMicrosoftIdentityWebApi(builder.Configuration)
+            .EnableTokenAcquisitionToCallDownstreamApi()
+            .AddInMemoryTokenCaches();
 
 
 
@@ -74,10 +76,10 @@ public partial class Program
 
 
         app.UseCors(options => options
-                            .AllowAnyMethod()
-                            .AllowAnyHeader()
-                            .AllowCredentials()
-                            .SetIsOriginAllowed(origin => true));
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .SetIsOriginAllowed(origin => true));
 
         app.MapControllers();
 
@@ -87,5 +89,3 @@ public partial class Program
         app.Run();
     }
 }
-
-

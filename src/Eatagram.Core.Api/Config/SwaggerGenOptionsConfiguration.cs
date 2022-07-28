@@ -12,7 +12,7 @@ namespace Eatagram.Core.Api.Config
             {
                 Description = @"JWT Authorization header using the Bearer scheme. <br>
                 Enter 'Bearer' [space] and then your token in the text input below.
-                <br>Example: 'Bearer 12345abcdef'",
+                <br>Example: 'Bearer 12345abc-def'",
                 Name = "Authorization",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,

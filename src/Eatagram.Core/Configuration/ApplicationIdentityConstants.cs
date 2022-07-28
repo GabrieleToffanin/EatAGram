@@ -1,5 +1,6 @@
 ﻿namespace Eatagram.Core.Configuration
 {
+/*
     /// <summary>
     /// Default user credentials for having an already registered user
     /// </summary>
@@ -14,4 +15,5 @@
         public const string DefaultPassword = "Unicorn-12";
 
     }
+*/
 }

@@ -9,34 +9,36 @@ namespace Eatagram.Core.Api.Hubs
     [Authorize]
     public class MessagingHub : Hub
     {
-        private readonly IUserMessaging userMessaging;
+        private readonly IUserMessaging _userMessaging;
+        private string _identityName;
 
         public MessagingHub(IUserMessaging userMessaging)
         {
-            this.userMessaging = userMessaging;
+            this._userMessaging = userMessaging;
         }
 
-        public async override Task<Task> OnConnectedAsync()
+        public override async Task<Task> OnConnectedAsync()
         {
             SeriLogger.Information("StoQua");
-            var user = await userMessaging.GetUserByUsernameAsync(Context.User.Identity.Name);
+            if (Context.User?.Identity.Name != null)
+            {
+                var user = await _userMessaging.GetUserByUsernameAsync(Context.User?.Identity.Name ?? string.Empty);
 
-            if (user is null)
-            {
-                user = new ChatUser()
+                if (user is null)
                 {
-                    UserName = Context.User.Identity.Name
-                };
-                SeriLogger.Information("StoQua");
-                await userMessaging.AddUserToCollectionAsync(user);
+                    _identityName = Context.User?.Identity.Name ?? throw new InvalidOperationException();
+                    user = new ChatUser()
+                    {
+                        UserName = _identityName
+                    };
+                    await _userMessaging.AddUserToCollectionAsync(user);
+                }
+                else
+                {
+                    foreach (var item in user.ConversationRooms)
+                        await Groups.AddToGroupAsync(Context.ConnectionId, item.RoomName);
+                }
             }
-            else
-            {
-                SeriLogger.Information("StoQua");
-                foreach (var item in user.ConversationRooms)
-                    await Groups.AddToGroupAsync(Context.ConnectionId, item.RoomName);
-            }
-            SeriLogger.Information("StoQua");
             return base.OnConnectedAsync();
         }
     }

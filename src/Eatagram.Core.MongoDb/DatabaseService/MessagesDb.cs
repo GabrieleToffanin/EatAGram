@@ -14,24 +14,24 @@ namespace Eatagram.Core.MongoDb.DatabaseService
         public IMongoCollection<ChatUser> Users { get; set; }
 
 
-        public MessagesDb(IOptions<MessagesStoreDatabaseSettings> messagesDBSettings) 
+        public MessagesDb(IOptions<MessagesStoreDatabaseSettings> messagesDbSettings) 
         {
-            var mongoClient = new MongoClient(messagesDBSettings.Value.ConnectionString);
+            var mongoClient = new MongoClient(messagesDbSettings.Value.ConnectionString);
 
             var mongoDb = mongoClient.GetDatabase(
-                messagesDBSettings.Value.DatabaseName);
+                messagesDbSettings.Value.DatabaseName);
 
             Messages = mongoDb.GetCollection<Message>(
-                messagesDBSettings.Value.MessagesCollectionName);
+                messagesDbSettings.Value.MessagesCollectionName);
 
             Connections = mongoDb.GetCollection<Connection>(
-                messagesDBSettings.Value.ConnectionsCollectionName);
+                messagesDbSettings.Value.ConnectionsCollectionName);
 
             ConversationRooms = mongoDb.GetCollection<ConversationRoom>(
-                messagesDBSettings.Value.ConversationRoomsCollectionName);
+                messagesDbSettings.Value.ConversationRoomsCollectionName);
 
             Users = mongoDb.GetCollection<ChatUser>(
-                messagesDBSettings.Value.ChatUsersCollectionName);
+                messagesDbSettings.Value.ChatUsersCollectionName);
         }
 
         

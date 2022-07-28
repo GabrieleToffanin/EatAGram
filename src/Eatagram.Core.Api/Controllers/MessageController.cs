@@ -12,9 +12,6 @@ using Microsoft.AspNetCore.SignalR;
 namespace Eatagram.Core.Api.Controllers
 {
 
-    /// <summary>
-    /// 
-    /// </summary>
     [DurationFilter]
     [ExceptionFilter]
     [Route("api/[controller]")]
@@ -49,13 +46,7 @@ namespace Eatagram.Core.Api.Controllers
             var content = request.GetContract();
 
             content.FromUser = User.GetUserId();
-
-            //Private Chat
             await _hubContext.Clients.Group(request.GroupName!).SendAsync("sendPrivateMessage");
-
-            //Global chat
-            //await _hubContext.Clients.All.SendAsync("receiveMessage", request.User, request.Message);
-
 
             await _messagingLogic.SaveMessage(content);
 

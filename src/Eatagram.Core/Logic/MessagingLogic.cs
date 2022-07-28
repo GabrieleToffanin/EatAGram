@@ -11,21 +11,21 @@ namespace Eatagram.Core.Logic
 {
     public class MessagingLogic : IMessagingLogic
     {
-        private readonly IMessagesRepository messagesRepository;
+        private readonly IMessagesRepository _messagesRepository;
 
         public MessagingLogic(IMessagesRepository messagesRepository)
         {
-            this.messagesRepository = messagesRepository;
+            this._messagesRepository = messagesRepository;
         }
 
         public async Task<IEnumerable<Message>> LoadConversationMessages()
         {
-            return await messagesRepository.GetAsync();
+            return await _messagesRepository.GetAsync();
         }
 
         public async Task SaveMessage(Message message)
         {
-            await messagesRepository.CreateAsync(message);
+            await _messagesRepository.CreateAsync(message);
         }
     }
 }

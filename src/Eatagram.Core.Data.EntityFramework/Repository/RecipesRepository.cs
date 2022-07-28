@@ -23,7 +23,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// </summary>
         /// <param name="recipe">current recipe that has to be added to the db</param>
         /// <returns>the current create recipe</returns>
-        public async Task<Recipe> CreateRecipe(Recipe recipe)
+        public async Task<Recipe?> CreateRecipe(Recipe recipe)
         {
             await _dbContext.AddAsync(recipe);
             await _dbContext.SaveChangesAsync();
@@ -36,11 +36,13 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// </summary>
         /// <param name="currentRecipe">current recipe to be removed</param>
         /// <returns>Return the recipe if deleted else null</returns>
-        public async Task<Recipe> DeleteRecipe(Recipe currentRecipe)
+        public async Task<Recipe?> DeleteRecipe(Recipe? currentRecipe)
         {
             var momentCopy = currentRecipe;
 
+#pragma warning disable CS8634
             _dbContext.Remove(currentRecipe);
+#pragma warning restore CS8634
             await _dbContext.SaveChangesAsync();
 
             return momentCopy;
@@ -65,7 +67,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// </summary>
         /// <param name="id">Current supposed recipe id already present in DB </param>
         /// <returns>The fetched recipe</returns>
-        public async Task<Recipe> FindRecipeById(int id)
+        public async Task<Recipe?> FindRecipeById(int id)
         {
             return await _dbContext.Recipes.Include(x => x.Ingredients)
                                            .Include(x => x.Comments)
@@ -73,11 +75,11 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
                                            .FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Recipe>> GetUserRecipe(Func<Recipe, bool> filter)
+        public Task<IEnumerable<Recipe>> GetUserRecipe(Func<Recipe, bool> filter)
         {
-            return _dbContext.Recipes.Include(x => x.Ingredients)
-                                     .Where(filter)
-                                     .OrderBy(x => x.Name);
+            return Task.FromResult<IEnumerable<Recipe>>(_dbContext.Recipes.Include(x => x.Ingredients)
+                                                                          .Where(filter)
+                                                                          .OrderBy(x => x.Name));
                                            
         }
 
@@ -87,7 +89,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// <param name="id">of the recipe already in DB</param>
         /// <param name="toUpdate">Data that will update the recipe</param>
         /// <returns>The updated recipe, with updated values</returns>
-        public async Task<Recipe> UpdateRecipe(int id, Recipe toUpdate)
+        public async Task<Recipe?> UpdateRecipe(int id, Recipe toUpdate)
         {
             var current = await FindRecipeById(id);
 

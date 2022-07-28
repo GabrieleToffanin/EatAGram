@@ -17,7 +17,7 @@ namespace Eatagram.SDK.Services
         {
         }
 
-        public Task<HttpResponseMessage<IEnumerable<RecipeContract>>> FetchRecipes()
+        public Task<HttpResponseMessage<IEnumerable<RecipeContract>?>> FetchRecipes()
         {
             return InvokeAsync<object, IEnumerable<RecipeContract>>(
                 null, "api/Recipe/GetRecipes", HttpMethod.Get);

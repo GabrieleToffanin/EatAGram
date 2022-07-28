@@ -12,10 +12,10 @@ namespace Eatagram.Core.Api.Extensions
             return builder.AddAzureAdBearer(_ => { });
         }
 
-        public static AuthenticationBuilder AddAzureAdBearer(this AuthenticationBuilder builder, Action<AzureAdOptions> configureOptions)
+        private static AuthenticationBuilder AddAzureAdBearer(this AuthenticationBuilder builder, Action<AzureAdOptions> configureOptions)
         {
             builder.Services.Configure(configureOptions);
-            builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfiugureAzureOptions>();
+            builder.Services.AddSingleton<IConfigureOptions<JwtBearerOptions>, AzureOptionsConfiguration>();
             builder.AddJwtBearer();
 
             return builder;

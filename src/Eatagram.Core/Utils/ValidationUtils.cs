@@ -17,7 +17,7 @@ namespace Eatagram.Core.Utils
             if (entityToValidate == null) throw new ArgumentNullException(nameof(entityToValidate));
 
             //Creates a validation context based on current entity
-            ValidationContext context = new ValidationContext(entityToValidate);
+            var context = new ValidationContext(entityToValidate);
 
             //Creates a list who'll be filled with error if any
             IList<ValidationResult> validationResults = new List<ValidationResult>();

@@ -10,7 +10,7 @@ namespace Eatagram.SDK.Models.Authentication
     {
         public string DisplayName { get; set; }
         public DateTimeOffset ExpiresOn { get; set; }
-        public string Token { get; set; }
+        public string Token { get; init; }
         public string UserId { get; set; }
     }
 }

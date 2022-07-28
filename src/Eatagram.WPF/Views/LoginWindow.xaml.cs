@@ -26,7 +26,7 @@ namespace Eatagram.WPF.Views
         public LoginWindow(IEventAggregator events)
         {
             InitializeComponent();
-            events.GetEvent<AuthenticationSuccessfullEvent>().Subscribe(_ => OnAuthSuccess(), ThreadOption.UIThread);
+            events.GetEvent<SuccessAuthenticationEvent>().Subscribe(_ => OnAuthSuccess(), ThreadOption.UIThread);
         }
 
         private void OnAuthSuccess()

@@ -100,7 +100,7 @@ namespace Eatagram.Core.Api.Controllers
             var toUpdate = recipeUpdateRequest.GetContract();
 
 
-            Recipe result = await _recipeLogic.UpdateRecipe(id, toUpdate);
+            Recipe? result = await _recipeLogic.UpdateRecipe(id, toUpdate);
 
             if (result == null)
                 return NotFound("Recipe not found");

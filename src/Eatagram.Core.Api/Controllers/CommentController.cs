@@ -27,7 +27,7 @@ namespace Eatagram.Core.Api.Controllers
         [ProducesResponseType(200, Type= typeof(IEnumerable<Comment>))]
         public async Task<IActionResult> GetRecipeComments([FromRoute] int id)
         {
-            if (id is < 0)
+            if (id < 0)
                 return BadRequest("Id must be greater than 0");
 
             var result = await _commentsLogic.FetchRecipeComments(id);
@@ -45,7 +45,7 @@ namespace Eatagram.Core.Api.Controllers
         public async Task<IActionResult> PostComment([FromBody] CommentRequest comment)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Provided request has unvalid data");
+                return BadRequest("Provided request has not valid data");
 
             var current = comment.GetContract();
 
@@ -65,7 +65,7 @@ namespace Eatagram.Core.Api.Controllers
             if (commentUpvote.CommentId < 0)
                 return BadRequest("Id must be greater than 0");
 
-            Comment result = await _commentsLogic.UpVoteCommentByIdAsync(commentUpvote.CommentId);
+            Comment? result = await _commentsLogic.UpVoteCommentByIdAsync(commentUpvote.CommentId);
 
 
             if (result is null)

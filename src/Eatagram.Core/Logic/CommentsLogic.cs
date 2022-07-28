@@ -1,11 +1,7 @@
 ﻿using Eatagram.Core.Entities;
 using Eatagram.Core.Interfaces.Comments;
 using Eatagram.Core.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Eatagram.Core.Logic
 {
@@ -18,9 +14,9 @@ namespace Eatagram.Core.Logic
             _commentsRepository = commentsRepository;
         }
 
-        public async Task<Comment> AddCommentOnRecipe(Comment comment)
+        public async Task<Comment?> AddCommentOnRecipe(Comment comment)
         {
-            if (ValidationUtils.Validate(comment).Count() > 0)
+            if (ValidationUtils.Validate(comment).Any())
                 return null;
 
             return await _commentsRepository.PostRecipeComment(comment);
@@ -34,7 +30,7 @@ namespace Eatagram.Core.Logic
             return await _commentsRepository.DeleteRecipeComment(commentId);
         }
 
-        public async Task<IEnumerable<Comment>> FetchFirstFiveMostUpvotedComments(int recipeId)
+        public async Task<IEnumerable<Comment>> FetchFirstFiveMostVotedComments(int recipeId)
         {
             if (recipeId < 0)
                 return null;
@@ -50,7 +46,7 @@ namespace Eatagram.Core.Logic
             return await _commentsRepository.FetchMostUpVotedRecipeComment(recipeId);
         }
 
-        public async Task<Comment> UpVoteCommentByIdAsync(int commentId)
+        public async Task<Comment?> UpVoteCommentByIdAsync(int commentId)
         {
             return await _commentsRepository.UpVoteCommentByIdAsync(commentId);
         }

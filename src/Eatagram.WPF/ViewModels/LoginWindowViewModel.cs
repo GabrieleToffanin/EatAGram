@@ -25,16 +25,21 @@ namespace Eatagram.WPF.ViewModels
             _authenticationService = authenticationService;
             _events = events;
 
-            MicrosoftAuthenticationCommand = new DelegateCommand(async () => await AuthenticateUserThroughMicrosoft());
+            MicrosoftAuthenticationCommand = new DelegateCommand(OnAuthRequested);
+        }
+
+        private async void OnAuthRequested()
+        {
+            await AuthenticateUserThroughMicrosoft();
         }
 
         private async Task AuthenticateUserThroughMicrosoft()
         {
             var result = await _authenticationService.AuthenticateUser();
 
-            if (result != null)
+            if (result is not null)
             {
-                _events.GetEvent<AuthenticationSuccessfullEvent>().Publish(result);
+                _events.GetEvent<SuccessAuthenticationEvent>().Publish(result);
             }
 
         }

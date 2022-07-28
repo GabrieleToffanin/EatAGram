@@ -10,10 +10,10 @@ namespace Eatagram.Core.Interfaces.Comments
     public interface ICommentsLogic
     {
         Task<IEnumerable<Comment>> FetchRecipeComments(int recipeId);
-        Task<IEnumerable<Comment>> FetchFirstFiveMostUpvotedComments(int recipeId);
+        Task<IEnumerable<Comment>> FetchFirstFiveMostVotedComments(int recipeId);
 
-        Task<Comment> AddCommentOnRecipe(Comment comment);
+        Task<Comment?> AddCommentOnRecipe(Comment comment);
         Task<Comment> DeleteCommentOnRecipe(int commentId);
-        Task<Comment> UpVoteCommentByIdAsync(int commentId);
+        Task<Comment?> UpVoteCommentByIdAsync(int commentId);
     }
 }

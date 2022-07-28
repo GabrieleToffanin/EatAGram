@@ -3,29 +3,28 @@ using Eatagram.Framework.Logger.LogSetup;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Text.Json;
 
-namespace Eatagram.Core.Api.Filter
+namespace Eatagram.Core.Api.Filter;
+
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+public class ExceptionFilterAttribute : LoggerFilterAttributeBase 
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-    public class ExceptionFilterAttribute : LoggerFilterAttributeBase 
+    public override void OnActionExecuted(ActionExecutedContext context)
     {
-        public override void OnActionExecuted(ActionExecutedContext context)
-        {
-            if (context.Exception == null)
-                return;
+        if (context.Exception == null)
+            return;
 
-            var paramJson = ActionArguments == null || ActionArguments.Count == 0
-                ? "-"
-                : JsonSerializer.Serialize(ActionArguments);
+        var paramJson = ActionArguments.Count == 0
+            ? "-"
+            : JsonSerializer.Serialize(ActionArguments);
 
-            string messageTracing = $"({ApplicationName}|{EnvironmentName}) " +
-                $"(Exception) " +
-                $"[{HttpMethodName}] {ControllerName}/{ActionName} " +
-                $"with params '{paramJson}' (auth:{AuthenticatedUserName}) " +
-                $"- Exception: {context.Exception}";
+        var messageTracing = $"({ApplicationName}|{EnvironmentName}) " +
+                             $"(Exception) " +
+                             $"[{HttpMethodName}] {ControllerName}/{ActionName} " +
+                             $"with params '{paramJson}' (auth:{AuthenticatedUserName}) " +
+                             $"- Exception: {context.Exception}";
 
-            SeriLogger.Error(messageTracing);
+        SeriLogger.Error(messageTracing);
 
-            base.OnActionExecuted(context);
-        }
+        base.OnActionExecuted(context);
     }
 }

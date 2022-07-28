@@ -12,8 +12,8 @@ namespace Eatagram.Core.Interfaces.Comments
         Task<IEnumerable<Comment>> FetchSpecificRecipeComments(int recipeId);
         Task<IEnumerable<Comment>> FetchMostUpVotedRecipeComment(int recipeId);
 
-        Task<Comment> PostRecipeComment(Comment comment);
+        Task<Comment?> PostRecipeComment(Comment comment);
         Task<Comment> DeleteRecipeComment(int commentId);
-        Task<Comment> UpVoteCommentByIdAsync(int commentId);
+        Task<Comment?> UpVoteCommentByIdAsync(int commentId);
     }
 }

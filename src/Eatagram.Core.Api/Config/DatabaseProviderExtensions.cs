@@ -10,9 +10,9 @@ namespace Eatagram.Core.Api.Config
 
         public static void ConfigureDatabases(this WebApplicationBuilder builder)
         {
-            string sqlConnection = !builder.Environment.IsDevelopment() 
+            var sqlConnection = !builder.Environment.IsDevelopment() 
                 ? AzureKeyVaultConfig.GetSqlConnectionString() : builder.Configuration["ConnectionStrings:SqlLocal"];
-            string mongoDbConnection = !builder.Environment.IsDevelopment() 
+            var mongoDbConnection = !builder.Environment.IsDevelopment() 
                 ? AzureKeyVaultConfig.GetMongoConnectionString() : builder.Configuration["MessageStoreDatabase:ConnectionString"];
 
 

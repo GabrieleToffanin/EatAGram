@@ -2,11 +2,6 @@
 using Eatagram.Core.Entities;
 using Eatagram.Core.Interfaces.Comments;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Eatagram.Core.Data.EntityFramework.Repository
 {
@@ -49,7 +44,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
                                             .ToListAsync();
         }
 
-        public async Task<Comment> PostRecipeComment(Comment comment)
+        public async Task<Comment?> PostRecipeComment(Comment comment)
         {
             if (comment == null)
                 throw new InvalidDataException("Invalid data to be inserted provided");
@@ -61,7 +56,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
 
         }
 
-        public async Task<Comment> FindCommentById(int id)
+        private async Task<Comment?> FindCommentById(int id)
         {
 
             var result = await _dbContext.Comments.Include(x => x.OfRecipe)
@@ -71,7 +66,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
             return result;
         }
 
-        public async Task<Comment> UpVoteCommentByIdAsync(int commentId)
+        public async Task<Comment?> UpVoteCommentByIdAsync(int commentId)
         {
             var commentFound = await _dbContext.Comments.Where(x => x.Id == commentId)
                                                         .FirstOrDefaultAsync();

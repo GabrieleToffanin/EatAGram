@@ -25,19 +25,19 @@ namespace Eatagram.Core.Interfaces.Logic
         /// </summary>
         /// <param name="currentRecipe">Recipe to be created</param>
         /// <returns>The created Recipe</returns>
-        Task<Recipe> CreateRecipe(Recipe currentRecipe);
+        Task<Recipe?> CreateRecipe(Recipe currentRecipe);
         /// <summary>
         /// Deletes the recipe from the db from the DB
         /// </summary>
         /// <param name="id">Id to be searched and will delete the recipe with this ID</param>
         /// <returns>The deleted recipe</returns>
-        Task<Recipe> DeleteRecipe(int id);
+        Task<Recipe?> DeleteRecipe(int id);
         /// <summary>
         /// Updates the recipe with the new content
         /// </summary>
         /// <param name="id">Id for faster search trough Put method</param>
         /// <param name="toUpdate">Recipe with updated content</param>
         /// <returns>The updated recipe with updated values</returns>
-        Task<Recipe> UpdateRecipe(int id, Recipe toUpdate);
+        Task<Recipe?> UpdateRecipe(int id, Recipe toUpdate);
     }
 }

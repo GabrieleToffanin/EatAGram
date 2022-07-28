@@ -8,11 +8,11 @@ namespace Eatagram.SDK.Models
 {
     public class HttpResponseMessage<TResponse> where TResponse : class
     {
-        public HttpResponseMessage OriginalContent { get; set; }
+        private HttpResponseMessage OriginalContent { get; }
 
-        public TResponse Content { get; set; }
+        public TResponse? Content { get; }
 
-        public HttpResponseMessage(HttpResponseMessage originalContent, TResponse content)
+        public HttpResponseMessage(HttpResponseMessage originalContent, TResponse? content)
         {
             OriginalContent = originalContent;
             Content = content;

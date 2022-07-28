@@ -20,7 +20,7 @@ namespace Eatagram.SDK.Services.Common
         /// <summary>
         /// Base client for making requests to the Http
         /// </summary>
-        private protected readonly HttpClient _client;
+        private readonly HttpClient _client;
 
         private readonly AuthenticationToken _authenticationToken;
 
@@ -29,7 +29,7 @@ namespace Eatagram.SDK.Services.Common
         /// </summary>
         private readonly string _baseUrl;
 
-        public HttpServiceBase(AuthenticationToken authenticatedUser)
+        protected HttpServiceBase(AuthenticationToken authenticatedUser)
         {
             _client = new HttpClient();
             _baseUrl = "https://localhost:5000/";
@@ -37,7 +37,7 @@ namespace Eatagram.SDK.Services.Common
         }
 
 
-        private protected async Task<HttpResponseMessage<TResult>> InvokeAsync<TRequest, TResult>
+        private protected async Task<HttpResponseMessage<TResult?>> InvokeAsync<TRequest, TResult>
             (TRequest request, string specificUri, HttpMethod httpMethod) where TRequest : class
                                                                           where TResult : class
         {
@@ -69,16 +69,16 @@ namespace Eatagram.SDK.Services.Common
 
                     TResult result = JsonConvert.DeserializeObject<TResult>(jsonResponse);
 
-                    return new HttpResponseMessage<TResult>(response, result);
+                    return new HttpResponseMessage<TResult?>(response, result);
                 }
 
-                return new HttpResponseMessage<TResult>(response);
+                return new HttpResponseMessage<TResult?>(response);
             }
             catch (Exception ex)
             {
                 SeriLogger.Error(ex.Message);
 
-                return new HttpResponseMessage<TResult>(
+                return new HttpResponseMessage<TResult?>(
                     new HttpResponseMessage(System.Net.HttpStatusCode.ServiceUnavailable));
             }
         }

@@ -23,10 +23,10 @@ namespace Eatagram.Core.Logic
         /// </summary>
         /// <param name="currentRecipe">Current asked for entity </param>
         /// <returns>Return the created recipe if good data else null</returns>
-        public async Task<Recipe> CreateRecipe(Recipe currentRecipe)
+        public async Task<Recipe?> CreateRecipe(Recipe currentRecipe)
         {
             //Performs the validation on the Entity
-            if (ValidationUtils.Validate(currentRecipe).Count() > 0)
+            if (ValidationUtils.Validate(currentRecipe).Any())
                 return null;
 
             //Returns the entity cause of success validation
@@ -37,9 +37,9 @@ namespace Eatagram.Core.Logic
         /// </summary>
         /// <param name="id">Current id of the recipe to be deleted</param>
         /// <returns>If Recipe not found in db null, else the deleted recipe</returns>
-        public async Task<Recipe> DeleteRecipe(int id)
+        public async Task<Recipe?> DeleteRecipe(int id)
         {
-            Recipe currentRecipe = await _recipeRepository.FindRecipeById(id);
+            Recipe? currentRecipe = await _recipeRepository.FindRecipeById(id);
 
             if (currentRecipe == null)
                 return null;
@@ -58,7 +58,7 @@ namespace Eatagram.Core.Logic
             IEnumerable<Recipe> recipes = await _recipeRepository.FetchAllRecipes();
 
             //Returns the recipes if any, else an empty Enumerable of type Recipe
-            return recipes ?? Enumerable.Empty<Recipe>();
+            return recipes;
         }
 
         public async Task<IEnumerable<Recipe>> GetUserRecipes(Func<Recipe, bool> userFilter)
@@ -74,9 +74,9 @@ namespace Eatagram.Core.Logic
         /// <param name="id">current recipe id in the database</param>
         /// <param name="toUpdate">current data that the already present Recipe will be updated with</param>
         /// <returns>the updated recipe from the database</returns>
-        public async Task<Recipe> UpdateRecipe(int id, Recipe toUpdate)
+        public async Task<Recipe?> UpdateRecipe(int id, Recipe toUpdate)
         {
-            if (ValidationUtils.Validate(toUpdate).Count() > 0)
+            if (ValidationUtils.Validate(toUpdate).Any())
                 return null;
 
             return await _recipeRepository.UpdateRecipe(id, toUpdate);

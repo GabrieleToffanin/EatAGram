@@ -24,8 +24,7 @@ namespace Eatagram.Core.Api.Utils
             Func<TEntity, TResult> converter) where TEntity : class
                                               where TResult : class
         {
-            foreach (var entity in entities)
-                yield return converter(entity);
+            return entities.Select(converter);
         }
 
         /// <summary>
@@ -33,8 +32,8 @@ namespace Eatagram.Core.Api.Utils
         /// </summary>
         /// <param name="recipe">Current recipe to be translated</param>
         /// <returns></returns>
-        public static RecipeContract GetContract(this Recipe recipe)
-            => new RecipeContract
+        public static RecipeContract GetContract(this Recipe? recipe)
+            => new()
             {
                 Id = recipe.Id,
                 Name = recipe.Name,
@@ -76,7 +75,7 @@ namespace Eatagram.Core.Api.Utils
         /// </summary>
         /// <param name="request">current request to be transposed to Ingredient Base</param>
         /// <returns>The converted in Ingredient</returns>
-        public static Ingredient GetContract(this IngredientCreationRequest request)
+        internal static Ingredient GetContract(this IngredientCreationRequest request)
         {
             return new Ingredient
             {
@@ -107,7 +106,7 @@ namespace Eatagram.Core.Api.Utils
             };
         }
 
-        public static CommentContract GetContract(this Comment comment)
+        public static CommentContract GetContract(this Comment? comment)
         {
             return new CommentContract
             {

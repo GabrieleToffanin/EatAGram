@@ -11,12 +11,12 @@ namespace Eatagram.Framework.Logger.LogSetup
 {
     public static class SeriLogger
     {
-        private static Lazy<ILogger> _instance = new Lazy<ILogger>(InitializeLogger);
+        private static readonly Lazy<ILogger> _instance = new(InitializeLogger);
 
         private static ILogger InitializeLogger()
         {
-            var file = Assembly.GetEntryAssembly().GetName().Name + ".log";
-            var format = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}";
+            var file = Assembly.GetEntryAssembly()?.GetName().Name + ".log";
+            const string format = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}";
             var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "logs", file);
 
             ILogger logger = new LoggerConfiguration()

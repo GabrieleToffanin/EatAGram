@@ -28,9 +28,9 @@ namespace Eatagram.Core.Mocks.Data
                 OwnerName = "Test user"
             };
         }
-        private static IEnumerable<Recipe> GetRecipesSeeding()
+        private static IEnumerable<Recipe?> GetRecipesSeeding()
         {
-            return new List<Recipe>
+            return new List<Recipe?>
             {
                 new Recipe
                 {

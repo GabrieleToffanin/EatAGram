@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Eatagram.WPF.Events
 {
-    public class AuthenticationSuccessfullEvent : PubSubEvent<AuthenticationToken>
+    public class SuccessAuthenticationEvent : PubSubEvent<AuthenticationToken>
     {
 
     }

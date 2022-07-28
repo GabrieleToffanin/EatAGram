@@ -37,7 +37,7 @@ namespace Eatagram.WPF
             var login = Container.Resolve<LoginWindow>();
             var result = login.ShowDialog();
 
-            if (result.Value)
+            if (result != null && result.Value)
                 base.OnInitialized();
         }
     }

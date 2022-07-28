@@ -20,23 +20,23 @@ namespace Eatagram.WPF.ViewModels
         private readonly IEventAggregator _events;
         private IEatagramRecipesService _recipesService;
 
-        public ObservableCollection<RecipeContract> Recipes { get; set; } 
-            = new ObservableCollection<RecipeContract>();
+        public ObservableCollection<RecipeContract> Recipes => new();
 
-        private string accessToken;
+        private string _accessToken;
 
-        public string AccessToken
+        private string AccessToken
         {
-            get => accessToken;
-            set => SetProperty(ref accessToken, value);
+            get => _accessToken;
+            set => SetProperty(ref _accessToken, value);
         }
 
 
+        /// <inheritdoc />
         public HomeWindowViewModel(IEventAggregator events)
         {
             _events = events;
 
-            _events.GetEvent<AuthenticationSuccessfullEvent>().Subscribe(OnAuthReceived, false);
+            _events.GetEvent<SuccessAuthenticationEvent>().Subscribe(OnAuthReceived, false);
         }
 
         private void OnAuthReceived(AuthenticationToken token)
@@ -50,7 +50,7 @@ namespace Eatagram.WPF.ViewModels
         {
             var response = await _recipesService.FetchRecipes();
 
-            if (response != null)
+            if (response.Content != null)
                 foreach (var item in response.Content)
                     Recipes.Add(item);
         }

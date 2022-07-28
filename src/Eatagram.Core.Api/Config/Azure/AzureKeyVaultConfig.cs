@@ -3,53 +3,52 @@ using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Options;
 
-namespace Eatagram.Core.Api.Config.Azure
+namespace Eatagram.Core.Api.Config.Azure;
+
+public static class AzureKeyVaultConfig
 {
-    public static class AzureKeyVaultConfig
+    private static readonly SecretClient _secretClient;
+    private static readonly IDictionary<string, string> _connStrings = new Dictionary<string, string>();
+    private static readonly SecretClientOptions _options = new()
     {
-        private static readonly SecretClient _secretClient;
-        private static readonly Dictionary<string, string> connStrings = new Dictionary<string, string>();
-        private static readonly SecretClientOptions options = new SecretClientOptions
+        Retry =
         {
-            Retry =
-            {
-                Delay = TimeSpan.FromSeconds(2),
-                MaxDelay = TimeSpan.FromSeconds(16),
-                MaxRetries = 5,
-                Mode = RetryMode.Exponential
-            }
-        };
+            Delay = TimeSpan.FromSeconds(2),
+            MaxDelay = TimeSpan.FromSeconds(16),
+            MaxRetries = 5,
+            Mode = RetryMode.Exponential
+        }
+    };
 
-        static AzureKeyVaultConfig()
+    static AzureKeyVaultConfig()
+    {
+
+        _secretClient = new SecretClient(new Uri("https://eatagramapikeyvault.vault.azure.net/"), new DefaultAzureCredential(), _options);
+
+    }
+
+    public static string GetMongoConnectionString()
+    {
+        if (!_connStrings.ContainsKey("Mongo"))
         {
+            KeyVaultSecret connectionString = _secretClient.GetSecret("Eatagram-Api-MongoDB-Connection");
 
-            _secretClient = new SecretClient(new Uri("https://eatagramapikeyvault.vault.azure.net/"), new DefaultAzureCredential(), options);
-
+            _connStrings["Mongo"] = connectionString.Value;
         }
 
-        public static string GetMongoConnectionString()
+        return _connStrings["Mongo"];
+    }
+
+    public static string GetSqlConnectionString()
+    {
+        if (!_connStrings.ContainsKey("Sql"))
         {
-            if (!connStrings.ContainsKey("Mongo"))
-            {
-                KeyVaultSecret connectionString = _secretClient.GetSecret("Eatagram-Api-MongoDB-Connection");
+            KeyVaultSecret connectionString =
+                _secretClient.GetSecret("Eatagram-Api-Sql-Connection");
 
-                connStrings["Mongo"] = connectionString.Value;
-            }
-
-            return connStrings["Mongo"];
+            _connStrings["Sql"] = connectionString.Value;
         }
 
-        public static string GetSqlConnectionString()
-        {
-            if (!connStrings.ContainsKey("Sql"))
-            {
-                KeyVaultSecret connectionString =
-                    _secretClient.GetSecret("Eatagram-Api-Sql-Connection");
-
-                connStrings["Sql"] = connectionString.Value;
-            }
-
-            return connStrings["Sql"];
-        }
+        return _connStrings["Sql"];
     }
 }
