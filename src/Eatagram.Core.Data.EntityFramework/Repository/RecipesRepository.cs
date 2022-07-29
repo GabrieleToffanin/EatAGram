@@ -25,7 +25,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// <returns>the current create recipe</returns>
         public async Task<Recipe?> CreateRecipe(Recipe recipe)
         {
-            await _dbContext.AddAsync(recipe);
+            await _dbContext.Set<Recipe>().AddAsync(recipe);
             await _dbContext.SaveChangesAsync();
 
             return await FindRecipeById(recipe.Id);
@@ -41,7 +41,7 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
             var momentCopy = currentRecipe;
 
 #pragma warning disable CS8634
-            _dbContext.Remove(currentRecipe);
+            _dbContext.Set<Recipe>().Remove(currentRecipe);
 #pragma warning restore CS8634
             await _dbContext.SaveChangesAsync();
 
@@ -54,9 +54,10 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// <returns>A collection of recipes</returns>
         public async Task<IEnumerable<Recipe>> FetchAllRecipes()
         {
-            var items = await _dbContext.Recipes.Include(x => x.Ingredients)
+            var items = await _dbContext.Set<Recipe>().Include(x => x.Ingredients)
                                                 .Include(x => x.Comments)
                                                 .OrderBy(x => x.Name)
+                                                .AsNoTracking()
                                                 .ToListAsync();
 
             return items ?? Enumerable.Empty<Recipe>();
@@ -69,18 +70,21 @@ namespace Eatagram.Core.Data.EntityFramework.Repository
         /// <returns>The fetched recipe</returns>
         public async Task<Recipe?> FindRecipeById(int id)
         {
-            return await _dbContext.Recipes.Include(x => x.Ingredients)
+            return await _dbContext.Set<Recipe>().Include(x => x.Ingredients)
                                            .Include(x => x.Comments)
                                            .Where(x => x.Id == id)
                                            .FirstOrDefaultAsync();
         }
 
-        public Task<IEnumerable<Recipe>> GetUserRecipe(Func<Recipe, bool> filter)
+        public async Task<IEnumerable<Recipe>> GetUserRecipe(Func<Recipe, bool> filter)
         {
-            return Task.FromResult<IEnumerable<Recipe>>(_dbContext.Recipes.Include(x => x.Ingredients)
-                                                                          .Where(filter)
-                                                                          .OrderBy(x => x.Name));
-                                           
+            var userRecipes = _dbContext.Set<Recipe>().Include(x => x.Ingredients)
+                .OrderBy(x => x.Name)
+                .Where(recipe => filter(recipe))
+                .AsNoTracking()
+                .ToListAsync();
+
+            return await userRecipes;
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿using Eatagram.Core.Entities;
 using Eatagram.Core.Interfaces.Comments;
+using Eatagram.Core.Interfaces.Repository;
 using Eatagram.Core.Utils;
-
 
 namespace Eatagram.Core.Logic
 {

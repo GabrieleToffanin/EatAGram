@@ -32,10 +32,10 @@ namespace Eatagram.Core.Api.Controllers
 
             var result = await _commentsLogic.FetchRecipeComments(id);
 
-            if(result == null)
+            if (result is null)
                 return NotFound("Could not found comments for this recipe");
 
-            return Ok(result.AsContracts(x => x.GetContract()));
+            return Ok(result.AsContracts(recipe => recipe.GetContract()));
         }
 
         [HttpPost]
